@@ -3,7 +3,7 @@
     <tstamp/>
     <property name="version" value="1.0" />
     
- 	<property name="deploy.dir"  value="${basedir}/../../../deploy" />
+ 	<property name="deploy.dir"  value="${basedir}/../deploy" />
     
  	<target name="main" depends="make_deploy_dir, build" description="Build HyperCon, the Hyperion configuration file builder" />
  		
