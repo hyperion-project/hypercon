@@ -27,6 +27,8 @@ public class ImageProcessConfig extends Observable {
 	
 	/** Flag indicating that black borders are excluded in the image processing */
 	public boolean mBlackBorderRemoval = true;
+	/** Threshold for the blackborder detector */
+	public double mBlackBorderThreshold = 0.01;
 	
 	/**
 	 * Returns the horizontal depth (top and bottom) of the image integration as a fraction of the 
@@ -161,14 +163,34 @@ public class ImageProcessConfig extends Observable {
 		}
 	}
 
+	/** 
+	 * Sets the blackborder threshold
+	 * @param pThreshold the threshold value [0 .. 1]
+	 */
+	public void setBlackborderThreshold(double pThreshold) {
+		if (mBlackBorderThreshold != pThreshold) {
+			mBlackBorderThreshold = pThreshold;
+			setChanged();
+		}
+	}
+	
+	/**
+	 * @return The black border threshold
+	 */
+	public double getBlackborderThreshold() {
+		return mBlackBorderThreshold;
+	}
+	
 	public void appendTo(JsonStringBuffer pJsonBuf) {
 		String comment = 
 				"The black border configuration, contains the following items: \n" +
-				" * enable : true if the detector should be activated\n";
+				" * enable    : true if the detector should be activated\n" +
+				" * threshold : Value below which a pixel is regarded as black (value between 0.0 and 1.0)\n";
 		pJsonBuf.writeComment(comment);
 		
 		pJsonBuf.startObject("blackborderdetector");
-		pJsonBuf.addValue("enable", mBlackBorderRemoval, true);
+		pJsonBuf.addValue("enable", mBlackBorderRemoval, false);
+		pJsonBuf.addValue("threshold", mBlackBorderThreshold, true);
 		pJsonBuf.stopObject();
 	}
 	

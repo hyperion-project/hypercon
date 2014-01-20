@@ -37,6 +37,9 @@ public class ImageProcessPanel extends JPanel {
 	private JLabel mBlackborderDetectorLabel;
 	private JComboBox<String> mBlackborderDetectorCombo;
 
+	private JLabel mBlackborderThresholdLabel;
+	private JSpinner mBlackborderThresholdSpinner;
+
 	public ImageProcessPanel(ImageProcessConfig pProcessConfig) {
 		super();
 		
@@ -99,7 +102,18 @@ public class ImageProcessPanel extends JPanel {
 		mBlackborderDetectorCombo.setToolTipText("Enables or disables the blackborder detection and removal");
 		mBlackborderDetectorCombo.addActionListener(mActionListener);
 		add(mBlackborderDetectorCombo);
-	
+
+		mBlackborderThresholdLabel = new JLabel("Blackborder Threshold [%]:");
+		add(mBlackborderThresholdLabel);
+		
+		mBlackborderThresholdSpinner = new JSpinner(new SpinnerNumberModel(mProcessConfig.mBlackBorderThreshold*100.0, -100.0, 100.0, 0.5));
+		mBlackborderThresholdSpinner.addChangeListener(mChangeListener);
+		add(mBlackborderThresholdSpinner);
+
+		// set gui state of threshold spinner
+		mBlackborderThresholdLabel.setEnabled(mProcessConfig.isBlackBorderRemoval());
+		mBlackborderThresholdSpinner.setEnabled(mProcessConfig.isBlackBorderRemoval());
+
 		GroupLayout layout = new GroupLayout(this);
 		layout.setAutoCreateGaps(true);
 		setLayout(layout);
@@ -112,6 +126,7 @@ public class ImageProcessPanel extends JPanel {
 						.addComponent(mVerticalGapLabel)
 						.addComponent(mOverlapLabel)
 						.addComponent(mBlackborderDetectorLabel)
+						.addComponent(mBlackborderThresholdLabel)
 						)
 				.addGroup(layout.createParallelGroup()
 						.addComponent(mHorizontalDepthSpinner)
@@ -120,6 +135,7 @@ public class ImageProcessPanel extends JPanel {
 						.addComponent(mVerticalGapSpinner)
 						.addComponent(mOverlapSpinner)
 						.addComponent(mBlackborderDetectorCombo)
+						.addComponent(mBlackborderThresholdSpinner)
 						)
 						);
 		layout.setVerticalGroup(layout.createSequentialGroup()
@@ -147,6 +163,10 @@ public class ImageProcessPanel extends JPanel {
 						.addComponent(mBlackborderDetectorLabel)
 						.addComponent(mBlackborderDetectorCombo)
 						)
+				.addGroup(layout.createParallelGroup()
+						.addComponent(mBlackborderThresholdLabel)
+						.addComponent(mBlackborderThresholdSpinner)
+						)
 						);
 	}
 
@@ -156,10 +176,15 @@ public class ImageProcessPanel extends JPanel {
 			// Update the processing configuration
 			mProcessConfig.setBlackBorderRemoval((mBlackborderDetectorCombo.getSelectedItem() == "On"));
 			
+			// set gui state of spinner
+			mBlackborderThresholdLabel.setEnabled(mProcessConfig.isBlackBorderRemoval());
+			mBlackborderThresholdSpinner.setEnabled(mProcessConfig.isBlackBorderRemoval());
+			
 			// Notify observers
 			mProcessConfig.notifyObservers(this);
 		}
 	};
+	
 	private final ChangeListener mChangeListener = new ChangeListener() {
 		@Override
 		public void stateChanged(ChangeEvent e) {
@@ -169,6 +194,7 @@ public class ImageProcessPanel extends JPanel {
 			mProcessConfig.setHorizontalGap(((Double)mHorizontalGapSpinner.getValue())/100.0);
 			mProcessConfig.setVerticalGap(((Double)mVerticalGapSpinner.getValue())/100.0);
 			mProcessConfig.setOverlapFraction(((Double)mOverlapSpinner.getValue())/100.0);
+			mProcessConfig.setBlackborderThreshold(((Double)mBlackborderThresholdSpinner.getValue())/100.0);
 
 			// Notify observers
 			mProcessConfig.notifyObservers(this);
