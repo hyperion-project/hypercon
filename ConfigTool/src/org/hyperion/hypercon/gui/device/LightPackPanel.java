@@ -32,6 +32,7 @@ public class LightPackPanel extends DeviceTypePanel {
 		add(mSerialNoLabel);
 		
 		mSerialNoField = new JTextField();
+		mSerialNoField.setToolTipText("The serial number of the lightpack. Leave empty if just one hyperion will sort it out.");
 		mSerialNoField.setMaximumSize(maxDim);
 		mSerialNoField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
