@@ -11,15 +11,16 @@ import java.util.Vector;
 
 import javax.swing.SwingWorker;
 
-import org.hyperion.hypercon.spec.Led;
+import org.hyperion.hypercon.spec.LedModel;
+import org.mufassa.model.ModelList;
 
 public class LedSimulationWorker extends SwingWorker<BufferedImage, Object> {
 
 	private final BufferedImage mTvImage;
 	
-	private final Vector<Led> mLeds;
+	private final ModelList<LedModel> mLeds;
 	
-	public LedSimulationWorker(BufferedImage pTvImage, Vector<Led> pLeds) {
+	public LedSimulationWorker(BufferedImage pTvImage, final ModelList<LedModel> pLeds) {
 		super();
 		
 		mTvImage = pTvImage;
@@ -47,18 +48,18 @@ public class LedSimulationWorker extends SwingWorker<BufferedImage, Object> {
 		
 		int imageWidth  = mTvImage.getWidth();
 		int imageHeight = mTvImage.getHeight();
-		for (Led led : mLeds) {
+		for (LedModel led : mLeds) {
 			LedPaint ledPaint = new LedPaint();
 			
 			// Determine the location and orientation of the led on the image
-			ledPaint.point = tv2image(imageDim, led.mLocation);
-			ledPaint.angle_rad = 0.5*Math.PI - led.mSide.getAngle_rad();
+			ledPaint.point = tv2image(imageDim, led.location.getValue());
+			ledPaint.angle_rad = 0.5*Math.PI - led.side.getValue().getAngle_rad();
 			
 			// Determine the color of the led
-			int xMin = (int)(led.mImageRectangle.getMinX() * (imageWidth-1));
-			int xMax = (int)(led.mImageRectangle.getMaxX() * (imageWidth-1));
-			int yMin = (int)(led.mImageRectangle.getMinY() * (imageHeight-1));
-			int yMax = (int)(led.mImageRectangle.getMaxY() * (imageHeight-1));
+			int xMin = (int)(led.imageRectangle.getValue().getMinX() * (imageWidth-1));
+			int xMax = (int)(led.imageRectangle.getValue().getMaxX() * (imageWidth-1));
+			int yMin = (int)(led.imageRectangle.getValue().getMinY() * (imageHeight-1));
+			int yMax = (int)(led.imageRectangle.getValue().getMaxY() * (imageHeight-1));
 			ledPaint.color = determineColor(xMin, xMax, yMin, yMax);
 			
 			mLedPaints.add(ledPaint);

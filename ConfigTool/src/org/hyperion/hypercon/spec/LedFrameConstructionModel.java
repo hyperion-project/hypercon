@@ -1,6 +1,7 @@
 package org.hyperion.hypercon.spec;
 
 import org.mufassa.model.AbstractModel;
+import org.mufassa.model.Event;
 import org.mufassa.model.ParameterBool;
 import org.mufassa.model.ParameterInt;
 
@@ -9,7 +10,10 @@ import org.mufassa.model.ParameterInt;
 /**
  * The LedFrame describes the construction of leds along the sides of the TV screen.
  */
+@Event(LedFrameConstructionModel.LEDFRAMECONSTRUCTION_EVENT)
 public class LedFrameConstructionModel extends AbstractModel {
+	public static final String LEDFRAMECONSTRUCTION_EVENT = "LedFrameConstructionEvent";
+	
 	/**
 	 * Enumeration of the led configuration direction 
 	 */
@@ -18,6 +22,11 @@ public class LedFrameConstructionModel extends AbstractModel {
 		clockwise,
 		/** Counter Clockwise led configuration */
 		counter_clockwise;
+	}
+	
+	public LedFrameConstructionModel() {
+		super();
+		initialize();
 	}
 	
 	/** True if the leds are organised clockwise else false (counter clockwise) */

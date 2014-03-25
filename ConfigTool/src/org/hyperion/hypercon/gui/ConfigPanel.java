@@ -3,9 +3,6 @@ package org.hyperion.hypercon.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -17,10 +14,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import org.hyperion.hypercon.ConfigurationFile;
-import org.hyperion.hypercon.LedFrameFactory;
-import org.hyperion.hypercon.LedString;
-import org.hyperion.hypercon.Main;
+import org.hyperion.hypercon.LedStringModel;
 
 /**
  * The main-config panel of HyperCon. Includes the configuration and the panels to edit and 
@@ -29,7 +23,7 @@ import org.hyperion.hypercon.Main;
 public class ConfigPanel extends JPanel {
 
 	/** The LED configuration information*/
-	private final LedString ledString;
+	private final LedStringModel ledString;
 	
 	/** Action for write the Hyperion deamon configuration file */
 	private final Action mSaveConfigAction = new AbstractAction("Create Hyperion Configuration") {
@@ -43,20 +37,20 @@ public class ConfigPanel extends JPanel {
 				return;
 			}
 
-			try {
-				ledString.saveConfigFile(fileChooser.getSelectedFile().getAbsolutePath());
-				
-				ConfigurationFile configFile = new ConfigurationFile();
-				configFile.store(ledString.mDeviceConfig);
-				configFile.store(ledString.mLedFrameConfig);
-				configFile.store(ledString.mProcessConfig);
-				configFile.store(ledString.mColorConfig);
-				configFile.store(ledString.mMiscConfig);
-				configFile.save(Main.configFilename);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+//			try {
+//				ledString.saveConfigFile(fileChooser.getSelectedFile().getAbsolutePath());
+//				
+//				ConfigurationFile configFile = new ConfigurationFile();
+//				configFile.store(ledString.mDeviceConfig);
+//				configFile.store(ledString.mLedFrameConfig);
+//				configFile.store(ledString.mProcessConfig);
+//				configFile.store(ledString.mColorConfig);
+//				configFile.store(ledString.mMiscConfig);
+//				configFile.save(Main.configFilename);
+//			} catch (IOException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
 		}
 	};
 	
@@ -78,28 +72,12 @@ public class ConfigPanel extends JPanel {
 	/**
 	 * Constructs the configuration panel with a default initialised led-frame and configuration
 	 */
-	public ConfigPanel(final LedString pLedString) {
+	public ConfigPanel(final LedStringModel pLedString) {
 		super();
 		
 		ledString = pLedString;
 		
 		initialise();
-		
-		// Compute the individual leds for the current configuration
-		ledString.leds = LedFrameFactory.construct(ledString.mLedFrameConfig, ledString.mProcessConfig);
-		mHyperionTv.setLeds(ledString.leds);
-		
-		// Add Observer to update the individual leds if the configuration changes
-		final Observer observer = new Observer() {
-			@Override
-			public void update(Observable o, Object arg) {
-				ledString.leds = LedFrameFactory.construct(ledString.mLedFrameConfig, ledString.mProcessConfig);
-				mHyperionTv.setLeds(ledString.leds);
-				mHyperionTv.repaint();
-			}
-		};
-		ledString.mLedFrameConfig.addObserver(observer);
-		ledString.mProcessConfig.addObserver(observer);
 	}
 	
 	/**
@@ -158,9 +136,9 @@ public class ConfigPanel extends JPanel {
 			mHardwarePanel = new JPanel();
 			mHardwarePanel.setLayout(new BoxLayout(mHardwarePanel, BoxLayout.Y_AXIS));
 			
-			mHardwarePanel.add(new DevicePanel(ledString.mDeviceConfig));
+			mHardwarePanel.add(new DevicePanel(ledString.mDevice));
 			mHardwarePanel.add(new LedFramePanel(ledString.mLedFrameConfig));
-			mHardwarePanel.add(new ImageProcessPanel(ledString.mProcessConfig));
+			mHardwarePanel.add(new ImageProcessPanel(ledString.mProcessConfig, ledString.blackborderdetector));
 			mHardwarePanel.add(Box.createVerticalGlue());
 		}
 		return mHardwarePanel;
@@ -171,9 +149,9 @@ public class ConfigPanel extends JPanel {
 			mProcessPanel = new JPanel();
 			mProcessPanel.setLayout(new BoxLayout(mProcessPanel, BoxLayout.Y_AXIS));
 			
-			mProcessPanel.add(new FrameGrabberPanel(ledString.mMiscConfig));
-			mProcessPanel.add(new ColorSmoothingPanel(ledString.mColorConfig));
-			mProcessPanel.add(new ColorsPanel(ledString.mColorConfig));
+			mProcessPanel.add(new FrameGrabberPanel(ledString.frameGrabber));
+			mProcessPanel.add(new ColorSmoothingPanel(ledString.mColor.mSmoothing));
+			mProcessPanel.add(new ColorsPanel(ledString.mColor));
 			mProcessPanel.add(Box.createVerticalGlue());
 		}
 		return mProcessPanel;
@@ -184,9 +162,9 @@ public class ConfigPanel extends JPanel {
 			mExternalPanel = new JPanel();
 			mExternalPanel.setLayout(new BoxLayout(mExternalPanel, BoxLayout.Y_AXIS));
 			
-			mExternalPanel.add(new XbmcPanel(ledString.mMiscConfig));
-			mExternalPanel.add(new InterfacePanel(ledString.mMiscConfig));
-			mExternalPanel.add(new EffectEnginePanel(ledString.mMiscConfig));
+			mExternalPanel.add(new XbmcPanel(ledString.xbmcVideoChecker));
+			mExternalPanel.add(new InterfacePanel(ledString));
+			mExternalPanel.add(new EffectEnginePanel(ledString.effects, ledString.bootSequence));
 			mExternalPanel.add(Box.createVerticalGlue());
 		}
 		return mExternalPanel;

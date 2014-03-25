@@ -16,11 +16,14 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.hyperion.hypercon.spec.MiscConfig;
+import org.hyperion.hypercon.LedStringModel;
+import org.hyperion.hypercon.spec.TcpServerModel;
 
 public class InterfacePanel extends JPanel {
 
-	public final MiscConfig mMiscConfig;
+	private final TcpServerModel mJsonServerModel;
+	private final TcpServerModel mProtoServerModel;
+	private final TcpServerModel mBoblightServerModel;
 	
 	private JPanel mJsonPanel;
 	private JCheckBox mJsonCheck;
@@ -37,10 +40,12 @@ public class InterfacePanel extends JPanel {
 	private JLabel mBoblightPortLabel;
 	private JSpinner mBoblightPortSpinner;
 	
-	public InterfacePanel(final MiscConfig pMiscConfig) {
+	public InterfacePanel(final LedStringModel pLedStringModel) {
 		super();
 		
-		mMiscConfig = pMiscConfig;
+		mJsonServerModel     = pLedStringModel.jsonServer;
+		mProtoServerModel    = pLedStringModel.protoServer;
+		mBoblightServerModel = pLedStringModel.boblightServer;
 		
 		initialise();
 	}
@@ -70,14 +75,14 @@ public class InterfacePanel extends JPanel {
 			mJsonPanel.setBorder(BorderFactory.createTitledBorder("Json server"));
 			
 			mJsonCheck = new JCheckBox("Enabled");
-			mJsonCheck.setSelected(mMiscConfig.mJsonInterfaceEnabled);
+			mJsonCheck.setSelected(mJsonServerModel.enabled.getValue());
 			mJsonCheck.addActionListener(mActionListener);
 			mJsonPanel.add(mJsonCheck);
 			
 			mJsonPortLabel = new JLabel("TCP Port: ");
 			mJsonPanel.add(mJsonPortLabel);
 			
-			mJsonPortSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mJsonPort, 1, 65536, 1));
+			mJsonPortSpinner = new JSpinner(new SpinnerNumberModel(mJsonServerModel.tcpPort.getValue(), 1, 65536, 1));
 			mJsonPortSpinner.addChangeListener(mChangeListener);
 			mJsonPanel.add(mJsonPortSpinner);
 			
@@ -109,14 +114,14 @@ public class InterfacePanel extends JPanel {
 			mProtoPanel.setBorder(BorderFactory.createTitledBorder("Proto server"));
 			
 			mProtoCheck = new JCheckBox("Enabled");
-			mProtoCheck.setSelected(mMiscConfig.mProtoInterfaceEnabled);
+			mProtoCheck.setSelected(mProtoServerModel.enabled.getValue());
 			mProtoCheck.addActionListener(mActionListener);
 			mProtoPanel.add(mProtoCheck);
 			
 			mProtoPortLabel = new JLabel("TCP Port: ");
 			mProtoPanel.add(mProtoPortLabel);
 			
-			mProtoPortSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mProtoPort, 1, 65536, 1));
+			mProtoPortSpinner = new JSpinner(new SpinnerNumberModel(mProtoServerModel.tcpPort.getValue(), 1, 65536, 1));
 			mProtoPortSpinner.addChangeListener(mChangeListener);
 			mProtoPanel.add(mProtoPortSpinner);
 			
@@ -149,14 +154,14 @@ public class InterfacePanel extends JPanel {
 			mBoblightPanel.setBorder(BorderFactory.createTitledBorder("Boblight server"));
 			
 			mBoblightCheck = new JCheckBox("Enabled");
-			mBoblightCheck.setSelected(mMiscConfig.mBoblightInterfaceEnabled);
+			mBoblightCheck.setSelected(mBoblightServerModel.enabled.getValue());
 			mBoblightCheck.addActionListener(mActionListener);
 			mBoblightPanel.add(mBoblightCheck);
 			
 			mBoblightPortLabel = new JLabel("TCP Port: ");
 			mBoblightPanel.add(mBoblightPortLabel);
 			
-			mBoblightPortSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mBoblightPort, 1, 65536, 1));
+			mBoblightPortSpinner = new JSpinner(new SpinnerNumberModel(mBoblightServerModel.tcpPort.getValue(), 1, 65536, 1));
 			mBoblightPortSpinner.addChangeListener(mChangeListener);
 			mBoblightPanel.add(mBoblightPortSpinner);
 			
@@ -184,22 +189,22 @@ public class InterfacePanel extends JPanel {
 	}
 	
 	private  void toggleEnabledFlags() {
-		mJsonPortLabel.setEnabled(mMiscConfig.mJsonInterfaceEnabled);
-		mJsonPortSpinner.setEnabled(mMiscConfig.mJsonInterfaceEnabled);
+		mJsonPortLabel.setEnabled(mJsonServerModel.enabled.getValue());
+		mJsonPortSpinner.setEnabled(mJsonServerModel.enabled.getValue());
 		
-		mProtoPortLabel.setEnabled(mMiscConfig.mProtoInterfaceEnabled);
-		mProtoPortSpinner.setEnabled(mMiscConfig.mProtoInterfaceEnabled);
+		mProtoPortLabel.setEnabled(mProtoServerModel.enabled.getValue());
+		mProtoPortSpinner.setEnabled(mProtoServerModel.enabled.getValue());
 		
-		mBoblightPortLabel.setEnabled(mMiscConfig.mBoblightInterfaceEnabled);
-		mBoblightPortSpinner.setEnabled(mMiscConfig.mBoblightInterfaceEnabled);
+		mBoblightPortLabel.setEnabled(mBoblightServerModel.enabled.getValue());
+		mBoblightPortSpinner.setEnabled(mBoblightServerModel.enabled.getValue());
 	}
 	
 	private final ActionListener mActionListener = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			mMiscConfig.mJsonInterfaceEnabled = mJsonCheck.isSelected();
-			mMiscConfig.mProtoInterfaceEnabled = mProtoCheck.isSelected();
-			mMiscConfig.mBoblightInterfaceEnabled = mBoblightCheck.isSelected();
+			mJsonServerModel.enabled.setValue(mJsonCheck.isSelected());
+			mProtoServerModel.enabled.setValue(mProtoCheck.isSelected());
+			mBoblightServerModel.enabled.setValue(mBoblightCheck.isSelected());
 			
 			toggleEnabledFlags();
 		}
@@ -207,9 +212,9 @@ public class InterfacePanel extends JPanel {
 	private final ChangeListener mChangeListener = new ChangeListener() {
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			mMiscConfig.mJsonPort = (Integer)mJsonPortSpinner.getValue();
-			mMiscConfig.mProtoPort = (Integer)mJsonPortSpinner.getValue();
-			mMiscConfig.mBoblightPort = (Integer)mJsonPortSpinner.getValue();
+			mJsonServerModel.tcpPort.setValue((Integer)mJsonPortSpinner.getValue());
+			mProtoServerModel.tcpPort.setValue((Integer)mJsonPortSpinner.getValue());
+			mBoblightServerModel.tcpPort.setValue((Integer)mJsonPortSpinner.getValue());
 		}
 	};
 }

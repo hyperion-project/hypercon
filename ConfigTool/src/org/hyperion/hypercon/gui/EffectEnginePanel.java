@@ -17,7 +17,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.hyperion.hypercon.spec.MiscConfig;
+import org.hyperion.hypercon.spec.BootsequenceModel;
+import org.hyperion.hypercon.spec.EffectEngineModel;
 
 /**
  * THe EffectEnginePanel contains the components for configuring the parameters of the Effect Engine
@@ -25,7 +26,8 @@ import org.hyperion.hypercon.spec.MiscConfig;
 public class EffectEnginePanel extends JPanel {
 
 	/** The MISC config contains the effect engine settings */
-	private final MiscConfig mMiscConfig;
+	private final EffectEngineModel mEffectEngineModel;
+	private final BootsequenceModel mBootsequenceModel;
 	
 	private JLabel mPathLabel;
 	private JTextField mPathField;
@@ -37,10 +39,11 @@ public class EffectEnginePanel extends JPanel {
 	private JLabel mBootSequenceLengthLabel;
 	private JSpinner mBootSequenceLengthSpinner;
 
-	public EffectEnginePanel(final MiscConfig pMiscConfig) {
+	public EffectEnginePanel(final EffectEngineModel pMiscConfig, final BootsequenceModel pBootSequenceModel) {
 		super();
 		
-		mMiscConfig = pMiscConfig;
+		mEffectEngineModel = pMiscConfig;
+		mBootsequenceModel = pBootSequenceModel;
 		
 		initialise();
 	}
@@ -54,19 +57,19 @@ public class EffectEnginePanel extends JPanel {
 		
 		mPathField = new JTextField();
 		mPathField.setMaximumSize(new Dimension(1024, 20));
-		mPathField.setText(mMiscConfig.mEffectEnginePath);
+		mPathField.setText(mEffectEngineModel.mEffectEnginePath.getValue());
 		mPathField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				mMiscConfig.mEffectEnginePath = mPathField.getText();
+				mEffectEngineModel.mEffectEnginePath.setValue(mPathField.getText());
 			}
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				mMiscConfig.mEffectEnginePath = mPathField.getText();
+				mEffectEngineModel.mEffectEnginePath.setValue(mPathField.getText());
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				mMiscConfig.mEffectEnginePath = mPathField.getText();
+				mEffectEngineModel.mEffectEnginePath.setValue(mPathField.getText());
 			}
 		});
 		add(mPathField);
@@ -95,54 +98,54 @@ public class EffectEnginePanel extends JPanel {
 			mBootSequencePanel.setBorder(BorderFactory.createTitledBorder("Bootsequence"));
 			
 			mBootSequenceCheck = new JCheckBox("Enabled");
-			mBootSequenceCheck.setSelected(mMiscConfig.mBootSequenceEnabled);
+			mBootSequenceCheck.setSelected(mBootsequenceModel.enabled.getValue());
 			mBootSequenceCheck.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					mMiscConfig.mBootSequenceEnabled = mBootSequenceCheck.isSelected();
-					mBootSequenceLabel.setEnabled(mMiscConfig.mBootSequenceEnabled);
-					mBootSequenceField.setEnabled(mMiscConfig.mBootSequenceEnabled);
+					mBootsequenceModel.enabled.setValue(mBootSequenceCheck.isSelected());
+					mBootSequenceLabel.setEnabled(mBootsequenceModel.enabled.getValue());
+					mBootSequenceField.setEnabled(mBootsequenceModel.enabled.getValue());
 				}
 			});
 			mBootSequencePanel.add(mBootSequenceCheck);
 			
 			mBootSequenceLabel = new JLabel("Type:");
 			mBootSequenceLabel.setMinimumSize(new Dimension(75, 10));
-			mBootSequenceLabel.setEnabled(mMiscConfig.mBootSequenceEnabled);
+			mBootSequenceLabel.setEnabled(mBootsequenceModel.enabled.getValue());
 			mBootSequencePanel.add(mBootSequenceLabel);
 			
 			mBootSequenceField = new JTextField();
 			mBootSequenceField.setMaximumSize(new Dimension(1024, 20));
-			mBootSequenceField.setText(mMiscConfig.mBootSequenceEffect);
-			mBootSequenceField.setEnabled(mMiscConfig.mBootSequenceEnabled);
+			mBootSequenceField.setText(mBootsequenceModel.effect.getValue());
+			mBootSequenceField.setEnabled(mBootsequenceModel.enabled.getValue());
 			mBootSequenceField.getDocument().addDocumentListener(new DocumentListener() {
 				@Override
 				public void removeUpdate(DocumentEvent e) {
-					mMiscConfig.mBootSequenceEffect = mBootSequenceField.getText();
+					mBootsequenceModel.effect.setValue(mBootSequenceField.getText());
 				}
 				@Override
 				public void insertUpdate(DocumentEvent e) {
-					mMiscConfig.mBootSequenceEffect = mBootSequenceField.getText();
+					mBootsequenceModel.effect.setValue(mBootSequenceField.getText());
 				}
 				@Override
 				public void changedUpdate(DocumentEvent e) {
-					mMiscConfig.mBootSequenceEffect = mBootSequenceField.getText();
+					mBootsequenceModel.effect.setValue(mBootSequenceField.getText());
 				}
 			});
 			mBootSequencePanel.add(mBootSequenceField);
 			
 			mBootSequenceLengthLabel = new JLabel("Length[ms]: ");
 			mBootSequenceLengthLabel.setMinimumSize(new Dimension(75, 10));
-			mBootSequenceLengthLabel.setEnabled(mMiscConfig.mBootSequenceEnabled);
+			mBootSequenceLengthLabel.setEnabled(mBootsequenceModel.enabled.getValue());
 			mBootSequencePanel.add(mBootSequenceLengthLabel);
 		
-			mBootSequenceLengthSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mBootSequenceLength_ms, 100, 1500000, 500));
+			mBootSequenceLengthSpinner = new JSpinner(new SpinnerNumberModel(mBootsequenceModel.duration_ms.getValue(), 100, 1500000, 500));
 			mBootSequenceLengthSpinner.setMaximumSize(new Dimension(1024, 20));
-			mBootSequenceLengthSpinner.setEnabled(mMiscConfig.mBootSequenceEnabled);
+			mBootSequenceLengthSpinner.setEnabled(mBootsequenceModel.enabled.getValue());
 			mBootSequenceLengthSpinner.addChangeListener(new ChangeListener() {
 				@Override
 				public void stateChanged(ChangeEvent e) {
-					mMiscConfig.mBootSequenceLength_ms = (Integer)mBootSequenceLengthSpinner.getValue();
+					mBootsequenceModel.duration_ms.setValue((Integer)mBootSequenceLengthSpinner.getValue());
 				}
 			});
 			mBootSequencePanel.add(mBootSequenceLengthSpinner);

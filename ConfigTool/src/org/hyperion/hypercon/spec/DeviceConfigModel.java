@@ -19,6 +19,11 @@ import org.mufassa.model.ParameterObject;
 		" * 'colorOrder' : The order of the color bytes ('rgb', 'rbg', 'bgr', etc.).")
 public class DeviceConfigModel extends AbstractModel {
 	
+	public DeviceConfigModel() {
+		super();
+		initialize();
+	}
+	
 	/** The name of the device */
 	public final ParameterObject<String> mName = new ParameterObject<>("Name", "MyPi");
 	

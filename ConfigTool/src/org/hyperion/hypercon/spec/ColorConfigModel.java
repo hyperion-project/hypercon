@@ -34,6 +34,11 @@ import org.mufassa.model.ModelList;
 		"           - 'updateFrequency' The update frequency of the leds in Hz")
 public class ColorConfigModel extends AbstractModel {
 	
+	public ColorConfigModel() {
+		super();
+		initialize();
+	}
+	
 	/** List with color transformations */
 	public final ModelList<TransformConfigModel> mTransform = new ModelList<>();
 	{

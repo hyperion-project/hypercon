@@ -13,15 +13,21 @@ import org.mufassa.model.ParameterObject;
  * integrating an image into led color  
  */
 public class LedModel extends AbstractModel {
+	
+	public LedModel() {
+		super();
+		initialize();
+	}
+
 	/** The sequence number of the led */
-	public final ParameterInt mLedSeqNr = new ParameterInt("LedSeqNr", 0, 0, Integer.MAX_VALUE);
+	public final ParameterInt sequenceNr = new ParameterInt("SequenceNr", 0, 0, Integer.MAX_VALUE);
 	
 	/** The side along which the led is placed */
-	public final ParameterObject<BorderSide> mSide = new ParameterObject<>("Side", BorderSide.top);
+	public final ParameterObject<BorderSide> side = new ParameterObject<>("Side", BorderSide.top);
 	
 	/** The fractional location of the led */
-	public final ParameterObject<Point2D.Double> mLocation = new ParameterObject<>("Location", new Point2D.Double());
+	public final ParameterObject<Point2D.Double> location = new ParameterObject<>("Location", new Point2D.Double());
 
 	/** The fractional rectangle for image integration */
-	public final ParameterObject<Rectangle2D.Double> mImageRectangle = new ParameterObject<>("ImageRectangle", new Rectangle2D.Double());
+	public final ParameterObject<Rectangle2D.Double> imageRectangle = new ParameterObject<>("ImageRectangle", new Rectangle2D.Double());
 }

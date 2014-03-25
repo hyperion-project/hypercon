@@ -15,23 +15,22 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.URL;
-import java.util.Vector;
+import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
-import org.hyperion.hypercon.LedFrameFactory;
-import org.hyperion.hypercon.spec.ImageProcessConfig;
-import org.hyperion.hypercon.spec.Led;
-import org.hyperion.hypercon.spec.LedFrameConstruction;
+import org.hyperion.hypercon.spec.LedModel;
+import org.mufassa.model.IModelObserver;
+import org.mufassa.model.ModelEvent;
+import org.mufassa.model.ModelList;
 
 
 public class LedSimulationComponent extends JPanel {
@@ -45,6 +44,14 @@ public class LedSimulationComponent extends JPanel {
 		Image image = new ImageIcon(LedSimulationComponent.class.getResource("TestImage_01.png")).getImage();
 		mTvImage.createGraphics().drawImage(image, 0, 0, mTvImage.getWidth(), mTvImage.getHeight(), null);
 	}
+	
+	private final ModelList<LedModel> mLeds;
+	private final IModelObserver mLedsObserver = new IModelObserver() {
+		@Override
+		public void modelUpdate(Set<ModelEvent> pEvents) {
+			updateLeds();
+		}
+	};
 
 	private JPanel mTopPanel;
 	private ImageComponent mTopLeftImage;
@@ -63,15 +70,18 @@ public class LedSimulationComponent extends JPanel {
 	LedTvComponent mTvComponent;
 	private int mLedCnt = 0;
 	
-	public LedSimulationComponent(Vector<Led> pLeds) {
+	public LedSimulationComponent(final ModelList<LedModel> pLeds) {
 		super();
 		
-		initialise(pLeds);
+		mLeds = pLeds;
 		
-		setLeds(pLeds);
+		initialise();
+		updateLeds();
+		
+		mLeds.addObserver(mLedsObserver, ModelList.LIST_CHANGED);
 	}
 
-	void initialise(Vector<Led> pLeds) {
+	void initialise() {
 		setBackground(Color.BLACK);
 		setLayout(new BorderLayout());
 		
@@ -86,7 +96,7 @@ public class LedSimulationComponent extends JPanel {
 		
 		add(getBottomPanel(), BorderLayout.SOUTH);
 		
-		mTvComponent = new LedTvComponent(pLeds);
+		mTvComponent = new LedTvComponent(mLeds);
 		mTvComponent.setImage(mTvImage);
 		add(mTvComponent, BorderLayout.CENTER);
 		
@@ -135,9 +145,8 @@ public class LedSimulationComponent extends JPanel {
 	
 	LedSimulationWorker mWorker = null;
 	
-	public void setLeds(Vector<Led> pLeds) {
-		mLedCnt = pLeds == null? 0 : pLeds.size();
-		mTvComponent.setLeds(pLeds);
+	private void updateLeds() {
+		mLedCnt = (mLeds == null)? 0 : mLeds.size();
 		
 		synchronized (LedSimulationComponent.this) {
 			if (mWorker != null) {
@@ -145,7 +154,7 @@ public class LedSimulationComponent extends JPanel {
 			}
 			mWorker = null;
 		}		
-		mWorker = new LedSimulationWorker(mTvImage, pLeds);
+		mWorker = new LedSimulationWorker(mTvImage, mLeds);
 		mProgressBar.setValue(0);
 		mWorker.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
@@ -213,22 +222,7 @@ public class LedSimulationComponent extends JPanel {
         String ledCntStr = "Led count: " + mLedCnt;
         gCopy.drawString(ledCntStr, getWidth()-150.0f, getHeight()-10.0f);
 	}
-	
-	public static void main(String[] pArgs) {
-		JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setSize(800, 600);
-		
-		Vector<Led> leds = LedFrameFactory.construct(new LedFrameConstruction(), new ImageProcessConfig());
-		
-		LedSimulationComponent ledSimComp = new LedSimulationComponent(leds);
-		
-		frame.getContentPane().setLayout(new BorderLayout());
-		frame.getContentPane().add(ledSimComp);
-		
-		frame.setVisible(true);
-	}
-	
+
 	private final MouseListener mPopupListener = new MouseAdapter() {
 		@Override
 		public void mouseReleased(MouseEvent e) {

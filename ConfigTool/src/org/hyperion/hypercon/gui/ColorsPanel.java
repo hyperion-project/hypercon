@@ -16,29 +16,33 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import org.hyperion.hypercon.spec.ColorConfig;
+import org.hyperion.hypercon.spec.ColorConfigModel;
 import org.hyperion.hypercon.spec.TransformConfig;
+import org.hyperion.hypercon.spec.TransformConfigModel;
 
 public class ColorsPanel extends JPanel {
 
-	private final ColorConfig mColorConfig;
-	private final DefaultComboBoxModel<TransformConfig> mTransformsModel;
+	private final ColorConfigModel mColorConfig;
+	private final DefaultComboBoxModel<TransformConfigModel> mTransformsModel;
 	
 	private JPanel mControlPanel;
-	private JComboBox<TransformConfig> mTransformCombo;
+	private JComboBox<TransformConfigModel> mTransformCombo;
 	private JButton mAddTransformButton;
 	private JButton mDelTransformButton;
 	
 	private JPanel mTransformPanel;
 	
-	private final Map<TransformConfig, ColorTransformPanel> mTransformPanels = new HashMap<>();
+	private final Map<TransformConfigModel, ColorTransformPanel> mTransformPanels = new HashMap<>();
 	
 	
-	public ColorsPanel(ColorConfig pColorConfig) {
+	public ColorsPanel(ColorConfigModel pColorConfig) {
 		super();
 		
 		mColorConfig = pColorConfig;
-		mTransformsModel = new DefaultComboBoxModel<TransformConfig>(mColorConfig.mTransforms);
+		mTransformsModel = new DefaultComboBoxModel<TransformConfigModel>();
+		for (TransformConfigModel tcm : mColorConfig.mTransform) {
+			mTransformsModel.addElement(tcm);
+		}
 		
 		initialise();
 	}
@@ -53,10 +57,10 @@ public class ColorsPanel extends JPanel {
 		mTransformPanel.setLayout(new BorderLayout());
 		add(mTransformPanel, BorderLayout.CENTER);
 		
-		for (TransformConfig config : mColorConfig.mTransforms) {
+		for (TransformConfigModel config : mColorConfig.mTransform) {
 			mTransformPanels.put(config, new ColorTransformPanel(config));
 		}
-		ColorTransformPanel currentPanel = mTransformPanels.get(mColorConfig.mTransforms.get(0));
+		ColorTransformPanel currentPanel = mTransformPanels.get(mColorConfig.mTransform.get(0));
 		mTransformPanel.add(currentPanel, BorderLayout.CENTER);
 	}
 	
@@ -88,8 +92,8 @@ public class ColorsPanel extends JPanel {
 				return;
 			}
 			
-			TransformConfig config = new TransformConfig();
-			config.mId = newId;
+			TransformConfigModel config = new TransformConfigModel();
+			config.id.setValue(newId);
 			
 			ColorTransformPanel panel = new ColorTransformPanel(config);
 			mTransformPanels.put(config, panel);

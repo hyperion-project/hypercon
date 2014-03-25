@@ -1,11 +1,17 @@
 package org.hyperion.hypercon;
 
+import org.hyperion.control.LedConfigController;
+import org.hyperion.hypercon.spec.BlackborderDetectorModel;
+import org.hyperion.hypercon.spec.BootsequenceModel;
 import org.hyperion.hypercon.spec.ColorConfigModel;
 import org.hyperion.hypercon.spec.DeviceConfigModel;
-import org.hyperion.hypercon.spec.ImageProcessConfigModel;
+import org.hyperion.hypercon.spec.EffectEngineModel;
+import org.hyperion.hypercon.spec.ImageProcessModel;
 import org.hyperion.hypercon.spec.LedFrameConstructionModel;
 import org.hyperion.hypercon.spec.LedModel;
-import org.hyperion.hypercon.spec.MiscConfigModel;
+import org.hyperion.hypercon.spec.TcpServerModel;
+import org.hyperion.hypercon.spec.VideoGrabberModel;
+import org.hyperion.hypercon.spec.XbmcVideoCheckerModel;
 import org.mufassa.model.AbstractModel;
 import org.mufassa.model.JsonComment;
 import org.mufassa.model.ModelList;
@@ -20,21 +26,46 @@ public class LedStringModel extends AbstractModel {
 	
 	/** The color adjustment configuration */
 	public final ColorConfigModel mColor = new ColorConfigModel();
+	
+	/** The translation of the led frame construction and image processing to individual led configuration */
+	public final ModelList<LedModel> leds = new ModelList<>();
+
+	/** The configuration of the blackborder detection and removal algorithm */
+	public final BlackborderDetectorModel blackborderdetector = new BlackborderDetectorModel();
+	
+	/** The configuration of the effect-engine */
+	public final EffectEngineModel effects = new EffectEngineModel();
+	
+	/** The configuration of the bootsequence */
+	public final BootsequenceModel bootSequence = new BootsequenceModel();
+	
+	/** The configuration of the Dispmanx Video Grabber */
+	public final VideoGrabberModel frameGrabber = new VideoGrabberModel();
+	
+	/** The configuration of the XBMC video checker */
+	public final XbmcVideoCheckerModel xbmcVideoChecker = new XbmcVideoCheckerModel();
+	
+	/** The configuration of the JSON interface */
+	public final TcpServerModel jsonServer = new TcpServerModel(true, 19444);
+	/** The configuration of the PROTO interface */ 
+	public final TcpServerModel protoServer = new TcpServerModel(true, 19445);
+	/** The configuration of the Boblight interface */
+	public final TcpServerModel boblightServer = new TcpServerModel(false, 19333);
 
 	/** THe configuration of the 'physical' led frame */
 	public final LedFrameConstructionModel mLedFrameConfig = new LedFrameConstructionModel();
 	
 	/** The configuration of the image processing */
-	public final ImageProcessConfigModel mProcessConfig = new ImageProcessConfigModel();
-	
-	/** The miscellaneous configuration (bootsequence, blackborder detector, etc) */
-	public final MiscConfigModel mMiscConfig = new MiscConfigModel();
-
-	/** The translation of the led frame construction and image processing to individual led configuration */
-	public final ModelList<LedModel> leds = new ModelList<>();
+	public final ImageProcessModel mProcessConfig = new ImageProcessModel();
 
 	public static void main(String[] pArgs) {
 		LedStringModel myModel = new LedStringModel();
+		
+		LedConfigController ledsController = new LedConfigController(myModel);
+		
+		myModel.mLedFrameConfig.topCorners.setValue(false);
+		myModel.mLedFrameConfig.commitEvents();
+		
 		String modelJson = Jsonizer.serialize(myModel);
 		
 		System.out.println("Model: \n" + modelJson);

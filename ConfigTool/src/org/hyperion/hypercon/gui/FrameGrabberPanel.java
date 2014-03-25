@@ -15,11 +15,11 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.hyperion.hypercon.spec.MiscConfig;
+import org.hyperion.hypercon.spec.VideoGrabberModel;
 
 public class FrameGrabberPanel extends JPanel {
 
-	private final MiscConfig mMiscConfig;
+	private final VideoGrabberModel mGrabberModel;
 	
 	private JCheckBox mFrameGrabberCheck;
 	private JLabel mWidthLabel;
@@ -29,10 +29,10 @@ public class FrameGrabberPanel extends JPanel {
 	private JLabel mIntervalLabel;
 	private JSpinner mIntervalSpinner;
 	
-	public FrameGrabberPanel(final MiscConfig pMiscConfig) {
+	public FrameGrabberPanel(final VideoGrabberModel pGrabberModel) {
 		super();
 		
-		mMiscConfig = pMiscConfig;
+		mGrabberModel = pGrabberModel;
 		
 		initialise();
 	}
@@ -49,28 +49,28 @@ public class FrameGrabberPanel extends JPanel {
 		setBorder(BorderFactory.createTitledBorder("Frame Grabber"));
 		
 		mFrameGrabberCheck = new JCheckBox("Enabled");
-		mFrameGrabberCheck.setSelected(mMiscConfig.mFrameGrabberEnabled);
+		mFrameGrabberCheck.setSelected(mGrabberModel.enabled.getValue());
 		mFrameGrabberCheck.addActionListener(mActionListener);
 		add(mFrameGrabberCheck);
 		
 		mWidthLabel = new JLabel("Width: ");
 		add(mWidthLabel);
 		
-		mWidthSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mFrameGrabberWidth, 16, 1024, 8));
+		mWidthSpinner = new JSpinner(new SpinnerNumberModel(mGrabberModel.width.getValue(), 16, 1024, 8));
 		mWidthSpinner.addChangeListener(mChangeListener);
 		add(mWidthSpinner);
 		
 		mHeightLabel = new JLabel("Heigth: ");
 		add(mHeightLabel);
 		
-		mHeightSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mFrameGrabberHeight, 16, 1024, 8));
+		mHeightSpinner = new JSpinner(new SpinnerNumberModel(mGrabberModel.height.getValue(), 16, 1024, 8));
 		mHeightSpinner.addChangeListener(mChangeListener);
 		add(mHeightSpinner);
 		
 		mIntervalLabel = new JLabel("Interval [ms]:");
 		add(mIntervalLabel);
 		
-		mIntervalSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mFrameGrabberInterval_ms, 10, 60000, 10));
+		mIntervalSpinner = new JSpinner(new SpinnerNumberModel(mGrabberModel.interval_ms.getValue(), 10, 60000, 10));
 		mIntervalSpinner.addChangeListener(mChangeListener);
 		add(mIntervalSpinner);
 
@@ -106,7 +106,7 @@ public class FrameGrabberPanel extends JPanel {
 						.addComponent(mIntervalSpinner)
 						));
 
-		toggleEnabled(mMiscConfig.mFrameGrabberEnabled);
+		toggleEnabled(mGrabberModel.enabled.getValue());
 	}
 	
 	private void toggleEnabled(boolean pEnabled) {
@@ -121,17 +121,17 @@ public class FrameGrabberPanel extends JPanel {
 	private final ActionListener mActionListener = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			mMiscConfig.mFrameGrabberEnabled = mFrameGrabberCheck.isSelected();
+			mGrabberModel.enabled.setValue(mFrameGrabberCheck.isSelected());
 			
-			toggleEnabled(mMiscConfig.mFrameGrabberEnabled);
+			toggleEnabled(mGrabberModel.enabled.getValue());
 		}
 	}; 
 	private final ChangeListener mChangeListener = new ChangeListener() {
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			mMiscConfig.mFrameGrabberWidth = (Integer)mWidthSpinner.getValue();
-			mMiscConfig.mFrameGrabberHeight = (Integer)mHeightSpinner.getValue();
-			mMiscConfig.mFrameGrabberInterval_ms = (Integer)mIntervalSpinner.getValue();
+			mGrabberModel.width.setValue((Integer)mWidthSpinner.getValue());
+			mGrabberModel.height.setValue((Integer)mHeightSpinner.getValue());
+			mGrabberModel.interval_ms.setValue((Integer)mIntervalSpinner.getValue());
 		}
 	};
 }

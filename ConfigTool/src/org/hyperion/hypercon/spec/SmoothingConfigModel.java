@@ -8,6 +8,11 @@ import org.mufassa.model.ParameterObject;
 
 public class SmoothingConfigModel extends AbstractModel {
 	
+	public SmoothingConfigModel() {
+		super();
+		initialize();
+	}
+	
 	public final ParameterBool mSmoothingEnabled = new ParameterBool("enabled", false);
 	/** The type of smoothing algorithm */
 	public final ParameterObject<ColorSmoothingType> mType = new ParameterObject<>("type", ColorSmoothingType.linear);

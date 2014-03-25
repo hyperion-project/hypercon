@@ -15,11 +15,13 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.hyperion.hypercon.spec.ImageProcessConfig;
+import org.hyperion.hypercon.spec.BlackborderDetectorModel;
+import org.hyperion.hypercon.spec.ImageProcessModel;
 
 public class ImageProcessPanel extends JPanel {
 	
-	private final ImageProcessConfig mProcessConfig;
+	private final ImageProcessModel mProcessConfig;
+	private final BlackborderDetectorModel mBlackborderModel;
 	
 	private JLabel mHorizontalDepthLabel;
 	private JSpinner mHorizontalDepthSpinner;
@@ -40,10 +42,11 @@ public class ImageProcessPanel extends JPanel {
 	private JLabel mBlackborderThresholdLabel;
 	private JSpinner mBlackborderThresholdSpinner;
 
-	public ImageProcessPanel(ImageProcessConfig pProcessConfig) {
+	public ImageProcessPanel(final ImageProcessModel pProcessConfig, final BlackborderDetectorModel pBlackborderModel) {
 		super();
 		
 		mProcessConfig = pProcessConfig;
+		mBlackborderModel = pBlackborderModel;
 		
 		initialise();
 	}
@@ -62,35 +65,35 @@ public class ImageProcessPanel extends JPanel {
 		mHorizontalDepthLabel = new JLabel("Horizontal depth [%]:");
 		add(mHorizontalDepthLabel);
 		
-		mHorizontalDepthSpinner = new JSpinner(new SpinnerNumberModel(mProcessConfig.mHorizontalDepth*100.0, 1.0, 100.0, 1.0));
+		mHorizontalDepthSpinner = new JSpinner(new SpinnerNumberModel(mProcessConfig.horizontalDepth.getValue()*100.0, 1.0, 100.0, 1.0));
 		mHorizontalDepthSpinner.addChangeListener(mChangeListener);
 		add(mHorizontalDepthSpinner);
 
 		mVerticalDepthLabel = new JLabel("Vertical depth [%]:");
 		add(mVerticalDepthLabel);
 		
-		mVerticalDepthSpinner = new JSpinner(new SpinnerNumberModel(mProcessConfig.mVerticalDepth*100.0, 1.0, 100.0, 1.0));
+		mVerticalDepthSpinner = new JSpinner(new SpinnerNumberModel(mProcessConfig.verticalDepth.getValue()*100.0, 1.0, 100.0, 1.0));
 		mVerticalDepthSpinner.addChangeListener(mChangeListener);
 		add(mVerticalDepthSpinner);
 
 		mHorizontalGapLabel = new JLabel("Horizontal gap [%]:");
 		add(mHorizontalGapLabel);
 		
-		mHorizontalGapSpinner = new JSpinner(new SpinnerNumberModel(mProcessConfig.mHorizontalGap*100.0, 0.0, 50.0, 1.0));
+		mHorizontalGapSpinner = new JSpinner(new SpinnerNumberModel(mProcessConfig.horizontalGap.getValue()*100.0, 0.0, 50.0, 1.0));
 		mHorizontalGapSpinner.addChangeListener(mChangeListener);
 		add(mHorizontalGapSpinner);
 
 		mVerticalGapLabel = new JLabel("Vertical gap [%]:");
 		add(mVerticalGapLabel);
 		
-		mVerticalGapSpinner = new JSpinner(new SpinnerNumberModel(mProcessConfig.mVerticalGap*100.0, 0.0, 50.0, 1.0));
+		mVerticalGapSpinner = new JSpinner(new SpinnerNumberModel(mProcessConfig.verticalGap.getValue()*100.0, 0.0, 50.0, 1.0));
 		mVerticalGapSpinner.addChangeListener(mChangeListener);
 		add(mVerticalGapSpinner);
 
 		mOverlapLabel = new JLabel("Overlap [%]:");
 		add(mOverlapLabel);
 		
-		mOverlapSpinner = new JSpinner(new SpinnerNumberModel(mProcessConfig.mOverlapFraction*100.0, -100.0, 100.0, 1.0));
+		mOverlapSpinner = new JSpinner(new SpinnerNumberModel(mProcessConfig.overlapFraction.getValue()*100.0, -100.0, 100.0, 1.0));
 		mOverlapSpinner.addChangeListener(mChangeListener);
 		add(mOverlapSpinner);
 		
@@ -98,7 +101,7 @@ public class ImageProcessPanel extends JPanel {
 		add(mBlackborderDetectorLabel);
 		
 		mBlackborderDetectorCombo = new JComboBox<>(new String[] {"On", "Off"});
-		mBlackborderDetectorCombo.setSelectedItem(mProcessConfig.mBlackBorderRemoval?"On":"Off");
+		mBlackborderDetectorCombo.setSelectedItem(mBlackborderModel.enabled.getValue()?"On":"Off");
 		mBlackborderDetectorCombo.setToolTipText("Enables or disables the blackborder detection and removal");
 		mBlackborderDetectorCombo.addActionListener(mActionListener);
 		add(mBlackborderDetectorCombo);
@@ -106,13 +109,13 @@ public class ImageProcessPanel extends JPanel {
 		mBlackborderThresholdLabel = new JLabel("Blackborder Threshold [%]:");
 		add(mBlackborderThresholdLabel);
 		
-		mBlackborderThresholdSpinner = new JSpinner(new SpinnerNumberModel(mProcessConfig.mBlackBorderThreshold*100.0, -100.0, 100.0, 0.5));
+		mBlackborderThresholdSpinner = new JSpinner(new SpinnerNumberModel(mBlackborderModel.threshold.getValue()*100.0, -100.0, 100.0, 0.5));
 		mBlackborderThresholdSpinner.addChangeListener(mChangeListener);
 		add(mBlackborderThresholdSpinner);
 
 		// set gui state of threshold spinner
-		mBlackborderThresholdLabel.setEnabled(mProcessConfig.isBlackBorderRemoval());
-		mBlackborderThresholdSpinner.setEnabled(mProcessConfig.isBlackBorderRemoval());
+		mBlackborderThresholdLabel.setEnabled(mBlackborderModel.enabled.getValue());
+		mBlackborderThresholdSpinner.setEnabled(mBlackborderModel.enabled.getValue());
 
 		GroupLayout layout = new GroupLayout(this);
 		layout.setAutoCreateGaps(true);
@@ -174,14 +177,14 @@ public class ImageProcessPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// Update the processing configuration
-			mProcessConfig.setBlackBorderRemoval((mBlackborderDetectorCombo.getSelectedItem() == "On"));
+			mBlackborderModel.enabled.setValue((mBlackborderDetectorCombo.getSelectedItem() == "On"));
 			
 			// set gui state of spinner
-			mBlackborderThresholdLabel.setEnabled(mProcessConfig.isBlackBorderRemoval());
-			mBlackborderThresholdSpinner.setEnabled(mProcessConfig.isBlackBorderRemoval());
+			mBlackborderThresholdLabel.setEnabled(mBlackborderModel.enabled.getValue());
+			mBlackborderThresholdSpinner.setEnabled(mBlackborderModel.enabled.getValue());
 			
 			// Notify observers
-			mProcessConfig.notifyObservers(this);
+			mBlackborderModel.commitEvents();
 		}
 	};
 	
@@ -189,15 +192,16 @@ public class ImageProcessPanel extends JPanel {
 		@Override
 		public void stateChanged(ChangeEvent e) {
 			// Update the processing configuration
-			mProcessConfig.setHorizontalDepth(((Double)mHorizontalDepthSpinner.getValue())/100.0);
-			mProcessConfig.setVerticalDepth(((Double)mVerticalDepthSpinner.getValue())/100.0);
-			mProcessConfig.setHorizontalGap(((Double)mHorizontalGapSpinner.getValue())/100.0);
-			mProcessConfig.setVerticalGap(((Double)mVerticalGapSpinner.getValue())/100.0);
-			mProcessConfig.setOverlapFraction(((Double)mOverlapSpinner.getValue())/100.0);
-			mProcessConfig.setBlackborderThreshold(((Double)mBlackborderThresholdSpinner.getValue())/100.0);
+			mProcessConfig.horizontalDepth.setValue(((Double)mHorizontalDepthSpinner.getValue())/100.0);
+			mProcessConfig.verticalDepth.setValue(((Double)mVerticalDepthSpinner.getValue())/100.0);
+			mProcessConfig.horizontalGap.setValue(((Double)mHorizontalGapSpinner.getValue())/100.0);
+			mProcessConfig.verticalGap.setValue(((Double)mVerticalGapSpinner.getValue())/100.0);
+			mProcessConfig.overlapFraction.setValue(((Double)mOverlapSpinner.getValue())/100.0);
+			
+			mBlackborderModel.threshold.setValue(((Double)mBlackborderThresholdSpinner.getValue())/100.0);
 
 			// Notify observers
-			mProcessConfig.notifyObservers(this);
+			mProcessConfig.commitEvents();
 		}
 	};
 }

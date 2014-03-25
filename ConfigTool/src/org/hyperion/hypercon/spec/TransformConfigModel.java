@@ -5,6 +5,12 @@ import org.mufassa.model.ParameterDouble;
 import org.mufassa.model.ParameterObject;
 
 public class TransformConfigModel extends AbstractModel {
+	
+	public TransformConfigModel() {
+		super();
+		initialize();
+	}
+
 	/** The identifier of this ColorTransform configuration */
 	public final ParameterObject<String> id = new ParameterObject<>("id", "default");
 	

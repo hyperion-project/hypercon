@@ -16,12 +16,12 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.hyperion.hypercon.spec.ColorConfig;
 import org.hyperion.hypercon.spec.ColorSmoothingType;
+import org.hyperion.hypercon.spec.SmoothingConfigModel;
 
 public class ColorSmoothingPanel extends JPanel {
 
-	private final ColorConfig mColorConfig;
+	private final SmoothingConfigModel mSmoothConfig;
 
 	private JCheckBox mEnabledCheck;
 	private JLabel mTypeLabel;
@@ -31,10 +31,10 @@ public class ColorSmoothingPanel extends JPanel {
 	private JLabel mUpdateFrequencyLabel;
 	private JSpinner mUpdateFrequencySpinner;
 
-	public ColorSmoothingPanel(final ColorConfig pColorConfig) {
+	public ColorSmoothingPanel(final SmoothingConfigModel pSmoothConfig) {
 		super();
 		
-		mColorConfig = pColorConfig;
+		mSmoothConfig = pSmoothConfig;
 		
 		initialise();
 	}
@@ -51,7 +51,7 @@ public class ColorSmoothingPanel extends JPanel {
 		setBorder(BorderFactory.createTitledBorder("Smoothing"));
 		
 		mEnabledCheck = new JCheckBox("Enabled");
-		mEnabledCheck.setSelected(mColorConfig.mSmoothingEnabled);
+		mEnabledCheck.setSelected(mSmoothConfig.mSmoothingEnabled.getValue());
 		mEnabledCheck.addActionListener(mActionListener);
 		add(mEnabledCheck);
 		
@@ -59,21 +59,21 @@ public class ColorSmoothingPanel extends JPanel {
 		add(mTypeLabel);
 		
 		mTypeCombo = new JComboBox<>(ColorSmoothingType.values());
-		mTypeCombo.setSelectedItem(mColorConfig.mSmoothingType);
+		mTypeCombo.setSelectedItem(mSmoothConfig.mType.getValue());
 		mTypeCombo.addActionListener(mActionListener);
 		add(mTypeCombo);
 		
 		mTimeLabel = new JLabel("Time [ms]: ");
 		add(mTimeLabel);
 		
-		mTimeSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mSmoothingTime_ms, 1, 600, 100));
+		mTimeSpinner = new JSpinner(new SpinnerNumberModel(mSmoothConfig.mTime_ms.getValue(), 1, 600, 100));
 		mTimeSpinner.addChangeListener(mChangeListener);
 		add(mTimeSpinner);
 		
 		mUpdateFrequencyLabel = new JLabel("Update Freq. [Hz]: ");
 		add(mUpdateFrequencyLabel);
 		
-		mUpdateFrequencySpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mSmoothingUpdateFrequency_Hz, 1, 100, 1));
+		mUpdateFrequencySpinner = new JSpinner(new SpinnerNumberModel(mSmoothConfig.mUpdateFrequency_Hz.getValue(), 1, 100, 1));
 		mUpdateFrequencySpinner.addChangeListener(mChangeListener);
 		add(mUpdateFrequencySpinner);
 
@@ -109,7 +109,7 @@ public class ColorSmoothingPanel extends JPanel {
 						.addComponent(mUpdateFrequencySpinner)
 						));
 		
-		toggleEnabled(mColorConfig.mSmoothingEnabled);
+		toggleEnabled(mSmoothConfig.mSmoothingEnabled.getValue());
 	}
 	
 	private void toggleEnabled(boolean pEnabled) {
@@ -124,18 +124,18 @@ public class ColorSmoothingPanel extends JPanel {
 	private final ActionListener mActionListener = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			mColorConfig.mSmoothingEnabled = mEnabledCheck.isSelected();
-			mColorConfig.mSmoothingType = (ColorSmoothingType)mTypeCombo.getSelectedItem();
+			mSmoothConfig.mSmoothingEnabled.setValue(mEnabledCheck.isSelected());
+			mSmoothConfig.mType.setValue((ColorSmoothingType)mTypeCombo.getSelectedItem());
 			
-			toggleEnabled(mColorConfig.mSmoothingEnabled);
+			toggleEnabled(mSmoothConfig.mSmoothingEnabled.getValue());
 		}
 	};
 	
 	private final ChangeListener mChangeListener = new ChangeListener() {
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			mColorConfig.mSmoothingTime_ms = (Integer)mTimeSpinner.getValue();
-			mColorConfig.mSmoothingUpdateFrequency_Hz = (Double)mUpdateFrequencySpinner.getValue();
+			mSmoothConfig.mTime_ms.setValue((Integer)mTimeSpinner.getValue());
+			mSmoothConfig.mUpdateFrequency_Hz.setValue((Double)mUpdateFrequencySpinner.getValue());
 		}
 	};
 }

@@ -14,14 +14,14 @@ import javax.swing.JPanel;
 
 import org.hyperion.hypercon.gui.device.DeviceTypePanel;
 import org.hyperion.hypercon.spec.ColorByteOrder;
-import org.hyperion.hypercon.spec.DeviceConfig;
+import org.hyperion.hypercon.spec.DeviceConfigModel;
 import org.hyperion.hypercon.spec.DeviceType;
 
 public class DevicePanel extends JPanel {
 
 	public static final String[] KnownOutputs = {"/dev/spidev0.0", "/dev/spidev0.1", "/dev/ttyS0", "/dev/ttyUSB0", "/dev/ttyprintk", "/home/pi/test.out", "/dev/null"};
 
-	private final DeviceConfig mDeviceConfig;
+	private final DeviceConfigModel mDeviceConfig;
 	
 	private JLabel mTypeLabel;
 	private JComboBox<DeviceType> mTypeCombo;
@@ -31,7 +31,7 @@ public class DevicePanel extends JPanel {
 	private JLabel mRgbLabel;
 	private JComboBox<ColorByteOrder> mRgbCombo;
 	
-	public DevicePanel(DeviceConfig pDeviceConfig) {
+	public DevicePanel(DeviceConfigModel pDeviceConfig) {
 		super();
 		
 		mDeviceConfig = pDeviceConfig;
@@ -62,7 +62,7 @@ public class DevicePanel extends JPanel {
 		mDevicePanel = new JPanel();
 		mDevicePanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 		mDevicePanel.setLayout(new BorderLayout());
-		DeviceTypePanel typePanel = mDeviceConfig.mType.getConfigPanel(mDeviceConfig);
+		DeviceTypePanel typePanel = mDeviceConfig.mType.getValue().getConfigPanel(mDeviceConfig);
 		if (typePanel != null) {
 			mDevicePanel.add(typePanel, BorderLayout.CENTER);
 		}
@@ -103,11 +103,11 @@ public class DevicePanel extends JPanel {
 	private final ActionListener mActionListener = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			mDeviceConfig.mType = (DeviceType)mTypeCombo.getSelectedItem();
-			mDeviceConfig.mColorByteOrder = (ColorByteOrder)mRgbCombo.getSelectedItem();
+			mDeviceConfig.mType.setValue((DeviceType)mTypeCombo.getSelectedItem());
+			mDeviceConfig.mColorByteOrder.setValue((ColorByteOrder)mRgbCombo.getSelectedItem());
 
 			mDevicePanel.removeAll();
-			DeviceTypePanel typePanel = mDeviceConfig.mType.getConfigPanel(mDeviceConfig);
+			DeviceTypePanel typePanel = mDeviceConfig.mType.getValue().getConfigPanel(mDeviceConfig);
 			if (typePanel != null) {
 				mDevicePanel.add(typePanel, BorderLayout.CENTER);
 			}

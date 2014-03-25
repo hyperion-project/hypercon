@@ -4,6 +4,12 @@ import org.mufassa.model.AbstractModel;
 import org.mufassa.model.ParameterDouble;
 
 public class RgbComponentConfigModel extends AbstractModel {
+	
+	public RgbComponentConfigModel() {
+		super();
+		initialize();
+	}
+
 	/** The minimum required component-value (in RGB space) */
 	public final ParameterDouble threshold  = new ParameterDouble("threshold", 0.0, 0.0, 1.0);
 	/** The gamma-curve correct for the component-value (in RGB space) */

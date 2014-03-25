@@ -52,7 +52,7 @@ public enum DeviceType {
 	 * 
 	 * @return The panel for configuring this device type
 	 */
-	public DeviceTypePanel getConfigPanel(DeviceConfig pDeviceConfig) {
+	public DeviceTypePanel getConfigPanel(DeviceConfigModel pDeviceConfig) {
 		if (mConfigPanel == null) {
 			switch (this) {
 			case ws2801:

@@ -11,7 +11,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.hyperion.hypercon.spec.DeviceConfig;
+import org.hyperion.hypercon.spec.DeviceConfigModel;
 
 /**
  * Panel for configuring Ws2801 specific settings
@@ -34,11 +34,11 @@ public class Ws2801Panel extends DeviceTypePanel {
 	}
 
 	@Override
-	public void setDeviceConfig(DeviceConfig pDeviceConfig) {
+	public void setDeviceConfig(DeviceConfigModel pDeviceConfig) {
 		super.setDeviceConfig(pDeviceConfig);
 
-		mOutputCombo.setSelectedItem(mDeviceConfig.mOutput);
-		((SpinnerNumberModel)mBaudrateSpinner.getModel()).setValue(mDeviceConfig.mBaudrate);
+		mOutputCombo.setSelectedItem(mDeviceConfig.mOutput.getValue());
+		((SpinnerNumberModel)mBaudrateSpinner.getModel()).setValue(mDeviceConfig.mBaudrate.getValue());
 	}
 	
 	private void initialise() {
@@ -88,9 +88,9 @@ public class Ws2801Panel extends DeviceTypePanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == mOutputCombo) {
-				mDeviceConfig.mOutput = (String)mOutputCombo.getSelectedItem();
+				mDeviceConfig.mOutput.setValue((String)mOutputCombo.getSelectedItem());
 			} else if (e.getSource() == mBaudrateSpinner) {
-				mDeviceConfig.mBaudrate = (Integer)mBaudrateSpinner.getValue();
+				mDeviceConfig.mBaudrate.setValue((Integer)mBaudrateSpinner.getValue());
 			}
 		}
 	};
@@ -98,7 +98,7 @@ public class Ws2801Panel extends DeviceTypePanel {
 	private ChangeListener mChangeListener = new ChangeListener() {
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			mDeviceConfig.mBaudrate = (Integer)mBaudrateSpinner.getValue();
+			mDeviceConfig.mBaudrate.setValue((Integer)mBaudrateSpinner.getValue());
 		}
 	};
 }

@@ -15,12 +15,12 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.hyperion.hypercon.spec.LedFrameConstruction;
-import org.hyperion.hypercon.spec.LedFrameConstruction.Direction;
+import org.hyperion.hypercon.spec.LedFrameConstructionModel;
+import org.hyperion.hypercon.spec.LedFrameConstructionModel.Direction;
 
 public class LedFramePanel extends JPanel {
 	
-	private final LedFrameConstruction mLedFrameSpec;
+	private final LedFrameConstructionModel mLedFrameSpec;
 
 	private JLabel mHorizontalCountLabel;
 	private JSpinner mHorizontalCountSpinner;
@@ -36,12 +36,12 @@ public class LedFramePanel extends JPanel {
 	private JComboBox<Boolean> mBottomCornerCombo;
 	
 	private JLabel mDirectionLabel;
-	private JComboBox<LedFrameConstruction.Direction> mDirectionCombo;
+	private JComboBox<LedFrameConstructionModel.Direction> mDirectionCombo;
 	
 	private JLabel mOffsetLabel;
 	private JSpinner mOffsetSpinner;
 	
-	public LedFramePanel(LedFrameConstruction ledFrameSpec) {
+	public LedFramePanel(LedFrameConstructionModel ledFrameSpec) {
 		super();
 		
 		mLedFrameSpec = ledFrameSpec;
@@ -76,32 +76,32 @@ public class LedFramePanel extends JPanel {
 		
 		mDirectionLabel = new JLabel("Direction");
 		add(mDirectionLabel);
-		mDirectionCombo = new JComboBox<>(LedFrameConstruction.Direction.values());
-		mDirectionCombo.setSelectedItem(mLedFrameSpec.clockwiseDirection?Direction.clockwise:Direction.counter_clockwise);
+		mDirectionCombo = new JComboBox<>(LedFrameConstructionModel.Direction.values());
+		mDirectionCombo.setSelectedItem(mLedFrameSpec.clockwiseDirection.getValue()?Direction.clockwise:Direction.counter_clockwise);
 		mDirectionCombo.addActionListener(mActionListener);
 		add(mDirectionCombo);
 
 		mHorizontalCountLabel = new JLabel("Horizontal #:");
 		add(mHorizontalCountLabel);
-		mHorizontalCountSpinner = new JSpinner(new SpinnerNumberModel(mLedFrameSpec.topLedCnt, 0, 1024, 1));
+		mHorizontalCountSpinner = new JSpinner(new SpinnerNumberModel(mLedFrameSpec.topLedCnt.getValue(), 0, 1024, 1));
 		mHorizontalCountSpinner.addChangeListener(mChangeListener);
 		add(mHorizontalCountSpinner);
 		
 		mBottomGapCountLabel = new JLabel("Bottom Gap #:");
 		add(mBottomGapCountLabel);
-		mBottomGapCountSpinner = new JSpinner(new SpinnerNumberModel(mLedFrameSpec.topLedCnt - mLedFrameSpec.bottomLedCnt, 0, 1024, 1));
+		mBottomGapCountSpinner = new JSpinner(new SpinnerNumberModel(mLedFrameSpec.topLedCnt.getValue() - mLedFrameSpec.bottomLedCnt.getValue(), 0, 1024, 1));
 		mBottomGapCountSpinner.addChangeListener(mChangeListener);
 		add(mBottomGapCountSpinner);
 
 		mVerticalCountLabel = new JLabel("Vertical #:");
 		add(mVerticalCountLabel);
-		mVerticalCountSpinner = new JSpinner(new SpinnerNumberModel(mLedFrameSpec.rightLedCnt, 0, 1024, 1));
+		mVerticalCountSpinner = new JSpinner(new SpinnerNumberModel(mLedFrameSpec.rightLedCnt.getValue(), 0, 1024, 1));
 		mVerticalCountSpinner.addChangeListener(mChangeListener);
 		add(mVerticalCountSpinner);
 
 		mOffsetLabel = new JLabel("1st LED offset");
 		add(mOffsetLabel);
-		mOffsetSpinner = new JSpinner(new SpinnerNumberModel(mLedFrameSpec.firstLedOffset, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
+		mOffsetSpinner = new JSpinner(new SpinnerNumberModel(mLedFrameSpec.firstLedOffset.getValue(), Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
 		mOffsetSpinner.addChangeListener(mChangeListener);
 		add(mOffsetSpinner);
 
@@ -153,21 +153,20 @@ public class LedFramePanel extends JPanel {
 	}
 	
 	void updateLedConstruction() {
-		mLedFrameSpec.topCorners    = (Boolean)mTopCornerCombo.getSelectedItem();
-		mLedFrameSpec.bottomCorners = (Boolean)mBottomCornerCombo.getSelectedItem();
+		mLedFrameSpec.topCorners.setValue((Boolean)mTopCornerCombo.getSelectedItem());
+		mLedFrameSpec.bottomCorners.setValue((Boolean)mBottomCornerCombo.getSelectedItem());
 		
-		mLedFrameSpec.clockwiseDirection = ((LedFrameConstruction.Direction)mDirectionCombo.getSelectedItem()) == LedFrameConstruction.Direction.clockwise;
-		mLedFrameSpec.firstLedOffset = (Integer)mOffsetSpinner.getValue();
+		mLedFrameSpec.clockwiseDirection.setValue(((LedFrameConstructionModel.Direction)mDirectionCombo.getSelectedItem()) == LedFrameConstructionModel.Direction.clockwise);
+		mLedFrameSpec.firstLedOffset.setValue((Integer)mOffsetSpinner.getValue());
 		
-		mLedFrameSpec.topLedCnt = (Integer)mHorizontalCountSpinner.getValue();
-		mLedFrameSpec.bottomLedCnt = Math.max(0, mLedFrameSpec.topLedCnt - (Integer)mBottomGapCountSpinner.getValue());
-		mLedFrameSpec.rightLedCnt = (Integer)mVerticalCountSpinner.getValue();
-		mLedFrameSpec.leftLedCnt  = (Integer)mVerticalCountSpinner.getValue();
+		mLedFrameSpec.topLedCnt.setValue((Integer)mHorizontalCountSpinner.getValue());
+		mLedFrameSpec.bottomLedCnt.setValue(Math.max(0, mLedFrameSpec.topLedCnt.getValue() - (Integer)mBottomGapCountSpinner.getValue()));
+		mLedFrameSpec.rightLedCnt.setValue((Integer)mVerticalCountSpinner.getValue());
+		mLedFrameSpec.leftLedCnt.setValue((Integer)mVerticalCountSpinner.getValue());
 		
-		mLedFrameSpec.setChanged();
-		mLedFrameSpec.notifyObservers();
-		
-		mBottomGapCountSpinner.setValue(mLedFrameSpec.topLedCnt - mLedFrameSpec.bottomLedCnt);
+		mBottomGapCountSpinner.setValue(mLedFrameSpec.topLedCnt.getValue() - mLedFrameSpec.bottomLedCnt.getValue());
+
+		mLedFrameSpec.commitEvents();
 	}
 	
 	private final ActionListener mActionListener = new ActionListener() {

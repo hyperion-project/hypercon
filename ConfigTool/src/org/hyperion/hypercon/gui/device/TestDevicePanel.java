@@ -6,7 +6,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.hyperion.hypercon.spec.DeviceConfig;
+import org.hyperion.hypercon.spec.DeviceConfigModel;
 
 public class TestDevicePanel extends DeviceTypePanel {
 
@@ -20,10 +20,10 @@ public class TestDevicePanel extends DeviceTypePanel {
 	}
 	
 	@Override
-	public void setDeviceConfig(DeviceConfig pDeviceConfig) {
+	public void setDeviceConfig(DeviceConfigModel pDeviceConfig) {
 		super.setDeviceConfig(pDeviceConfig);
 		
-		mFilenameField.setText(mDeviceConfig.mOutput);
+		mFilenameField.setText(mDeviceConfig.mOutput.getValue());
 	}
 	
 	private void initialise() {
@@ -36,15 +36,15 @@ public class TestDevicePanel extends DeviceTypePanel {
 		mFilenameField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				mDeviceConfig.mOutput = mFilenameField.getText();
+				mDeviceConfig.mOutput.setValue(mFilenameField.getText());
 			}
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				mDeviceConfig.mOutput = mFilenameField.getText();
+				mDeviceConfig.mOutput.setValue(mFilenameField.getText());
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				mDeviceConfig.mOutput = mFilenameField.getText();
+				mDeviceConfig.mOutput.setValue(mFilenameField.getText());
 			}
 		});
 		add(mFilenameField);

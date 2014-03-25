@@ -10,11 +10,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.util.Vector;
 
 import javax.swing.JComponent;
 
-import org.hyperion.hypercon.spec.Led;
+import org.hyperion.hypercon.spec.LedModel;
+import org.mufassa.model.ModelList;
 
 public class LedTvComponent extends JComponent {
 
@@ -23,18 +23,14 @@ public class LedTvComponent extends JComponent {
 	
 	private final int mBorderWidth = 12;
 	
-	private Vector<Led> mLeds;
+	private final ModelList<LedModel> mLeds;
 
-	private Led mSelectedLed;
+	private LedModel mSelectedLed;
 	
-	public LedTvComponent(Vector<Led> pLeds) {
+	public LedTvComponent(final ModelList<LedModel> pLeds) {
 		mLeds = pLeds;
 		
 		addMouseMotionListener(mMouseMotionListener);
-	}
-	
-	public void setLeds(Vector<Led> pLeds) {
-		mLeds = pLeds;
 	}
 	
 	public void setImage(Image pImage) {
@@ -55,40 +51,42 @@ public class LedTvComponent extends JComponent {
 		}
 		
 		g2d.setColor(Color.GRAY);
-		for (Led led : mLeds) {
-			Rectangle rect = led2tv(led.mImageRectangle);
+		for (LedModel led : mLeds) {
+			Rectangle rect = led2tv(led.imageRectangle.getValue());
 			
 			g2d.drawRect(rect.x, rect.y, rect.width, rect.height);
 			
-			switch (led.mSide) {
+			int seqNr = led.sequenceNr.getValue();
+			
+			switch (led.side.getValue()) {
 			case top_left:
-				g2d.drawString(""+led.mLedSeqNr, 0, 11);
+				g2d.drawString(""+seqNr, 0, 11);
 				break;
 			case top:
-				g2d.drawString(""+led.mLedSeqNr, (int)rect.getCenterX(), 11);
+				g2d.drawString(""+seqNr, (int)rect.getCenterX(), 11);
 				break;
 			case top_right:
-				g2d.drawString(""+led.mLedSeqNr, (int)getWidth()-11, (int)11);
+				g2d.drawString(""+seqNr, (int)getWidth()-11, (int)11);
 				break;
 			case right:
-				g2d.drawString(""+led.mLedSeqNr, (int)getWidth()-11, (int)rect.getCenterY());
+				g2d.drawString(""+seqNr, (int)getWidth()-11, (int)rect.getCenterY());
 				break;
 			case bottom_right:
-				g2d.drawString(""+led.mLedSeqNr, (int)getWidth()-11, (int)getHeight()-1);
+				g2d.drawString(""+seqNr, (int)getWidth()-11, (int)getHeight()-1);
 				break;
 			case bottom:
-				g2d.drawString(""+led.mLedSeqNr, (int)rect.getCenterX(), (int)getHeight()-1);
+				g2d.drawString(""+seqNr, (int)rect.getCenterX(), (int)getHeight()-1);
 				break;
 			case bottom_left:
-				g2d.drawString(""+led.mLedSeqNr, (int)0, (int)getHeight()-1);
+				g2d.drawString(""+seqNr, (int)0, (int)getHeight()-1);
 				break;
 			case left:
-				g2d.drawString(""+led.mLedSeqNr, 0, (int)rect.getCenterY());
+				g2d.drawString(""+seqNr, 0, (int)rect.getCenterY());
 				break;
 			}
 		}
 		if (mSelectedLed != null) {
-			Rectangle rect = led2tv(mSelectedLed.mImageRectangle);
+			Rectangle rect = led2tv(mSelectedLed.imageRectangle.getValue());
 
 			g2d.setStroke(new BasicStroke(3.0f));
 			g2d.setColor(Color.WHITE);
@@ -116,8 +114,8 @@ public class LedTvComponent extends JComponent {
 			double x = (double)(e.getX() - mBorderWidth) / (getWidth() - mBorderWidth*2);
 			double y = (double)(e.getY() - mBorderWidth) / (getHeight() - mBorderWidth*2);
 			
-			for (Led led : mLeds) {
-				if (led.mImageRectangle.contains(x, y) || (Math.abs(led.mLocation.getX() - x) < 0.01 && Math.abs(led.mLocation.getY() - y) < 0.01)) {
+			for (LedModel led : mLeds) {
+				if (led.imageRectangle.getValue().contains(x, y) || (Math.abs(led.location.getValue().getX() - x) < 0.01 && Math.abs(led.location.getValue().getY() - y) < 0.01)) {
 					mSelectedLed = led;
 					break;
 				}
