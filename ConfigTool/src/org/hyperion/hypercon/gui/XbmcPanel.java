@@ -66,26 +66,26 @@ public class XbmcPanel extends JPanel {
 		setBorder(BorderFactory.createTitledBorder("XBMC Checker"));
 		
 		mXbmcCheck = new JCheckBox("Enabled");
-		mXbmcCheck.setSelected(mCheckerModel.mEnabled.getValue());
+		mXbmcCheck.setSelected(mCheckerModel.enabled.getValue());
 		mXbmcCheck.addActionListener(mActionListener);
 		add(mXbmcCheck);
 		
 		mAddressLabel = new JLabel("Server address:");
 		add(mAddressLabel);
 		
-		mAddressField = new JTextField(mCheckerModel.mXbmcAddress.getValue());
+		mAddressField = new JTextField(mCheckerModel.xbmcAddress.getValue());
 		mAddressField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				mCheckerModel.mXbmcAddress.setValue(mAddressField.getText());
+				mCheckerModel.xbmcAddress.setValue(mAddressField.getText());
 			}
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				mCheckerModel.mXbmcAddress.setValue(mAddressField.getText());
+				mCheckerModel.xbmcAddress.setValue(mAddressField.getText());
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				mCheckerModel.mXbmcAddress.setValue(mAddressField.getText());
+				mCheckerModel.xbmcAddress.setValue(mAddressField.getText());
 			}
 		});
 		add(mAddressField);
@@ -93,7 +93,7 @@ public class XbmcPanel extends JPanel {
 		mTcpPortLabel = new JLabel("TCP port:");
 		add(mTcpPortLabel);
 		
-		mTcpPortSpinner = new JSpinner(new SpinnerNumberModel(mCheckerModel.mXbmcTcpPort.getValue(), 1, 65535, 1));
+		mTcpPortSpinner = new JSpinner(new SpinnerNumberModel(mCheckerModel.xbmcTcpPort.getValue(), 1, 65535, 1));
 		mTcpPortSpinner.addChangeListener(mChangeListener);
 		add(mTcpPortSpinner);
 		
@@ -101,8 +101,8 @@ public class XbmcPanel extends JPanel {
 		mMenuLabel = new JLabel("XBMC Menu");
 		add(mMenuLabel);
 		
-		mMenuCombo = new JComboBox<>(new String[] {"On", "Off"});
-		mMenuCombo.setSelectedItem(mCheckerModel.mMenuOn.getValue()? "On": "Off");
+		mMenuCombo = new JComboBox<String>(new String[] {"On", "Off"});
+		mMenuCombo.setSelectedItem(mCheckerModel.menuOn.getValue()? "On": "Off");
 		mMenuCombo.setToolTipText("Enables('On') or disables('Off') the ambi-light in the XBMC Menu");
 		mMenuCombo.addActionListener(mActionListener);
 		add(mMenuCombo);
@@ -110,8 +110,8 @@ public class XbmcPanel extends JPanel {
 		mVideoLabel = new JLabel("Video");
 		add(mVideoLabel);
 
-		mVideoCombo = new JComboBox<>(new String[] {"On", "Off"});
-		mVideoCombo.setSelectedItem(mCheckerModel.mVideoOn.getValue()? "On": "Off");
+		mVideoCombo = new JComboBox<String>(new String[] {"On", "Off"});
+		mVideoCombo.setSelectedItem(mCheckerModel.videoOn.getValue()? "On": "Off");
 		mVideoCombo.setToolTipText("Enables('On') or disables('Off') the ambi-light during video playback");
 		mVideoCombo.addActionListener(mActionListener);
 		add(mVideoCombo);
@@ -119,8 +119,8 @@ public class XbmcPanel extends JPanel {
 		mPictureLabel = new JLabel("Picture");
 		add(mPictureLabel);
 		
-		mPictureCombo = new JComboBox<>(new String[] {"On", "Off"});
-		mPictureCombo.setSelectedItem(mCheckerModel.mPictureOn.getValue()? "On": "Off");
+		mPictureCombo = new JComboBox<String>(new String[] {"On", "Off"});
+		mPictureCombo.setSelectedItem(mCheckerModel.pictureOn.getValue()? "On": "Off");
 		mPictureCombo.setToolTipText("Enables('On') or disables('Off') the ambi-light when viewing pictures");
 		mPictureCombo.addActionListener(mActionListener);
 		add(mPictureCombo);
@@ -128,8 +128,8 @@ public class XbmcPanel extends JPanel {
 		mAudioLabel = new JLabel("Audio");
 		add(mAudioLabel);
 		
-		mAudioCombo = new JComboBox<>(new String[] {"On", "Off"});
-		mAudioCombo.setSelectedItem(mCheckerModel.mAudioOn.getValue()? "On": "Off");
+		mAudioCombo = new JComboBox<String>(new String[] {"On", "Off"});
+		mAudioCombo.setSelectedItem(mCheckerModel.audioOn.getValue()? "On": "Off");
 		mAudioCombo.setToolTipText("Enables('On') or disables('Off') the ambi-light when listing to audio");
 		mAudioCombo.addActionListener(mActionListener);
 		add(mAudioCombo);
@@ -137,8 +137,8 @@ public class XbmcPanel extends JPanel {
 		mScreensaverLabel = new JLabel("Screensaver");
 		add(mScreensaverLabel);
 		
-		mScreensaverCombo = new JComboBox<>(new String[] {"On", "Off"});
-		mScreensaverCombo.setSelectedItem(mCheckerModel.mScreensaverOn.getValue()? "On": "Off");
+		mScreensaverCombo = new JComboBox<String>(new String[] {"On", "Off"});
+		mScreensaverCombo.setSelectedItem(mCheckerModel.screensaverOn.getValue()? "On": "Off");
 		mScreensaverCombo.setToolTipText("Enables('On') or disables('Off') the ambi-light when the XBMC screensaver is active");
 		mScreensaverCombo.addActionListener(mActionListener);
 		add(mScreensaverCombo);
@@ -146,8 +146,8 @@ public class XbmcPanel extends JPanel {
 		mEnable3DLabel = new JLabel("3D checking");
 		add(mEnable3DLabel);
 		
-		mEnable3DCombo = new JComboBox<>(new String[] {"On", "Off"});
-		mEnable3DCombo.setSelectedItem(mCheckerModel.m3DCheckingEnabled.getValue()? "On": "Off");
+		mEnable3DCombo = new JComboBox<String>(new String[] {"On", "Off"});
+		mEnable3DCombo.setSelectedItem(mCheckerModel.enable3DDetection.getValue()? "On": "Off");
 		mEnable3DCombo.setToolTipText("Enables('On') or disables('Off') switching to 3D mode when a 3D video file is started");
 		mEnable3DCombo.addActionListener(mActionListener);
 		add(mEnable3DCombo);
@@ -214,7 +214,7 @@ public class XbmcPanel extends JPanel {
 						.addComponent(mEnable3DCombo)
 						));
 
-		toggleEnabled(mCheckerModel.mEnabled.getValue());
+		toggleEnabled(mCheckerModel.enabled.getValue());
 	}
 	
 	private void toggleEnabled(boolean pEnabled) {
@@ -241,23 +241,23 @@ public class XbmcPanel extends JPanel {
 	private final ChangeListener mChangeListener = new ChangeListener() {
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			mCheckerModel.mXbmcTcpPort.setValue((Integer)mTcpPortSpinner.getValue());
+			mCheckerModel.xbmcTcpPort.setValue((Integer)mTcpPortSpinner.getValue());
 		}	
 	};
 	
 	private final ActionListener mActionListener = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			mCheckerModel.mEnabled.setValue(mXbmcCheck.isSelected());
+			mCheckerModel.enabled.setValue(mXbmcCheck.isSelected());
 
-			mCheckerModel.mMenuOn.setValue((mMenuCombo.getSelectedItem() == "On"));
-			mCheckerModel.mVideoOn.setValue((mVideoCombo.getSelectedItem() == "On"));
-			mCheckerModel.mPictureOn.setValue((mPictureCombo.getSelectedItem() == "On"));
-			mCheckerModel.mAudioOn.setValue((mAudioCombo.getSelectedItem() == "On"));
-			mCheckerModel.mScreensaverOn.setValue((mScreensaverCombo.getSelectedItem() == "On"));
-			mCheckerModel.m3DCheckingEnabled.setValue((mEnable3DCombo.getSelectedItem() == "On"));
+			mCheckerModel.menuOn.setValue((mMenuCombo.getSelectedItem() == "On"));
+			mCheckerModel.videoOn.setValue((mVideoCombo.getSelectedItem() == "On"));
+			mCheckerModel.pictureOn.setValue((mPictureCombo.getSelectedItem() == "On"));
+			mCheckerModel.audioOn.setValue((mAudioCombo.getSelectedItem() == "On"));
+			mCheckerModel.screensaverOn.setValue((mScreensaverCombo.getSelectedItem() == "On"));
+			mCheckerModel.enable3DDetection.setValue((mEnable3DCombo.getSelectedItem() == "On"));
 
-			toggleEnabled(mCheckerModel.mEnabled.getValue());
+			toggleEnabled(mCheckerModel.enabled.getValue());
 		}
 	};
 }

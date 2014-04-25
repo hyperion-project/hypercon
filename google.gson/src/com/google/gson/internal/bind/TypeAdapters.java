@@ -682,6 +682,10 @@ public final class TypeAdapters {
         }
 
       } else if (value.isJsonArray()) {
+    	JsonArray valueArr = value.getAsJsonArray();
+    	if (valueArr.getComment() != null && !valueArr.getComment().isEmpty()) {
+    		out.comment(valueArr.getComment());
+    	}
         out.beginArray();
         for (JsonElement e : value.getAsJsonArray()) {
           write(out, e);

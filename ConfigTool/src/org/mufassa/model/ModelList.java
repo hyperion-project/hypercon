@@ -139,21 +139,21 @@ public class ModelList<ElementType extends Object> extends AbstractModel impleme
 	@Override
 	public boolean addAll(Collection<? extends ElementType> pC) {
 		mList.addAll(pC);
-		notifyAdded(new ArrayList<>(pC));
+		notifyAdded(new ArrayList<ElementType>(pC));
 		return true;
 	}
 
 	@Override
 	public boolean addAll(int pIndex, Collection<? extends ElementType> pC) {
 		mList.addAll(pIndex, pC);
-		notifyAdded(new ArrayList<>(pC));
+		notifyAdded(new ArrayList<ElementType>(pC));
 		return true;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean removeAll(Collection<?> pC) {
-		List<?> removed = new ArrayList<>(pC);
+		List<?> removed = new ArrayList(pC);
 		
 		boolean rc;
 		synchronized (mList) {
@@ -169,7 +169,7 @@ public class ModelList<ElementType extends Object> extends AbstractModel impleme
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean retainAll(Collection<?> pC) {
-		List<?> removed = new ArrayList<>(pC);
+		List<?> removed = new ArrayList(pC);
 
 		boolean rc;
 		synchronized (mList) {
@@ -190,7 +190,7 @@ public class ModelList<ElementType extends Object> extends AbstractModel impleme
 			if(mList.isEmpty()) 
 				return;
 			
-			removed = new ArrayList<>(mList);
+			removed = new ArrayList<ElementType>(mList);
 			mList.clear();
 		}
 		

@@ -1,8 +1,8 @@
 package org.hyperion.hypercon.spec;
 
 import org.mufassa.model.AbstractModel;
-import org.mufassa.model.JsonComment;
 import org.mufassa.model.ModelList;
+import org.mufassa.model.json.JsonComment;
 
 /**
  * The color tuning parameters of the different color channels (both in RGB space as in HSV space)
@@ -40,10 +40,10 @@ public class ColorConfigModel extends AbstractModel {
 	}
 	
 	/** List with color transformations */
-	public final ModelList<TransformConfigModel> mTransform = new ModelList<>();
+	public final ModelList<TransformConfigModel> transform = new ModelList<TransformConfigModel>();
 	{
-		mTransform.add(new TransformConfigModel());
+		transform.add(new TransformConfigModel());
 	}
 
-	public final SmoothingConfigModel mSmoothing = new SmoothingConfigModel();
+	public final SmoothingConfigModel smoothing = new SmoothingConfigModel();
 }

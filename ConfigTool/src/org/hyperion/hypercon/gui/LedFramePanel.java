@@ -62,21 +62,21 @@ public class LedFramePanel extends JPanel {
 		
 		mTopCornerLabel = new JLabel("Led in top corners");
 		add(mTopCornerLabel);
-		mTopCornerCombo = new JComboBox<>(new Boolean[] {true, false});
+		mTopCornerCombo = new JComboBox<Boolean>(new Boolean[] {true, false});
 		mTopCornerCombo.setSelectedItem(mLedFrameSpec.topCorners);
 		mTopCornerCombo.addActionListener(mActionListener);
 		add(mTopCornerCombo);
 		
 		mBottomCornerLabel = new JLabel("Led in bottom corners");
 		add(mBottomCornerLabel);
-		mBottomCornerCombo = new JComboBox<>(new Boolean[] {true, false});
+		mBottomCornerCombo = new JComboBox<Boolean>(new Boolean[] {true, false});
 		mBottomCornerCombo.setSelectedItem(mLedFrameSpec.bottomCorners);
 		mBottomCornerCombo.addActionListener(mActionListener);
 		add(mBottomCornerCombo);
 		
 		mDirectionLabel = new JLabel("Direction");
 		add(mDirectionLabel);
-		mDirectionCombo = new JComboBox<>(LedFrameConstructionModel.Direction.values());
+		mDirectionCombo = new JComboBox<LedFrameConstructionModel.Direction>(LedFrameConstructionModel.Direction.values());
 		mDirectionCombo.setSelectedItem(mLedFrameSpec.clockwiseDirection.getValue()?Direction.clockwise:Direction.counter_clockwise);
 		mDirectionCombo.addActionListener(mActionListener);
 		add(mDirectionCombo);

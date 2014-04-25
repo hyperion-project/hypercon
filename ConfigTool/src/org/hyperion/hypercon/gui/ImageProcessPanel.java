@@ -100,7 +100,7 @@ public class ImageProcessPanel extends JPanel {
 		mBlackborderDetectorLabel = new JLabel("Blackborder Detector:");
 		add(mBlackborderDetectorLabel);
 		
-		mBlackborderDetectorCombo = new JComboBox<>(new String[] {"On", "Off"});
+		mBlackborderDetectorCombo = new JComboBox<String>(new String[] {"On", "Off"});
 		mBlackborderDetectorCombo.setSelectedItem(mBlackborderModel.enabled.getValue()?"On":"Off");
 		mBlackborderDetectorCombo.setToolTipText("Enables or disables the blackborder detection and removal");
 		mBlackborderDetectorCombo.addActionListener(mActionListener);

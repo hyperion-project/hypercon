@@ -15,7 +15,7 @@ public class BootsequenceModel extends AbstractModel {
 	/** Flag indicating that the boot sequence is enabled(true) or not(false) */
 	public final ParameterBool enabled = new ParameterBool("enabled", true);
 	/** The effect selected for the boot sequence */
-	public final ParameterObject<String> effect = new ParameterObject<>("effect", "Rainbow swirl fast");
+	public final ParameterObject<String> effect = new ParameterObject<String>("effect", "Rainbow swirl fast");
 	/** The (maximum) length of the boot-sequence */
 	public final ParameterInt duration_ms = new ParameterInt("duration_ms", 3000, 100, 3600000);
 

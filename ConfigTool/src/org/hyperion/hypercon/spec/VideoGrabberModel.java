@@ -1,9 +1,9 @@
 package org.hyperion.hypercon.spec;
 
 import org.mufassa.model.AbstractModel;
-import org.mufassa.model.JsonComment;
 import org.mufassa.model.ParameterBool;
 import org.mufassa.model.ParameterInt;
+import org.mufassa.model.json.JsonComment;
 
 @JsonComment(
 		"///  The configuration for the frame-grabber, contains the following items: \n" +

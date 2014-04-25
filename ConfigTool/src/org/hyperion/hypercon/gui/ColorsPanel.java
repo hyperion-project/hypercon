@@ -17,7 +17,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.hyperion.hypercon.spec.ColorConfigModel;
-import org.hyperion.hypercon.spec.TransformConfig;
 import org.hyperion.hypercon.spec.TransformConfigModel;
 
 public class ColorsPanel extends JPanel {
@@ -32,7 +31,7 @@ public class ColorsPanel extends JPanel {
 	
 	private JPanel mTransformPanel;
 	
-	private final Map<TransformConfigModel, ColorTransformPanel> mTransformPanels = new HashMap<>();
+	private final Map<TransformConfigModel, ColorTransformPanel> mTransformPanels = new HashMap<TransformConfigModel, ColorTransformPanel>();
 	
 	
 	public ColorsPanel(ColorConfigModel pColorConfig) {
@@ -40,7 +39,7 @@ public class ColorsPanel extends JPanel {
 		
 		mColorConfig = pColorConfig;
 		mTransformsModel = new DefaultComboBoxModel<TransformConfigModel>();
-		for (TransformConfigModel tcm : mColorConfig.mTransform) {
+		for (TransformConfigModel tcm : mColorConfig.transform) {
 			mTransformsModel.addElement(tcm);
 		}
 		
@@ -57,10 +56,10 @@ public class ColorsPanel extends JPanel {
 		mTransformPanel.setLayout(new BorderLayout());
 		add(mTransformPanel, BorderLayout.CENTER);
 		
-		for (TransformConfigModel config : mColorConfig.mTransform) {
+		for (TransformConfigModel config : mColorConfig.transform) {
 			mTransformPanels.put(config, new ColorTransformPanel(config));
 		}
-		ColorTransformPanel currentPanel = mTransformPanels.get(mColorConfig.mTransform.get(0));
+		ColorTransformPanel currentPanel = mTransformPanels.get(mColorConfig.transform.get(0));
 		mTransformPanel.add(currentPanel, BorderLayout.CENTER);
 	}
 	
@@ -69,7 +68,7 @@ public class ColorsPanel extends JPanel {
 			mControlPanel = new JPanel();
 			mControlPanel.setLayout(new BoxLayout(mControlPanel, BoxLayout.LINE_AXIS));
 			
-			mTransformCombo = new JComboBox<>(mTransformsModel);
+			mTransformCombo = new JComboBox<TransformConfigModel>(mTransformsModel);
 			mTransformCombo.addActionListener(mComboListener);
 			mControlPanel.add(mTransformCombo);
 			
@@ -107,7 +106,7 @@ public class ColorsPanel extends JPanel {
 	private final Action mDelAction = new AbstractAction("Del") {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			TransformConfig config = (TransformConfig) mTransformCombo.getSelectedItem();
+			TransformConfigModel config = (TransformConfigModel) mTransformCombo.getSelectedItem();
 			mTransformPanels.remove(config);
 			mTransformsModel.removeElement(config);
 			
@@ -118,7 +117,7 @@ public class ColorsPanel extends JPanel {
 	private final ActionListener mComboListener = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			TransformConfig selConfig = (TransformConfig) mTransformsModel.getSelectedItem();
+			TransformConfigModel selConfig = (TransformConfigModel) mTransformsModel.getSelectedItem();
 			if (selConfig == null) {
 				// Something went wrong here, there should always be a selection!
 				return;

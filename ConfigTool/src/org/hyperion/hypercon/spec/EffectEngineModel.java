@@ -1,8 +1,8 @@
 package org.hyperion.hypercon.spec;
 
 import org.mufassa.model.AbstractModel;
-import org.mufassa.model.JsonComment;
 import org.mufassa.model.ParameterObject;
+import org.mufassa.model.json.JsonComment;
 
 @JsonComment(
 		"The configuration of the effect engine, contains the following items: \n" +
@@ -15,6 +15,6 @@ public class EffectEngineModel extends AbstractModel {
 	}
 	
 	/** The absolute location(s) of the effects */
-	public final ParameterObject<String> mEffectEnginePath = new ParameterObject<>("EffectEnginePath", "/opt/hyperion/effects");
+	public final ParameterObject<String> mEffectEnginePath = new ParameterObject<String>("EffectEnginePath", "/opt/hyperion/effects");
 
 }

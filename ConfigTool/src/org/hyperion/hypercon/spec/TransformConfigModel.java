@@ -12,10 +12,10 @@ public class TransformConfigModel extends AbstractModel {
 	}
 
 	/** The identifier of this ColorTransform configuration */
-	public final ParameterObject<String> id = new ParameterObject<>("id", "default");
+	public final ParameterObject<String> id = new ParameterObject<String>("id", "default");
 	
 	/** The indices to which this transform applies */
-	public final ParameterObject<String> ledIndexString = new ParameterObject<>("leds", "*");
+	public final ParameterObject<String> ledIndexString = new ParameterObject<String>("leds", "*");
 	
 	/** The saturation gain (in HSV space) */
 	public final ParameterDouble saturationGain = new ParameterDouble("saturationGain", 1.0, 0.0, 1024.0);

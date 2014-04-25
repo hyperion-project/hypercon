@@ -136,9 +136,9 @@ public class ConfigPanel extends JPanel {
 			mHardwarePanel = new JPanel();
 			mHardwarePanel.setLayout(new BoxLayout(mHardwarePanel, BoxLayout.Y_AXIS));
 			
-			mHardwarePanel.add(new DevicePanel(ledString.mDevice));
-			mHardwarePanel.add(new LedFramePanel(ledString.mLedFrameConfig));
-			mHardwarePanel.add(new ImageProcessPanel(ledString.mProcessConfig, ledString.blackborderdetector));
+			mHardwarePanel.add(new DevicePanel(ledString.device));
+			mHardwarePanel.add(new LedFramePanel(ledString.ledFrameConfig));
+			mHardwarePanel.add(new ImageProcessPanel(ledString.processConfig, ledString.blackborderdetector));
 			mHardwarePanel.add(Box.createVerticalGlue());
 		}
 		return mHardwarePanel;
@@ -150,8 +150,8 @@ public class ConfigPanel extends JPanel {
 			mProcessPanel.setLayout(new BoxLayout(mProcessPanel, BoxLayout.Y_AXIS));
 			
 			mProcessPanel.add(new FrameGrabberPanel(ledString.frameGrabber));
-			mProcessPanel.add(new ColorSmoothingPanel(ledString.mColor.mSmoothing));
-			mProcessPanel.add(new ColorsPanel(ledString.mColor));
+			mProcessPanel.add(new ColorSmoothingPanel(ledString.color.smoothing));
+			mProcessPanel.add(new ColorsPanel(ledString.color));
 			mProcessPanel.add(Box.createVerticalGlue());
 		}
 		return mProcessPanel;

@@ -52,11 +52,11 @@ public class LedTvComponent extends JComponent {
 		
 		g2d.setColor(Color.GRAY);
 		for (LedModel led : mLeds) {
-			Rectangle rect = led2tv(led.imageRectangle.getValue());
+			Rectangle rect = led2tv(led.getImageRectangle());
 			
 			g2d.drawRect(rect.x, rect.y, rect.width, rect.height);
 			
-			int seqNr = led.sequenceNr.getValue();
+			int seqNr = led.index.getValue();
 			
 			switch (led.side.getValue()) {
 			case top_left:
@@ -86,7 +86,7 @@ public class LedTvComponent extends JComponent {
 			}
 		}
 		if (mSelectedLed != null) {
-			Rectangle rect = led2tv(mSelectedLed.imageRectangle.getValue());
+			Rectangle rect = led2tv(mSelectedLed.getImageRectangle());
 
 			g2d.setStroke(new BasicStroke(3.0f));
 			g2d.setColor(Color.WHITE);
@@ -115,7 +115,7 @@ public class LedTvComponent extends JComponent {
 			double y = (double)(e.getY() - mBorderWidth) / (getHeight() - mBorderWidth*2);
 			
 			for (LedModel led : mLeds) {
-				if (led.imageRectangle.getValue().contains(x, y) || (Math.abs(led.location.getValue().getX() - x) < 0.01 && Math.abs(led.location.getValue().getY() - y) < 0.01)) {
+				if (led.getImageRectangle().contains(x, y) || (Math.abs(led.location.getValue().getX() - x) < 0.01 && Math.abs(led.location.getValue().getY() - y) < 0.01)) {
 					mSelectedLed = led;
 					break;
 				}

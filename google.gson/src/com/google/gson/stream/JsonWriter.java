@@ -394,17 +394,34 @@ public class JsonWriter implements Closeable {
 	}
 
 	private void writeDeferredName() throws IOException {
-		if (deferredName != null) {
-			beforeName();
-			if (deferredComment != null) {
-				String[] commentLines = deferredComment.split("\\n");
-				newline();
-				for (String commentLine : commentLines) {
-					out.write("// ");
-					out.write(commentLine);
-					newline();
-				}
+		if (deferredComment != null) {
+			if (deferredName != null) {
+				beforeName();
 			}
+			String[] commentLines = deferredComment.split("\\n");
+			newline();
+			for (String commentLine : commentLines) {
+				out.write("// ");
+				out.write(commentLine);
+				newline();
+			}
+			if (deferredName == null) {
+				deferredComment = null;
+			}
+		}
+		if (deferredName != null) {
+			if (deferredComment == null) {
+				beforeName();
+			}
+//			if (deferredComment != null) {
+//				String[] commentLines = deferredComment.split("\\n");
+//				newline();
+//				for (String commentLine : commentLines) {
+//					out.write("// ");
+//					out.write(commentLine);
+//					newline();
+//				}
+//			}
 			string(deferredName);
 			deferredName = null;
 			deferredComment = null;

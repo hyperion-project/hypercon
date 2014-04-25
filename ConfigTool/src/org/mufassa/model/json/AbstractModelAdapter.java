@@ -7,7 +7,6 @@ import java.lang.reflect.Type;
 
 import org.apache.log4j.Logger;
 import org.mufassa.model.AbstractModel;
-import org.mufassa.model.JsonComment;
 import org.mufassa.model.ModelList;
 import org.mufassa.model.ParameterBool;
 import org.mufassa.model.ParameterDouble;
@@ -15,6 +14,8 @@ import org.mufassa.model.ParameterInt;
 import org.mufassa.model.ParameterObject;
 import org.mufassa.model.SelectableModelList;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.FieldNamingStrategy;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -37,7 +38,7 @@ public class AbstractModelAdapter implements JsonSerializer<AbstractModel>, Json
 	private static final String mSelectedIndex = "Selected index";
 	private static final String mContent = "Content";
 	
-	private NamingPolicy mNaming = new NamingPolicy();
+	private FieldNamingStrategy mNaming = FieldNamingPolicy.IDENTITY;
 
 	@Override
 	public JsonElement serialize(AbstractModel pSrc, Type pTypeOfSrc, JsonSerializationContext pContext) {
@@ -58,15 +59,21 @@ public class AbstractModelAdapter implements JsonSerializer<AbstractModel>, Json
 				continue;
 			}
 			
+			// Check if the field is commented
+			String fieldComment = null;
 			if (field.isAnnotationPresent(JsonComment.class)) {
-				JsonComment fieldComment = field.getAnnotation(JsonComment.class);
-				System.out.println("Field comment: " + fieldComment.value());
+				JsonComment fieldCommentAn = field.getAnnotation(JsonComment.class);
+				fieldComment = fieldCommentAn.value();
 			}
+			
 			// Obtain the object
 			Object object;
 			try {
 				object = field.get(pSrc);
-			} catch (IllegalArgumentException | IllegalAccessException e) {
+			} catch (IllegalArgumentException e) {
+				LOGGER.error("Something is seriously wrong in this class ("+pSrc+")", e);
+				continue;
+			} catch (IllegalAccessException e) {
 				LOGGER.error("Something is seriously wrong in this class ("+pSrc+")", e);
 				continue;
 			}
@@ -115,10 +122,16 @@ public class AbstractModelAdapter implements JsonSerializer<AbstractModel>, Json
 					Object selectedItem = ((SelectableModelList<?>) list).getSelectedItem();
 					int selectedIndex = list.indexOf(selectedItem);
 					JsonObject jsonObject = new JsonObject();
+					if (fieldComment != null) {
+						jsonObject.setComment(fieldComment);
+					}
 					jsonObject.addProperty(mSelectedIndex, selectedIndex);
 					jsonObject.add(mContent, array);
 					result.add(mNaming.translateName(field), jsonObject);
 				} else {
+					if (fieldComment != null) {
+						array.setComment(fieldComment);
+					}
 					result.add(mNaming.translateName(field), array);
 				}
 			} else if (object instanceof AbstractModel) {
@@ -165,7 +178,10 @@ public class AbstractModelAdapter implements JsonSerializer<AbstractModel>, Json
 			Object object;
 			try {
 				object = field.get(pModel);
-			} catch (IllegalArgumentException | IllegalAccessException e) {
+			} catch (IllegalArgumentException e) {
+				LOGGER.error("Something is seriously wrong in this class ("+pModel.getClass()+")", e);
+				continue;
+			} catch (IllegalAccessException e) {
 				LOGGER.error("Something is seriously wrong in this class ("+pModel.getClass()+")", e);
 				continue;
 			}
@@ -312,7 +328,13 @@ public class AbstractModelAdapter implements JsonSerializer<AbstractModel>, Json
 	private AbstractModel createModelFromClassName(String className) {
 		try {
 			return (AbstractModel) Class.forName(className).newInstance();
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+		} catch (InstantiationException e) {
+			LOGGER.error("Unable to load and create instance of class: " + className, e);
+			return null;
+		} catch (IllegalAccessException e) {
+			LOGGER.error("Unable to load and create instance of class: " + className, e);
+			return null;
+		} catch (ClassNotFoundException e) {
 			LOGGER.error("Unable to load and create instance of class: " + className, e);
 			return null;
 		} 

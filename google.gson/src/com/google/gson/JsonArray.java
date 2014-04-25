@@ -279,4 +279,13 @@ public final class JsonArray extends JsonElement implements Iterable<JsonElement
   public int hashCode() {
     return elements.hashCode();
   }
+
+  private String mComment = null;
+  
+  public String getComment() {
+	  return mComment;
+  }
+  public void setComment(String pComment) {
+	  mComment = pComment;
+  }
 }

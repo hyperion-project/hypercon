@@ -41,7 +41,7 @@ public abstract class AbstractModel {
 	 * Mapping of fields from the model to the event they generate. All ModelEvents are pre-generated which 
 	 * is possible as long as the events they throw have no arguments. 
 	 */
-	private final Map<Object, Set<ModelEvent>> mEventMap = new LinkedHashMap<>();
+	private final Map<Object, Set<ModelEvent>> mEventMap = new LinkedHashMap<Object, Set<ModelEvent>>();
 	
 	/**
 	 * List with all outstanding events
@@ -94,9 +94,9 @@ public abstract class AbstractModel {
 				//System.out.println("Commit: " + MODEL_TREE_CHANGE_EVENT);
 				// make a copy of the observer map otherwise a concurrent modification exception can
 				// occur when an observer unsubscribes itself during the call-back
-				Map<IModelObserver, Set<String>> observers = new LinkedHashMap<>(mObservers);
+				Map<IModelObserver, Set<String>> observers = new LinkedHashMap<IModelObserver, Set<String>>(mObservers);
 				for(Entry<IModelObserver, Set<String>> entry : observers.entrySet()) {
-					Set<String> events = new LinkedHashSet<>(entry.getValue());
+					Set<String> events = new LinkedHashSet<String>(entry.getValue());
 					if(events.contains(MODEL_TREE_CHANGE_EVENT)) {
 						entry.getKey().modelUpdate(Collections.singleton(new ModelEvent(AbstractModel.this, MODEL_TREE_CHANGE_EVENT)));						
 					}
@@ -117,7 +117,9 @@ public abstract class AbstractModel {
 			Object object;
 			try {
 				object = field.get(this);
-			} catch (IllegalArgumentException | IllegalAccessException e) {
+			} catch (IllegalArgumentException e) {
+				continue;
+			} catch (IllegalAccessException e) {
 				continue;
 			}
 
@@ -160,7 +162,7 @@ public abstract class AbstractModel {
 		// retrieve the event set.
 		Set<ModelEvent> eventSet = mEventMap.get(pObject);
 		if(eventSet == null) {
-			eventSet = new LinkedHashSet<>();
+			eventSet = new LinkedHashSet<ModelEvent>();
 			mEventMap.put(pObject, eventSet);
 		}
 		
@@ -189,7 +191,7 @@ public abstract class AbstractModel {
 			model.commitEvents();
 		}
 
-		Map<IModelObserver, Set<ModelEvent>> toBeCommitted = new LinkedHashMap<>();
+		Map<IModelObserver, Set<ModelEvent>> toBeCommitted = new LinkedHashMap<IModelObserver, Set<ModelEvent>>();
 		
 		// first obtain a list with events which need to be committed. 
 		// While doing this, the list of events and observers must not change
@@ -200,7 +202,7 @@ public abstract class AbstractModel {
 				for(Entry<IModelObserver, Set<String>> entry : mObservers.entrySet()) {
 					IModelObserver observer = entry.getKey();
 					Set<String> observerEvents = entry.getValue();
-					Set<ModelEvent> events = new LinkedHashSet<>();
+					Set<ModelEvent> events = new LinkedHashSet<ModelEvent>();
 					
 					for (ModelEvent event : mCurrentEvents) {
 						if(observerEvents.contains(event.getEvent())) {
@@ -237,7 +239,7 @@ public abstract class AbstractModel {
 
 		Set<String> events = mObservers.get(pObserver);
 		if (events == null) {
-			events = new LinkedHashSet<>();
+			events = new LinkedHashSet<String>();
 			mObservers.put(pObserver, events);
 		}
 		Collections.addAll(events, pEvents);
@@ -256,7 +258,7 @@ public abstract class AbstractModel {
 		
 		Set<String> events = mObservers.get(pObserver);
 		if (events == null) {
-			events = new LinkedHashSet<>();
+			events = new LinkedHashSet<String>();
 			mObservers.put(pObserver, events);
 		}
 		events.addAll(pEvents);

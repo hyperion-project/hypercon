@@ -46,7 +46,7 @@ public class SerialPanel extends DeviceTypePanel {
 		mOutputLabel.setMinimumSize(firstColMinDim);
 		add(mOutputLabel);
 		
-		mOutputCombo = new JComboBox<>(KnownOutputs);
+		mOutputCombo = new JComboBox<String>(KnownOutputs);
 		mOutputCombo.setMaximumSize(maxDim);
 		mOutputCombo.setEditable(true);
 		mOutputCombo.addActionListener(mActionListener);

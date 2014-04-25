@@ -54,7 +54,7 @@ public class DevicePanel extends JPanel {
 		mTypeLabel.setMinimumSize(new Dimension(80, 10));
 		add(mTypeLabel);
 		
-		mTypeCombo = new JComboBox<>(DeviceType.values());
+		mTypeCombo = new JComboBox<DeviceType>(DeviceType.values());
 		mTypeCombo.setSelectedItem(mDeviceConfig.mType);
 		mTypeCombo.addActionListener(mActionListener);
 		add(mTypeCombo);
@@ -72,7 +72,7 @@ public class DevicePanel extends JPanel {
 		mRgbLabel.setMinimumSize(new Dimension(80, 10));
 		add(mRgbLabel);
 		
-		mRgbCombo = new JComboBox<>(ColorByteOrder.values());
+		mRgbCombo = new JComboBox<ColorByteOrder>(ColorByteOrder.values());
 		mRgbCombo.setSelectedItem(mDeviceConfig.mColorByteOrder);
 		mRgbCombo.addActionListener(mActionListener);
 		add(mRgbCombo);

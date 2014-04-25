@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.mufassa.model.AbstractModel;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
@@ -22,7 +23,9 @@ public class Jsonizer {
 			.setPrettyPrinting()
 			.serializeNulls()
 			.serializeSpecialFloatingPointValues()
-			.setFieldNamingStrategy(new NamingPolicy())
+//			.setFieldNamingStrategy(new NamingPolicy())
+			.setFieldNamingStrategy(FieldNamingPolicy.IDENTITY)
+			.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
 			.setExclusionStrategies(new JsonExclusionStrategy())
 			.registerTypeHierarchyAdapter(AbstractModel.class, new AbstractModelAdapter())
 			.registerTypeAdapter(Color.class, new ColorAdapter())

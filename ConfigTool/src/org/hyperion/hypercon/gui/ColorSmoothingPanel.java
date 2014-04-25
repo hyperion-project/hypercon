@@ -58,7 +58,7 @@ public class ColorSmoothingPanel extends JPanel {
 		mTypeLabel = new JLabel("Type: ");
 		add(mTypeLabel);
 		
-		mTypeCombo = new JComboBox<>(ColorSmoothingType.values());
+		mTypeCombo = new JComboBox<ColorSmoothingType>(ColorSmoothingType.values());
 		mTypeCombo.setSelectedItem(mSmoothConfig.mType.getValue());
 		mTypeCombo.addActionListener(mActionListener);
 		add(mTypeCombo);

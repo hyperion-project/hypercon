@@ -11,7 +11,7 @@ import org.apache.log4j.spi.LoggingEvent;
  * Log4j appender used during deserialization by the Jsonizer
  */
 public class JsonizerAppender extends AppenderSkeleton {
-	private final List<LoggingEvent> loggingEvents = new ArrayList<>();
+	private final List<LoggingEvent> loggingEvents = new ArrayList<LoggingEvent>();
 
 	public JsonizerAppender() {
 	}
@@ -48,7 +48,7 @@ public class JsonizerAppender extends AppenderSkeleton {
 	}
 	
 	public List<String> getMessages() {
-		List<String> list = new ArrayList<>(loggingEvents.size());
+		List<String> list = new ArrayList<String>(loggingEvents.size());
 		for (LoggingEvent event : loggingEvents) {
 			list.add(String.format("%s - %s", event.getLevel(), event.getRenderedMessage()));
 		}

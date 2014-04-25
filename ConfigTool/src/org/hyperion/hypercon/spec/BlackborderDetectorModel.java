@@ -1,9 +1,9 @@
 package org.hyperion.hypercon.spec;
 
 import org.mufassa.model.AbstractModel;
-import org.mufassa.model.JsonComment;
 import org.mufassa.model.ParameterBool;
 import org.mufassa.model.ParameterDouble;
+import org.mufassa.model.json.JsonComment;
 
 @JsonComment(
 		"The black border configuration, contains the following items: \n" +

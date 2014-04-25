@@ -3,6 +3,7 @@ package org.hyperion.hypercon;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileWriter;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -10,6 +11,7 @@ import javax.swing.UIManager;
 
 import org.hyperion.control.LedConfigController;
 import org.hyperion.hypercon.gui.ConfigPanel;
+import org.mufassa.model.json.Jsonizer;
 
 /**
  * (static) Main-class for starting HyperCon (the Hyperion configuration file builder) as a standard 
@@ -34,11 +36,14 @@ public class Main {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {}
 		
+		// Construct the 'Model'
 		final LedStringModel ledString = new LedStringModel();
 		
+		// Construct the 'Controllers'
 		@SuppressWarnings("unused")
 		LedConfigController ledsController = new LedConfigController(ledString);
 		
+		// Construct the 'Views'
 		// Create a frame for the configuration panel
 		JFrame frame = new JFrame();
 		String title = "Hyperion configuration Tool" + ((versionStr != null && !versionStr.isEmpty())? (" (" + versionStr + ")") : ""); 
@@ -49,18 +54,15 @@ public class Main {
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-//				try {
-//					ConfigurationFile configFile = new ConfigurationFile();
-//					configFile.store(Main.HyperConConfig);
-//					configFile.store(ledString.mDeviceConfig);
-//					configFile.store(ledString.mLedFrameConfig);
-//					configFile.store(ledString.mProcessConfig);
-//					configFile.store(ledString.mColorConfig);
-//					configFile.store(ledString.mMiscConfig);
-//					configFile.save(configFilename);
-//				} catch (Throwable t) {
-//					System.err.println("Failed to save " + configFilename);
-//				}
+				try {
+					String ledStringJson = Jsonizer.serialize(ledString);
+					FileWriter fw = new FileWriter(configFilename);
+					fw.write(ledStringJson);
+					fw.close();
+				} catch (Throwable t) {
+					t.printStackTrace();
+					System.err.println("Failed to save " + configFilename);
+				}
 			}
 		});
 		

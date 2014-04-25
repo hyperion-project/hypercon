@@ -20,14 +20,22 @@ public class LedModel extends AbstractModel {
 	}
 
 	/** The sequence number of the led */
-	public final ParameterInt sequenceNr = new ParameterInt("SequenceNr", 0, 0, Integer.MAX_VALUE);
+	public final ParameterInt index = new ParameterInt("index", 0, 0, Integer.MAX_VALUE);
+	
+	public final DoubleRange hscan = new DoubleRange(0.0, 1.0, 0.0, 1.0);
+	public final DoubleRange vscan = new DoubleRange(0.0, 1.0, 0.0, 1.0);
 	
 	/** The side along which the led is placed */
-	public final ParameterObject<BorderSide> side = new ParameterObject<>("Side", BorderSide.top);
+	public final ParameterObject<BorderSide> side = new ParameterObject<BorderSide>("Side", BorderSide.top);
 	
 	/** The fractional location of the led */
-	public final ParameterObject<Point2D.Double> location = new ParameterObject<>("Location", new Point2D.Double());
+	public final ParameterObject<Point2D.Double> location = new ParameterObject<Point2D.Double>("Location", new Point2D.Double());
 
-	/** The fractional rectangle for image integration */
-	public final ParameterObject<Rectangle2D.Double> imageRectangle = new ParameterObject<>("ImageRectangle", new Rectangle2D.Double());
+	/** 
+	 * Return the fractional rectangle for image integration 
+	 */
+	public Rectangle2D getImageRectangle() {
+		return new Rectangle2D.Double(hscan.minimum.getValue(), vscan.minimum.getValue(), 
+				hscan.maximum.getValue()-hscan.minimum.getValue(), vscan.maximum.getValue()-vscan.minimum.getValue());
+	}
 }

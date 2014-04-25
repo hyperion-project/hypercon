@@ -1,9 +1,9 @@
 package org.hyperion.hypercon.spec;
 
 import org.mufassa.model.AbstractModel;
-import org.mufassa.model.JsonComment;
 import org.mufassa.model.ParameterInt;
 import org.mufassa.model.ParameterObject;
+import org.mufassa.model.json.JsonComment;
 
 /**
  * The device specific configuration
@@ -25,17 +25,17 @@ public class DeviceConfigModel extends AbstractModel {
 	}
 	
 	/** The name of the device */
-	public final ParameterObject<String> mName = new ParameterObject<>("Name", "MyPi");
+	public final ParameterObject<String> mName = new ParameterObject<String>("name", "MyPi");
 	
 	/** The type specification of the device */
-	public final ParameterObject<DeviceType> mType = new ParameterObject<>("Type", DeviceType.ws2801);
+	public final ParameterObject<DeviceType> mType = new ParameterObject<DeviceType>("type", DeviceType.ws2801);
 	
 	/** The device 'file' name */
-	public final ParameterObject<String> mOutput   = new ParameterObject<>("Output", "/dev/spidev0.0");
+	public final ParameterObject<String> mOutput   = new ParameterObject<String>("output", "/dev/spidev0.0");
 	
 	/** The baudrate of the device */
-	public final ParameterInt mBaudrate = new ParameterInt("Baudrate", 250000, 48000, 2000000);
+	public final ParameterInt mBaudrate = new ParameterInt("baudrate", 250000, 48000, 2000000);
 	
 	/** The order of the color bytes */
-	public final ParameterObject<ColorByteOrder> mColorByteOrder = new ParameterObject<>("ColorByteOrder", ColorByteOrder.RGB);	
+	public final ParameterObject<ColorByteOrder> mColorByteOrder = new ParameterObject<ColorByteOrder>("colorByteOrder", ColorByteOrder.RGB);	
 }

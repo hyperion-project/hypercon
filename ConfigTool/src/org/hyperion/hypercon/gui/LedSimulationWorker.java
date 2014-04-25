@@ -34,7 +34,7 @@ public class LedSimulationWorker extends SwingWorker<BufferedImage, Object> {
 		double angle_rad;
 	}
 	
-	private final List<LedPaint> mLedPaints = new Vector<>();
+	private final List<LedPaint> mLedPaints = new Vector<LedPaint>();
 	
 
 	@Override
@@ -56,10 +56,10 @@ public class LedSimulationWorker extends SwingWorker<BufferedImage, Object> {
 			ledPaint.angle_rad = 0.5*Math.PI - led.side.getValue().getAngle_rad();
 			
 			// Determine the color of the led
-			int xMin = (int)(led.imageRectangle.getValue().getMinX() * (imageWidth-1));
-			int xMax = (int)(led.imageRectangle.getValue().getMaxX() * (imageWidth-1));
-			int yMin = (int)(led.imageRectangle.getValue().getMinY() * (imageHeight-1));
-			int yMax = (int)(led.imageRectangle.getValue().getMaxY() * (imageHeight-1));
+			int xMin = (int)(led.hscan.minimum.getValue() * (imageWidth-1));
+			int xMax = (int)(led.hscan.maximum.getValue() * (imageWidth-1));
+			int yMin = (int)(led.vscan.minimum.getValue() * (imageHeight-1));
+			int yMax = (int)(led.vscan.maximum.getValue() * (imageHeight-1));
 			ledPaint.color = determineColor(xMin, xMax, yMin, yMax);
 			
 			mLedPaints.add(ledPaint);

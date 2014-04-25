@@ -1,10 +1,10 @@
 package org.hyperion.hypercon.spec;
 
 import org.mufassa.model.AbstractModel;
-import org.mufassa.model.JsonComment;
 import org.mufassa.model.ParameterBool;
 import org.mufassa.model.ParameterInt;
 import org.mufassa.model.ParameterObject;
+import org.mufassa.model.json.JsonComment;
 
 @JsonComment(
 		"The configuration of the XBMC connection used to enable and disable the frame-grabber. Contains the following fields:\n" + 
@@ -24,21 +24,21 @@ public class XbmcVideoCheckerModel extends AbstractModel {
 	}
 
 	/** Flag indicating that the XBMC checker is enabled */
-	public final ParameterBool mEnabled = new ParameterBool("Enabled", true);
+	public final ParameterBool enabled = new ParameterBool("enabled", true);
 	/** The IP-address of XBMC */
-	public final ParameterObject<String> mXbmcAddress  = new ParameterObject<>("XbmcAddress", "127.0.0.1");
+	public final ParameterObject<String> xbmcAddress  = new ParameterObject<String>("xbmcAddress", "127.0.0.1");
 	/** The TCP JSON-Port of XBMC */
-	public final ParameterInt mXbmcTcpPort = new ParameterInt("XbmcTcpPort", 9090, 1, 65535);
+	public final ParameterInt xbmcTcpPort = new ParameterInt("xbmcTcpPort", 9090, 1, 65535);
 	/** Flag indicating that the frame-grabber is on during video playback */
-	public final ParameterBool mVideoOn = new ParameterBool("VideoOn", true);
+	public final ParameterBool videoOn = new ParameterBool("grabVideo", true);
 	/** Flag indicating that the frame-grabber is on during XBMC menu */
-	public final ParameterBool mMenuOn = new ParameterBool("MenuOn", false);
+	public final ParameterBool menuOn = new ParameterBool("grabMenu", false);
 	/** Flag indicating that the frame-grabber is on during picture slideshow */
-	public final ParameterBool mPictureOn = new ParameterBool("PictureOn", true);
+	public final ParameterBool pictureOn = new ParameterBool("grabPictures", true);
 	/** Flag indicating that the frame-grabber is on during audio playback */
-	public final ParameterBool mAudioOn = new ParameterBool("AudioOn", true);
+	public final ParameterBool audioOn = new ParameterBool("grabAudio", true);
 	/** Flag indicating that the frame-grabber is on when xbmc is on screensaver */
-	public final ParameterBool mScreensaverOn = new ParameterBool("ScreensaveOn", true);
+	public final ParameterBool screensaverOn = new ParameterBool("grabScreensaver", true);
 	/** Flag indicating that the frame-grabber is should take actions when a 3D file is playing */
-	public final ParameterBool m3DCheckingEnabled = new ParameterBool("3DCheckEnabled", true);
+	public final ParameterBool enable3DDetection = new ParameterBool("enable3DDetection", true);
 }
