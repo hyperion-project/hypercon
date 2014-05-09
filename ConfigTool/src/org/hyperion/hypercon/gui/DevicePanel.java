@@ -62,10 +62,10 @@ public class DevicePanel extends JPanel {
 		mDevicePanel = new JPanel();
 		mDevicePanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 		mDevicePanel.setLayout(new BorderLayout());
-		DeviceTypePanel typePanel = mDeviceConfig.mType.getValue().getConfigPanel(mDeviceConfig);
-		if (typePanel != null) {
-			mDevicePanel.add(typePanel, BorderLayout.CENTER);
-		}
+//		DeviceTypePanel typePanel = mDeviceConfig.mType.getValue().getConfigPanel(mDeviceConfig);
+//		if (typePanel != null) {
+//			mDevicePanel.add(typePanel, BorderLayout.CENTER);
+//		}
 		add(mDevicePanel);
 		
 		mRgbLabel = new JLabel("RGB Byte Order: ");
@@ -103,14 +103,14 @@ public class DevicePanel extends JPanel {
 	private final ActionListener mActionListener = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			mDeviceConfig.mType.setValue((DeviceType)mTypeCombo.getSelectedItem());
-			mDeviceConfig.mColorByteOrder.setValue((ColorByteOrder)mRgbCombo.getSelectedItem());
+//			mDeviceConfig.mType.setValue((DeviceType)mTypeCombo.getSelectedItem());
+//			mDeviceConfig.mColorByteOrder.setValue((ColorByteOrder)mRgbCombo.getSelectedItem());
 
 			mDevicePanel.removeAll();
-			DeviceTypePanel typePanel = mDeviceConfig.mType.getValue().getConfigPanel(mDeviceConfig);
-			if (typePanel != null) {
-				mDevicePanel.add(typePanel, BorderLayout.CENTER);
-			}
+//			DeviceTypePanel typePanel = mDeviceConfig.mType.getValue().getConfigPanel(mDeviceConfig);
+//			if (typePanel != null) {
+//				mDevicePanel.add(typePanel, BorderLayout.CENTER);
+//			}
 			revalidate();
 		}
 	};

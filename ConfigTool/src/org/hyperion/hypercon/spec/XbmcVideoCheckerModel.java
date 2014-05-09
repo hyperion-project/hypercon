@@ -26,9 +26,9 @@ public class XbmcVideoCheckerModel extends AbstractModel {
 	/** Flag indicating that the XBMC checker is enabled */
 	public final ParameterBool enabled = new ParameterBool("enabled", true);
 	/** The IP-address of XBMC */
-	public final ParameterObject<String> xbmcAddress  = new ParameterObject<String>("xbmcAddress", "127.0.0.1");
+	public final ParameterObject<String> xbmcAddress  = new ParameterObject<String>("ipAddress", "127.0.0.1");
 	/** The TCP JSON-Port of XBMC */
-	public final ParameterInt xbmcTcpPort = new ParameterInt("xbmcTcpPort", 9090, 1, 65535);
+	public final ParameterInt xbmcTcpPort = new ParameterInt("tcpPort", 9090, 1, 65535);
 	/** Flag indicating that the frame-grabber is on during video playback */
 	public final ParameterBool videoOn = new ParameterBool("grabVideo", true);
 	/** Flag indicating that the frame-grabber is on during XBMC menu */

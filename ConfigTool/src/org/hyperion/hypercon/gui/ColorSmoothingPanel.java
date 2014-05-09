@@ -125,7 +125,7 @@ public class ColorSmoothingPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			mSmoothConfig.mSmoothingEnabled.setValue(mEnabledCheck.isSelected());
-			mSmoothConfig.mType.setValue((ColorSmoothingType)mTypeCombo.getSelectedItem());
+			//mSmoothConfig.mType.setValue((ColorSmoothingType)mTypeCombo.getSelectedItem());
 			
 			toggleEnabled(mSmoothConfig.mSmoothingEnabled.getValue());
 		}

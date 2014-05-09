@@ -18,7 +18,7 @@ public class VideoGrabberModel extends AbstractModel {
 	}
 	
 	/** Flag indicating that the Frame Grabber is enabled */
-	public final ParameterBool enabled = new ParameterBool("FrameGrabberEnabled", true);
+	public final ParameterBool enabled = new ParameterBool("Enabled", true);
 	/** The width of 'grabbed' frames (screen shots) [pixels] */
 	public final ParameterInt width = new ParameterInt("width", 64, 1, 3840);
 	/** The height of 'grabbed' frames (screen shots) [pixels] */

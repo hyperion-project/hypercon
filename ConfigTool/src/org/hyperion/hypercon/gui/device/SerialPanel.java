@@ -36,9 +36,6 @@ public class SerialPanel extends DeviceTypePanel {
 	@Override
 	public void setDeviceConfig(DeviceConfigModel pDeviceConfig) {
 		super.setDeviceConfig(pDeviceConfig);
-
-		mOutputCombo.setSelectedItem(mDeviceConfig.mOutput);
-		((SpinnerNumberModel)mBaudrateSpinner.getModel()).setValue(mDeviceConfig.mBaudrate);
 	}
 	
 	private void initialise() {
@@ -88,9 +85,7 @@ public class SerialPanel extends DeviceTypePanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == mOutputCombo) {
-				mDeviceConfig.mOutput.setValue((String)mOutputCombo.getSelectedItem());
 			} else if (e.getSource() == mBaudrateSpinner) {
-				mDeviceConfig.mBaudrate.setValue((Integer)mBaudrateSpinner.getValue());
 			}
 		}
 	};
@@ -98,7 +93,6 @@ public class SerialPanel extends DeviceTypePanel {
 	private ChangeListener mChangeListener = new ChangeListener() {
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			mDeviceConfig.mBaudrate.setValue((Integer)mBaudrateSpinner.getValue());
 		}
 	};
 }

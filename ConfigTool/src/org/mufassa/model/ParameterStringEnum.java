@@ -45,13 +45,26 @@ public class ParameterStringEnum extends Parameter {
 	 * @param pSelectedValue The current selected value (can not be null)
 	 */
 	public ParameterStringEnum(String pName, String pDescription, List<String> pValues, String pSelectedValue) {
-		super(pName, pDescription);
+		this(pName, pDescription, pValues.toArray(new String[0]), pSelectedValue);
+	}
+	
+	public ParameterStringEnum(String pName, Object pSelectedValue) {
+		this(pName, pName, pSelectedValue);
+	}
+
+	public ParameterStringEnum(String pName, String pDescription, Object pSelectedValue) {
+		super(pName);
 		
-		mValues = pValues.toArray(new String[0]);
-		if (!isValidValue(pSelectedValue)) {
+		Object[] enumValues = pSelectedValue.getClass().getEnumConstants();
+		mValues = new String[enumValues.length];
+		for (int i=0; i<enumValues.length; ++i) {
+			mValues[i] = enumValues[i].toString();
+		}
+		
+		if (!isValidValue(pSelectedValue.toString())) {
 			mSelectedValue = mValues[0];
 		} else {
-			mSelectedValue = pSelectedValue;
+			mSelectedValue = pSelectedValue.toString();
 		}
 	}
 	
@@ -67,8 +80,12 @@ public class ParameterStringEnum extends Parameter {
 		super(pName, pDescription);
 		
 		mValues = pValues;
-		mSelectedValue = pSelectedValue;
-	}
+		if (!isValidValue(pSelectedValue)) {
+			mSelectedValue = mValues[0];
+		} else {
+			mSelectedValue = pSelectedValue;
+		}
+}
 
 	/**
 	 * Returns the selected value of the enumeration

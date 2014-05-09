@@ -23,7 +23,6 @@ public class LightPackPanel extends DeviceTypePanel {
 	public void setDeviceConfig(DeviceConfigModel pDeviceConfig) {
 		super.setDeviceConfig(pDeviceConfig);
 		
-		mSerialNoField.setText(mDeviceConfig.mOutput.getValue());
 	}
 	
 	private void initialise() {
@@ -37,15 +36,12 @@ public class LightPackPanel extends DeviceTypePanel {
 		mSerialNoField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				mDeviceConfig.mOutput.setValue(mSerialNoField.getText());
 			}
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				mDeviceConfig.mOutput.setValue(mSerialNoField.getText());
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				mDeviceConfig.mOutput.setValue(mSerialNoField.getText());
 			}
 		});
 		add(mSerialNoField);

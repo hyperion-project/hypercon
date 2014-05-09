@@ -3,6 +3,7 @@ package org.hyperion.hypercon.spec;
 import org.mufassa.model.AbstractModel;
 import org.mufassa.model.ParameterDouble;
 import org.mufassa.model.ParameterObject;
+import org.mufassa.model.ParameterString;
 
 public class TransformConfigModel extends AbstractModel {
 	
@@ -12,10 +13,10 @@ public class TransformConfigModel extends AbstractModel {
 	}
 
 	/** The identifier of this ColorTransform configuration */
-	public final ParameterObject<String> id = new ParameterObject<String>("id", "default");
+	public final ParameterString id = new ParameterString("id", "default");
 	
 	/** The indices to which this transform applies */
-	public final ParameterObject<String> ledIndexString = new ParameterObject<String>("leds", "*");
+	public final ParameterString ledIndexString = new ParameterString("leds", "*");
 	
 	/** The saturation gain (in HSV space) */
 	public final ParameterDouble saturationGain = new ParameterDouble("saturationGain", 1.0, 0.0, 1024.0);

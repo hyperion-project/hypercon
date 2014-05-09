@@ -23,7 +23,6 @@ public class TestDevicePanel extends DeviceTypePanel {
 	public void setDeviceConfig(DeviceConfigModel pDeviceConfig) {
 		super.setDeviceConfig(pDeviceConfig);
 		
-		mFilenameField.setText(mDeviceConfig.mOutput.getValue());
 	}
 	
 	private void initialise() {
@@ -36,15 +35,12 @@ public class TestDevicePanel extends DeviceTypePanel {
 		mFilenameField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				mDeviceConfig.mOutput.setValue(mFilenameField.getText());
 			}
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				mDeviceConfig.mOutput.setValue(mFilenameField.getText());
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				mDeviceConfig.mOutput.setValue(mFilenameField.getText());
 			}
 		});
 		add(mFilenameField);

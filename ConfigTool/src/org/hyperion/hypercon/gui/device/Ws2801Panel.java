@@ -37,8 +37,6 @@ public class Ws2801Panel extends DeviceTypePanel {
 	public void setDeviceConfig(DeviceConfigModel pDeviceConfig) {
 		super.setDeviceConfig(pDeviceConfig);
 
-		mOutputCombo.setSelectedItem(mDeviceConfig.mOutput.getValue());
-		((SpinnerNumberModel)mBaudrateSpinner.getModel()).setValue(mDeviceConfig.mBaudrate.getValue());
 	}
 	
 	private void initialise() {
@@ -88,9 +86,7 @@ public class Ws2801Panel extends DeviceTypePanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == mOutputCombo) {
-				mDeviceConfig.mOutput.setValue((String)mOutputCombo.getSelectedItem());
 			} else if (e.getSource() == mBaudrateSpinner) {
-				mDeviceConfig.mBaudrate.setValue((Integer)mBaudrateSpinner.getValue());
 			}
 		}
 	};
@@ -98,7 +94,6 @@ public class Ws2801Panel extends DeviceTypePanel {
 	private ChangeListener mChangeListener = new ChangeListener() {
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			mDeviceConfig.mBaudrate.setValue((Integer)mBaudrateSpinner.getValue());
 		}
 	};
 }
