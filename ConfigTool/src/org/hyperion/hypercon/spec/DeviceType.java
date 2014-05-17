@@ -29,7 +29,8 @@ public enum DeviceType {
 	/** Test device for writing color values to file-output */
 	test("Test"),
 	/** No device, no output is generated */
-	none("None");
+	none("None"), 
+	multi_lightpack("Multi Lightpack");
 	
 	/** The 'pretty' name of the device type */
 	private final String mName;
@@ -80,10 +81,5 @@ public enum DeviceType {
 			mConfigPanel.setDeviceConfig(pDeviceConfig);
 		}
 		return mConfigPanel;
-	}
-	
-	@Override
-	public String toString() {
-		return mName;
 	}
 }

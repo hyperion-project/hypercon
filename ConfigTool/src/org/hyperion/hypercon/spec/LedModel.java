@@ -6,6 +6,7 @@ import java.awt.geom.Rectangle2D;
 import org.mufassa.model.AbstractModel;
 import org.mufassa.model.ParameterInt;
 import org.mufassa.model.ParameterObject;
+import org.mufassa.model.ParameterString;
 
 
 /**
@@ -19,6 +20,8 @@ public class LedModel extends AbstractModel {
 		initialize();
 	}
 
+	public final ParameterString id = new ParameterString("id", "");
+	
 	/** The sequence number of the led */
 	public final ParameterInt index = new ParameterInt("index", 0, 0, Integer.MAX_VALUE);
 	
