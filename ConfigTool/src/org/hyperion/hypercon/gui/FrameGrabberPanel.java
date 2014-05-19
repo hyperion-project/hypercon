@@ -15,11 +15,11 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.hyperion.hypercon.spec.VideoGrabberModel;
+import org.hyperion.hypercon.spec.DispmanxGrabberModel;
 
 public class FrameGrabberPanel extends JPanel {
 
-	private final VideoGrabberModel mGrabberModel;
+	private final DispmanxGrabberModel mGrabberModel;
 	
 	private JCheckBox mFrameGrabberCheck;
 	private JLabel mWidthLabel;
@@ -29,7 +29,7 @@ public class FrameGrabberPanel extends JPanel {
 	private JLabel mIntervalLabel;
 	private JSpinner mIntervalSpinner;
 	
-	public FrameGrabberPanel(final VideoGrabberModel pGrabberModel) {
+	public FrameGrabberPanel(final DispmanxGrabberModel pGrabberModel) {
 		super();
 		
 		mGrabberModel = pGrabberModel;

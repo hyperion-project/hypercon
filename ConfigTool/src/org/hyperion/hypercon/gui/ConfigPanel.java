@@ -1,6 +1,7 @@
 package org.hyperion.hypercon.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
@@ -12,9 +13,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import org.hyperion.hypercon.LedStringModel;
+import org.mufassa.gui.ModelPanel;
 
 /**
  * The main-config panel of HyperCon. Includes the configuration and the panels to edit and 
@@ -108,7 +111,9 @@ public class ConfigPanel extends JPanel {
 		if (mSpecificationTabs == null) {
 			mSpecificationTabs = new JTabbedPane();
 			
-			mSpecificationTabs.addTab("Hardware", getHardwarePanel());
+			JScrollPane hardwareScroll = new JScrollPane(getHardwarePanel());
+			hardwareScroll.getVerticalScrollBar().setUnitIncrement(16);
+			mSpecificationTabs.addTab("Hardware", new JScrollPane(getHardwarePanel()));
 			mSpecificationTabs.addTab("Process", getProcessPanel());
 			mSpecificationTabs.addTab("External", getExternalPanel());
 		}
@@ -130,15 +135,39 @@ public class ConfigPanel extends JPanel {
 		}
 		return mTvPanel;
 	}
+	private final Dimension firstColDim = new Dimension(100, 20);
 	
+	private JPanel mGrabberPanel = null;
+	
+	private final JPanel getGrabberPanel() {
+		if (mGrabberPanel == null) {
+			mGrabberPanel = new JPanel();
+			mGrabberPanel.setLayout(new BoxLayout(mGrabberPanel, BoxLayout.Y_AXIS));
+		}
+		return mGrabberPanel;
+	}
 	private JPanel getHardwarePanel() {
 		if (mHardwarePanel == null) {
 			mHardwarePanel = new JPanel();
 			mHardwarePanel.setLayout(new BoxLayout(mHardwarePanel, BoxLayout.Y_AXIS));
 			
 			//mHardwarePanel.add(new DevicePanel(ledString.device));
-			mHardwarePanel.add(new LedFramePanel(ledString.ledFrameConfig));
-			mHardwarePanel.add(new ImageProcessPanel(ledString.processConfig, ledString.blackborderdetector));
+			ModelPanel devicePanel = new ModelPanel(ledString.device, firstColDim);
+			devicePanel.setBorder(BorderFactory.createTitledBorder("Devices"));
+			mHardwarePanel.add(new ModelPanel(ledString.device, firstColDim));
+			
+			ModelPanel ledFramePanel = new ModelPanel(ledString.ledFrameConfig, firstColDim);
+			ledFramePanel.setBorder(BorderFactory.createTitledBorder("Led Frame"));
+			mHardwarePanel.add(ledFramePanel);
+			
+			ModelPanel colorsPanel = new ModelPanel(ledString.color, firstColDim);
+			colorsPanel.setBorder(BorderFactory.createTitledBorder("Color Transform"));
+			mHardwarePanel.add(colorsPanel);
+			
+			ModelPanel blackborderPanel = new ModelPanel(ledString.blackborderdetector, firstColDim);
+			blackborderPanel.setBorder(BorderFactory.createTitledBorder("Blackborder Detector"));
+			mHardwarePanel.add(blackborderPanel);
+			
 			mHardwarePanel.add(Box.createVerticalGlue());
 		}
 		return mHardwarePanel;

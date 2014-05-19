@@ -9,7 +9,7 @@ import org.hyperion.hypercon.spec.ImageProcessModel;
 import org.hyperion.hypercon.spec.LedFrameConstructionModel;
 import org.hyperion.hypercon.spec.LedModel;
 import org.hyperion.hypercon.spec.TcpServerModel;
-import org.hyperion.hypercon.spec.VideoGrabberModel;
+import org.hyperion.hypercon.spec.DispmanxGrabberModel;
 import org.hyperion.hypercon.spec.XbmcVideoCheckerModel;
 import org.mufassa.model.AbstractModel;
 import org.mufassa.model.ModelList;
@@ -51,7 +51,7 @@ public class LedStringModel extends AbstractModel {
 	public final BootsequenceModel bootSequence = new BootsequenceModel();
 	
 	/** The configuration of the Dispmanx Video Grabber */
-	public final VideoGrabberModel frameGrabber = new VideoGrabberModel();
+	public final DispmanxGrabberModel frameGrabber = new DispmanxGrabberModel();
 	
 	/** The configuration of the XBMC video checker */
 	public final XbmcVideoCheckerModel xbmcVideoChecker = new XbmcVideoCheckerModel();
