@@ -11,8 +11,8 @@ import org.hyperion.hypercon.spec.BorderSide;
 import org.hyperion.hypercon.spec.ImageProcessModel;
 import org.hyperion.hypercon.spec.LedFrameConstructionModel;
 import org.hyperion.hypercon.spec.LedModel;
-import org.mufassa.model.IModelObserver;
-import org.mufassa.model.ModelEvent;
+import org.hyperion.model.IModelObserver;
+import org.hyperion.model.ModelEvent;
 
 public class LedConfigController {
 

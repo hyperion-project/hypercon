@@ -9,10 +9,10 @@ import org.hyperion.hypercon.spec.device.LightPackDeviceModel;
 import org.hyperion.hypercon.spec.device.SerialDeviceModel;
 import org.hyperion.hypercon.spec.device.TestDeviceModel;
 import org.hyperion.hypercon.spec.device.Ws2801DeviceModel;
-import org.mufassa.model.IModelObserver;
-import org.mufassa.model.ModelEvent;
-import org.mufassa.model.ModelList;
-import org.mufassa.model.OptionalModel;
+import org.hyperion.model.IModelObserver;
+import org.hyperion.model.ModelEvent;
+import org.hyperion.model.ModelList;
+import org.hyperion.model.OptionalModel;
 
 public class DeviceController {
 	

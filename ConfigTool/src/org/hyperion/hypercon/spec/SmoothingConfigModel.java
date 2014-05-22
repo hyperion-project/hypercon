@@ -1,10 +1,10 @@
 package org.hyperion.hypercon.spec;
 
-import org.mufassa.model.AbstractModel;
-import org.mufassa.model.ParameterBool;
-import org.mufassa.model.ParameterDouble;
-import org.mufassa.model.ParameterInt;
-import org.mufassa.model.ParameterStringEnum;
+import org.hyperion.model.AbstractModel;
+import org.hyperion.model.ParameterBool;
+import org.hyperion.model.ParameterDouble;
+import org.hyperion.model.ParameterInt;
+import org.hyperion.model.ParameterStringEnum;
 
 public class SmoothingConfigModel extends AbstractModel {
 	

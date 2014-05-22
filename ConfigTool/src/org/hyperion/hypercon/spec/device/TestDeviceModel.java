@@ -1,6 +1,6 @@
 package org.hyperion.hypercon.spec.device;
 
-import org.mufassa.model.AbstractModel;
+import org.hyperion.model.AbstractModel;
 
 public class TestDeviceModel extends AbstractModel {
 

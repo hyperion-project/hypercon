@@ -11,7 +11,7 @@ import javax.swing.UIManager;
 
 import org.hyperion.control.LedConfigController;
 import org.hyperion.hypercon.gui.ConfigPanel;
-import org.mufassa.model.json.Jsonizer;
+import org.hyperion.model.json.Jsonizer;
 
 /**
  * (static) Main-class for starting HyperCon (the Hyperion configuration file builder) as a standard 

@@ -28,9 +28,9 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
 import org.hyperion.hypercon.spec.LedModel;
-import org.mufassa.model.IModelObserver;
-import org.mufassa.model.ModelEvent;
-import org.mufassa.model.ModelList;
+import org.hyperion.model.IModelObserver;
+import org.hyperion.model.ModelEvent;
+import org.hyperion.model.ModelList;
 
 
 public class LedSimulationComponent extends JPanel {

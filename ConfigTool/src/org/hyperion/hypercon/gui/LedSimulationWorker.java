@@ -12,7 +12,7 @@ import java.util.Vector;
 import javax.swing.SwingWorker;
 
 import org.hyperion.hypercon.spec.LedModel;
-import org.mufassa.model.ModelList;
+import org.hyperion.model.ModelList;
 
 public class LedSimulationWorker extends SwingWorker<BufferedImage, Object> {
 

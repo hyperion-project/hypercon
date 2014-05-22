@@ -1,10 +1,10 @@
 package org.hyperion.hypercon.spec;
 
-import org.mufassa.model.AbstractModel;
-import org.mufassa.model.ParameterBool;
-import org.mufassa.model.ParameterInt;
-import org.mufassa.model.ParameterObject;
-import org.mufassa.model.json.JsonComment;
+import org.hyperion.model.AbstractModel;
+import org.hyperion.model.ParameterBool;
+import org.hyperion.model.ParameterInt;
+import org.hyperion.model.ParameterObject;
+import org.hyperion.model.json.JsonComment;
 
 @JsonComment(
 		"The configuration of the XBMC connection used to enable and disable the frame-grabber. Contains the following fields:\n" + 

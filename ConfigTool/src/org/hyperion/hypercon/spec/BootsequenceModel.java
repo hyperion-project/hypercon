@@ -1,9 +1,9 @@
 package org.hyperion.hypercon.spec;
 
-import org.mufassa.model.AbstractModel;
-import org.mufassa.model.ParameterBool;
-import org.mufassa.model.ParameterInt;
-import org.mufassa.model.ParameterString;
+import org.hyperion.model.AbstractModel;
+import org.hyperion.model.ParameterBool;
+import org.hyperion.model.ParameterInt;
+import org.hyperion.model.ParameterString;
 
 public class BootsequenceModel extends AbstractModel {
 	

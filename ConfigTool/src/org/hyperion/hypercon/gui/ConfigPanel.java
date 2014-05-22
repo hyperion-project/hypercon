@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -11,13 +13,15 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
+import org.hyperion.gui.ModelPanel;
 import org.hyperion.hypercon.LedStringModel;
-import org.mufassa.gui.ModelPanel;
+import org.hyperion.model.json.Jsonizer;
 
 /**
  * The main-config panel of HyperCon. Includes the configuration and the panels to edit and 
@@ -39,21 +43,15 @@ public class ConfigPanel extends JPanel {
 			if (fileChooser.showSaveDialog(ConfigPanel.this) != JFileChooser.APPROVE_OPTION) {
 				return;
 			}
-
-//			try {
-//				ledString.saveConfigFile(fileChooser.getSelectedFile().getAbsolutePath());
-//				
-//				ConfigurationFile configFile = new ConfigurationFile();
-//				configFile.store(ledString.mDeviceConfig);
-//				configFile.store(ledString.mLedFrameConfig);
-//				configFile.store(ledString.mProcessConfig);
-//				configFile.store(ledString.mColorConfig);
-//				configFile.store(ledString.mMiscConfig);
-//				configFile.save(Main.configFilename);
-//			} catch (IOException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
+			try {
+				FileWriter fw = new FileWriter(fileChooser.getSelectedFile());
+				String jsonStr = Jsonizer.serialize(ledString);
+				fw.write(jsonStr);
+				fw.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	};
 	
@@ -110,15 +108,21 @@ public class ConfigPanel extends JPanel {
 	private JTabbedPane getSpecificationTabs() {
 		if (mSpecificationTabs == null) {
 			mSpecificationTabs = new JTabbedPane();
-			
-			JScrollPane hardwareScroll = new JScrollPane(getHardwarePanel());
-			hardwareScroll.getVerticalScrollBar().setUnitIncrement(16);
-			mSpecificationTabs.addTab("Hardware", new JScrollPane(getHardwarePanel()));
-			mSpecificationTabs.addTab("Process", getProcessPanel());
-			mSpecificationTabs.addTab("External", getExternalPanel());
+
+			addTab("Hardware", getHardwarePanel());
+			addTab("Image", getImagePanel());
+			addTab("Colors", getColorsPanel());
+			addTab("Grabbers", getGrabberPanel());
+			addTab("External", getExternalPanel());
 		}
 		return mSpecificationTabs;
 	}
+	private void addTab(String pName, JComponent pTab) {
+		JScrollPane scroll = new JScrollPane(pTab, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,  JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scroll.getVerticalScrollBar().setUnitIncrement(16);
+		mSpecificationTabs.addTab(pName, scroll);
+	}
+	
 	
 	/**
 	 * Created, if not exists, and returns the panel holding the simulated 'Hyperion TV'
@@ -143,9 +147,22 @@ public class ConfigPanel extends JPanel {
 		if (mGrabberPanel == null) {
 			mGrabberPanel = new JPanel();
 			mGrabberPanel.setLayout(new BoxLayout(mGrabberPanel, BoxLayout.Y_AXIS));
+
+			ModelPanel dispmanxPanel = new ModelPanel(ledString.dispmanxGrabber, firstColDim);
+			dispmanxPanel.setBorder(BorderFactory.createTitledBorder("Dispmanx"));
+			mGrabberPanel.add(dispmanxPanel);
+			
+			ModelPanel v4l2Panel = new ModelPanel(ledString.v4l2Grabber, firstColDim);
+			v4l2Panel.setBorder(BorderFactory.createTitledBorder("V4L2"));
+			mGrabberPanel.add(v4l2Panel);
+
+			ModelPanel x11Panel = new ModelPanel(ledString.x11Grabber, firstColDim);
+			x11Panel.setBorder(BorderFactory.createTitledBorder("X11"));
+			mGrabberPanel.add(x11Panel);
 		}
 		return mGrabberPanel;
 	}
+	
 	private JPanel getHardwarePanel() {
 		if (mHardwarePanel == null) {
 			mHardwarePanel = new JPanel();
@@ -154,23 +171,40 @@ public class ConfigPanel extends JPanel {
 			//mHardwarePanel.add(new DevicePanel(ledString.device));
 			ModelPanel devicePanel = new ModelPanel(ledString.device, firstColDim);
 			devicePanel.setBorder(BorderFactory.createTitledBorder("Devices"));
-			mHardwarePanel.add(new ModelPanel(ledString.device, firstColDim));
-			
-			ModelPanel ledFramePanel = new ModelPanel(ledString.ledFrameConfig, firstColDim);
-			ledFramePanel.setBorder(BorderFactory.createTitledBorder("Led Frame"));
-			mHardwarePanel.add(ledFramePanel);
-			
-			ModelPanel colorsPanel = new ModelPanel(ledString.color, firstColDim);
-			colorsPanel.setBorder(BorderFactory.createTitledBorder("Color Transform"));
-			mHardwarePanel.add(colorsPanel);
-			
-			ModelPanel blackborderPanel = new ModelPanel(ledString.blackborderdetector, firstColDim);
-			blackborderPanel.setBorder(BorderFactory.createTitledBorder("Blackborder Detector"));
-			mHardwarePanel.add(blackborderPanel);
+			mHardwarePanel.add(devicePanel);
 			
 			mHardwarePanel.add(Box.createVerticalGlue());
 		}
 		return mHardwarePanel;
+	}
+	private JPanel mImagePanel = null;
+	private JPanel getImagePanel() {
+		if (mImagePanel == null) {
+			mImagePanel = new JPanel();
+			mImagePanel.setLayout(new BoxLayout(mImagePanel, BoxLayout.Y_AXIS));
+			
+			ModelPanel framePanel = new ModelPanel(ledString.ledFrameConfig, firstColDim);
+			framePanel.setBorder(BorderFactory.createTitledBorder("Frame"));
+			mImagePanel.add(framePanel);
+			
+			ModelPanel blackborderPanel = new ModelPanel(ledString.blackborderdetector, firstColDim);
+			blackborderPanel.setBorder(BorderFactory.createTitledBorder("Blackborder detector"));
+			mImagePanel.add(blackborderPanel);
+		}
+		return mImagePanel;
+	}
+	
+	private JPanel mColorsPanel = null;
+	private JPanel getColorsPanel() {
+		if (mColorsPanel == null) {
+			mColorsPanel = new JPanel();
+			mColorsPanel.setLayout(new BoxLayout(mColorsPanel, BoxLayout.Y_AXIS));
+			
+			ModelPanel transformPanel = new ModelPanel(ledString.color, firstColDim);
+			transformPanel.setBorder(BorderFactory.createTitledBorder("Transform"));
+			mColorsPanel.add(transformPanel);
+		}
+		return mColorsPanel;
 	}
 	
 	private JPanel getProcessPanel() {
@@ -178,7 +212,6 @@ public class ConfigPanel extends JPanel {
 			mProcessPanel = new JPanel();
 			mProcessPanel.setLayout(new BoxLayout(mProcessPanel, BoxLayout.Y_AXIS));
 			
-			mProcessPanel.add(new FrameGrabberPanel(ledString.frameGrabber));
 			mProcessPanel.add(new ColorSmoothingPanel(ledString.color.smoothing));
 			mProcessPanel.add(new ColorsPanel(ledString.color));
 			mProcessPanel.add(Box.createVerticalGlue());

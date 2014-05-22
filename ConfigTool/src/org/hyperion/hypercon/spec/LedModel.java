@@ -3,10 +3,11 @@ package org.hyperion.hypercon.spec;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import org.mufassa.model.AbstractModel;
-import org.mufassa.model.ParameterInt;
-import org.mufassa.model.ParameterObject;
-import org.mufassa.model.ParameterString;
+import org.hyperion.model.AbstractModel;
+import org.hyperion.model.ParameterInt;
+import org.hyperion.model.ParameterObject;
+import org.hyperion.model.ParameterString;
+import org.hyperion.model.json.Jsonizer;
 
 
 /**
@@ -40,5 +41,11 @@ public class LedModel extends AbstractModel {
 	public Rectangle2D getImageRectangle() {
 		return new Rectangle2D.Double(hscan.minimum.getValue(), vscan.minimum.getValue(), 
 				hscan.maximum.getValue()-hscan.minimum.getValue(), vscan.maximum.getValue()-vscan.minimum.getValue());
+	}
+	
+	public static void main(String[] pArgs) {
+		LedModel model = new LedModel();
+		
+		System.out.println(Jsonizer.serialize(model));
 	}
 }

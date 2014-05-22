@@ -15,7 +15,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.hyperion.hypercon.spec.DispmanxGrabberModel;
+import org.hyperion.hypercon.spec.grabber.DispmanxGrabberModel;
 
 public class FrameGrabberPanel extends JPanel {
 

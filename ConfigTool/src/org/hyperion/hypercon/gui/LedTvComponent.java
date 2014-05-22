@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 
 import org.hyperion.hypercon.spec.LedModel;
-import org.mufassa.model.ModelList;
+import org.hyperion.model.ModelList;
 
 public class LedTvComponent extends JComponent {
 

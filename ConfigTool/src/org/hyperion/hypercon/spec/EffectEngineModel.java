@@ -1,8 +1,8 @@
 package org.hyperion.hypercon.spec;
 
-import org.mufassa.model.AbstractModel;
-import org.mufassa.model.ParameterString;
-import org.mufassa.model.json.JsonComment;
+import org.hyperion.model.AbstractModel;
+import org.hyperion.model.ParameterString;
+import org.hyperion.model.json.JsonComment;
 
 @JsonComment(
 		"The configuration of the effect engine, contains the following items: \n" +

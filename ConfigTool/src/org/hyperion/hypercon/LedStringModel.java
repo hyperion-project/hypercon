@@ -9,11 +9,13 @@ import org.hyperion.hypercon.spec.ImageProcessModel;
 import org.hyperion.hypercon.spec.LedFrameConstructionModel;
 import org.hyperion.hypercon.spec.LedModel;
 import org.hyperion.hypercon.spec.TcpServerModel;
-import org.hyperion.hypercon.spec.DispmanxGrabberModel;
 import org.hyperion.hypercon.spec.XbmcVideoCheckerModel;
-import org.mufassa.model.AbstractModel;
-import org.mufassa.model.ModelList;
-import org.mufassa.model.json.JsonComment;
+import org.hyperion.hypercon.spec.grabber.DispmanxGrabberModel;
+import org.hyperion.hypercon.spec.grabber.V4l2GrabberModel;
+import org.hyperion.hypercon.spec.grabber.X11GrabberModel;
+import org.hyperion.model.AbstractModel;
+import org.hyperion.model.ModelList;
+import org.hyperion.model.json.JsonComment;
 
 @JsonComment(
 		"Automatically generated configuration file for 'Hyperion daemon'\n" +
@@ -51,7 +53,9 @@ public class LedStringModel extends AbstractModel {
 	public final BootsequenceModel bootSequence = new BootsequenceModel();
 	
 	/** The configuration of the Dispmanx Video Grabber */
-	public final DispmanxGrabberModel frameGrabber = new DispmanxGrabberModel();
+	public final DispmanxGrabberModel dispmanxGrabber = new DispmanxGrabberModel();
+	public final V4l2GrabberModel v4l2Grabber = new V4l2GrabberModel();
+	public final X11GrabberModel x11Grabber   = new X11GrabberModel();
 	
 	/** The configuration of the XBMC video checker */
 	public final XbmcVideoCheckerModel xbmcVideoChecker = new XbmcVideoCheckerModel();

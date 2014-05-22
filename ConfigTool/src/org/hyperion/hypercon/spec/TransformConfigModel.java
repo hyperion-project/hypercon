@@ -1,9 +1,9 @@
 package org.hyperion.hypercon.spec;
 
-import org.mufassa.model.AbstractModel;
-import org.mufassa.model.ParameterDouble;
-import org.mufassa.model.ParameterObject;
-import org.mufassa.model.ParameterString;
+import org.hyperion.model.AbstractModel;
+import org.hyperion.model.ParameterDouble;
+import org.hyperion.model.ParameterObject;
+import org.hyperion.model.ParameterString;
 
 public class TransformConfigModel extends AbstractModel {
 	

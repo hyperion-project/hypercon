@@ -1,9 +1,9 @@
 package org.hyperion.hypercon.spec.device;
 
-import org.mufassa.model.AbstractModel;
-import org.mufassa.model.ParameterInt;
-import org.mufassa.model.ParameterString;
-import org.mufassa.model.Suggestions;
+import org.hyperion.model.AbstractModel;
+import org.hyperion.model.ParameterInt;
+import org.hyperion.model.ParameterString;
+import org.hyperion.model.Suggestions;
 
 public class SerialDeviceModel extends AbstractModel {
 	/** The device 'file' name */

@@ -1,8 +1,8 @@
 package org.hyperion.hypercon.spec;
 
-import org.mufassa.model.AbstractModel;
-import org.mufassa.model.ModelList;
-import org.mufassa.model.json.JsonComment;
+import org.hyperion.model.AbstractModel;
+import org.hyperion.model.ModelList;
+import org.hyperion.model.json.JsonComment;
 
 /**
  * The color tuning parameters of the different color channels (both in RGB space as in HSV space)

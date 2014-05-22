@@ -19,12 +19,12 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import org.mufassa.gui.ModelPanel;
-import org.mufassa.model.AbstractModel;
-import org.mufassa.model.IModelObserver;
-import org.mufassa.model.ModelEvent;
-import org.mufassa.model.ModelList;
-import org.mufassa.model.ParameterString;
+import org.hyperion.gui.ModelPanel;
+import org.hyperion.model.AbstractModel;
+import org.hyperion.model.IModelObserver;
+import org.hyperion.model.ModelEvent;
+import org.hyperion.model.ModelList;
+import org.hyperion.model.ParameterString;
 
 public class ModelListEditor extends JPanel {
 

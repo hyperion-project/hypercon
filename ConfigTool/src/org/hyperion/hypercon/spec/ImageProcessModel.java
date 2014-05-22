@@ -1,8 +1,8 @@
 package org.hyperion.hypercon.spec;
 
-import org.mufassa.model.AbstractModel;
-import org.mufassa.model.Event;
-import org.mufassa.model.ParameterDouble;
+import org.hyperion.model.AbstractModel;
+import org.hyperion.model.Event;
+import org.hyperion.model.ParameterDouble;
 
 /**
  * Configuration parameters for the image processing. These settings are translated using the 
