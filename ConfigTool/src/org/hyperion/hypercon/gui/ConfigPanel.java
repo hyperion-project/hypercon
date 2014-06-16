@@ -21,6 +21,8 @@ import org.hyperion.hypercon.ConfigurationFile;
 import org.hyperion.hypercon.LedFrameFactory;
 import org.hyperion.hypercon.LedString;
 import org.hyperion.hypercon.Main;
+import org.hyperion.hypercon.spec.SshConfig;
+import org.hyperion.ssh.PiSshConnection;
 
 /**
  * The main-config panel of HyperCon. Includes the configuration and the panels to edit and 
@@ -30,6 +32,8 @@ public class ConfigPanel extends JPanel {
 
 	/** The LED configuration information*/
 	private final LedString ledString;
+	private final PiSshConnection sshConnection;
+	private final SshConfig sshConfig;
 	
 	/** Action for write the Hyperion deamon configuration file */
 	private final Action mSaveConfigAction = new AbstractAction("Create Hyperion Configuration") {
@@ -70,6 +74,7 @@ public class ConfigPanel extends JPanel {
 	private JPanel mHardwarePanel = null;
 	private JPanel mProcessPanel = null;
 	private JPanel mExternalPanel = null;
+	private JPanel mTestingPanel = null;
 
 
 	/** The button connected to mSaveConfigAction */
@@ -77,12 +82,14 @@ public class ConfigPanel extends JPanel {
 	
 	/**
 	 * Constructs the configuration panel with a default initialised led-frame and configuration
+	 * @param sshConnection 
 	 */
-	public ConfigPanel(final LedString pLedString) {
+	public ConfigPanel(final LedString pLedString, final PiSshConnection psshConnection, final SshConfig pSshConfig) {
 		super();
 		
 		ledString = pLedString;
-		
+		sshConnection = psshConnection;
+		sshConfig = pSshConfig;
 		initialise();
 		
 		// Compute the individual leds for the current configuration
@@ -96,6 +103,10 @@ public class ConfigPanel extends JPanel {
 				ledString.leds = LedFrameFactory.construct(ledString.mLedFrameConfig, ledString.mProcessConfig);
 				mHyperionTv.setLeds(ledString.leds);
 				mHyperionTv.repaint();
+				if(sshConnection.isConnected()){
+					//TODO: use this to send new values to the test panel
+					
+				}
 			}
 		};
 		ledString.mLedFrameConfig.addObserver(observer);
@@ -133,6 +144,7 @@ public class ConfigPanel extends JPanel {
 			mSpecificationTabs.addTab("Hardware", getHardwarePanel());
 			mSpecificationTabs.addTab("Process", getProcessPanel());
 			mSpecificationTabs.addTab("External", getExternalPanel());
+			mSpecificationTabs.addTab("Testing", getTestingPanel());
 		}
 		return mSpecificationTabs;
 	}
@@ -190,5 +202,18 @@ public class ConfigPanel extends JPanel {
 			mExternalPanel.add(Box.createVerticalGlue());
 		}
 		return mExternalPanel;
+	}
+	
+	private JPanel getTestingPanel(){
+		if( mTestingPanel == null){
+			mTestingPanel = new JPanel();
+			mTestingPanel.setLayout(new BoxLayout(mTestingPanel, BoxLayout.Y_AXIS));
+			mTestingPanel.add(new SshConnectionPanel(sshConfig));
+
+			mTestingPanel.add(Box.createVerticalGlue());
+
+		}
+		
+		return mTestingPanel;
 	}
 }

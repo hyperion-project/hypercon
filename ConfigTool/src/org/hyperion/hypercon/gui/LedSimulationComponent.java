@@ -62,9 +62,11 @@ public class LedSimulationComponent extends JPanel {
 	
 	LedTvComponent mTvComponent;
 	private int mLedCnt = 0;
+//	private Vector<Led> mleds;
 	
 	public LedSimulationComponent(Vector<Led> pLeds) {
 		super();
+//		mleds = pLeds;
 		
 		initialise(pLeds);
 		
@@ -265,6 +267,7 @@ public class LedSimulationComponent extends JPanel {
 				Image image = imageIcon.getImage();
 				
 				mTvComponent.setImage(image);
+//				setLeds(mleds);
 //				setIma
 			} catch (Exception ex) {
 				
@@ -312,7 +315,7 @@ public class LedSimulationComponent extends JPanel {
 				
 				setImage(image);
 				mTvComponent.setImage(image);
-				
+//				setLeds(mleds);
 				repaint();
 			}
 		}

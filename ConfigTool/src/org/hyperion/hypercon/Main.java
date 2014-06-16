@@ -9,13 +9,21 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import org.hyperion.hypercon.gui.ConfigPanel;
+import org.hyperion.hypercon.spec.SshConfig;
 import org.hyperion.hypercon.spec.TransformConfig;
+import org.hyperion.ssh.PiSshConnection;
 
 /**
  * (static) Main-class for starting HyperCon (the Hyperion configuration file builder) as a standard 
  * JAVA application (contains the entry-point).
  */
 public class Main {
+	
+	
+	
+	
+	
+	
 	public static final String configFilename = "hypercon.dat";
 	
 	/** Some application settings (for easy/dirty access) */
@@ -29,6 +37,8 @@ public class Main {
 	public static void main(String[] pArgs) {
 		final String versionStr = Main.class.getPackage().getImplementationVersion();
 		final LedString ledString = new LedString();
+		final PiSshConnection sshConnection = new PiSshConnection();
+		final SshConfig  sshConfig = new SshConfig();
 		
 		try {
 			// Configure swing to use the system default look and feel
@@ -53,10 +63,12 @@ public class Main {
 					configFile.store(ledString.mProcessConfig);
 					configFile.store(ledString.mColorConfig);
 					configFile.store(ledString.mMiscConfig);
+					configFile.store(sshConfig);
 					configFile.save(configFilename);
 				} catch (Throwable t) {
 					System.err.println("Failed to save " + configFilename);
 				}
+				sshConnection.close();
 			}
 		});
 		
@@ -70,6 +82,7 @@ public class Main {
 				configFile.restore(ledString.mProcessConfig);
 				configFile.restore(ledString.mColorConfig);
 				configFile.restore(ledString.mMiscConfig);
+				configFile.restore(sshConfig);
 			} catch (Throwable t) {
 				System.err.println("Failed to load " + configFilename);
 			}
@@ -79,7 +92,7 @@ public class Main {
 		}
 		
 		// Add the HyperCon configuration panel
-		frame.setContentPane(new ConfigPanel(ledString));
+		frame.setContentPane(new ConfigPanel(ledString, sshConnection, sshConfig));
 		
 		// Show the frame
 		frame.setVisible(true);
