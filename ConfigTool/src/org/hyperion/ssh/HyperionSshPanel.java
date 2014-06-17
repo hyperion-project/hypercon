@@ -20,6 +20,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import com.jcraft.jsch.JSchException;
+
 public class HyperionSshPanel extends JPanel {
 
 	private final PiSshConnection mSshCon = new PiSshConnection();
@@ -72,7 +74,12 @@ public class HyperionSshPanel extends JPanel {
 			String username = mUsernameField.getText();
 			String password = new String(mPasswordField.getPassword());
 			
-			mSshCon.connect(hostName, sshPort, username, password);
+			try {
+				mSshCon.connect(hostName, sshPort, username, password);
+			} catch (JSchException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	};
 	private final Action mDisconnectAction = new AbstractAction("Disconnect") {

@@ -19,7 +19,7 @@ public class PiSshConnection {
 		mJsch = new JSch();
 	}
 
-	public void connect(String pHostName, int pTcpPort, String pUsername, String pPassword) {
+	public void connect(String pHostName, int pTcpPort, String pUsername, String pPassword) throws JSchException {
 		if (mSession != null) {
 			close();
 		}

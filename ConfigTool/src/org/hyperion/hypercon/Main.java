@@ -37,7 +37,6 @@ public class Main {
 	public static void main(String[] pArgs) {
 		final String versionStr = Main.class.getPackage().getImplementationVersion();
 		final LedString ledString = new LedString();
-		final PiSshConnection sshConnection = new PiSshConnection();
 		final SshConfig  sshConfig = new SshConfig();
 		
 		try {
@@ -68,7 +67,7 @@ public class Main {
 				} catch (Throwable t) {
 					System.err.println("Failed to save " + configFilename);
 				}
-				sshConnection.close();
+				SshConnectionModel.getInstance().disconnect();
 			}
 		});
 		
@@ -92,7 +91,7 @@ public class Main {
 		}
 		
 		// Add the HyperCon configuration panel
-		frame.setContentPane(new ConfigPanel(ledString, sshConnection, sshConfig));
+		frame.setContentPane(new ConfigPanel(ledString, sshConfig));
 		
 		// Show the frame
 		frame.setVisible(true);

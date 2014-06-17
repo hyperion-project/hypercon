@@ -21,6 +21,7 @@ import org.hyperion.hypercon.ConfigurationFile;
 import org.hyperion.hypercon.LedFrameFactory;
 import org.hyperion.hypercon.LedString;
 import org.hyperion.hypercon.Main;
+import org.hyperion.hypercon.SshConnectionModel;
 import org.hyperion.hypercon.spec.SshConfig;
 import org.hyperion.ssh.PiSshConnection;
 
@@ -32,7 +33,6 @@ public class ConfigPanel extends JPanel {
 
 	/** The LED configuration information*/
 	private final LedString ledString;
-	private final PiSshConnection sshConnection;
 	private final SshConfig sshConfig;
 	
 	/** Action for write the Hyperion deamon configuration file */
@@ -84,11 +84,10 @@ public class ConfigPanel extends JPanel {
 	 * Constructs the configuration panel with a default initialised led-frame and configuration
 	 * @param sshConnection 
 	 */
-	public ConfigPanel(final LedString pLedString, final PiSshConnection psshConnection, final SshConfig pSshConfig) {
+	public ConfigPanel(final LedString pLedString, final SshConfig pSshConfig) {
 		super();
 		
 		ledString = pLedString;
-		sshConnection = psshConnection;
 		sshConfig = pSshConfig;
 		initialise();
 		
@@ -103,7 +102,7 @@ public class ConfigPanel extends JPanel {
 				ledString.leds = LedFrameFactory.construct(ledString.mLedFrameConfig, ledString.mProcessConfig);
 				mHyperionTv.setLeds(ledString.leds);
 				mHyperionTv.repaint();
-				if(sshConnection.isConnected()){
+				if(SshConnectionModel.getInstance().isConnected()){
 					//TODO: use this to send new values to the test panel
 					
 				}
@@ -209,6 +208,7 @@ public class ConfigPanel extends JPanel {
 			mTestingPanel = new JPanel();
 			mTestingPanel.setLayout(new BoxLayout(mTestingPanel, BoxLayout.Y_AXIS));
 			mTestingPanel.add(new SshConnectionPanel(sshConfig));
+			mTestingPanel.add(new ColorPickingPanel());
 
 			mTestingPanel.add(Box.createVerticalGlue());
 
