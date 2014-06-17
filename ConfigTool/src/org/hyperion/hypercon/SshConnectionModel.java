@@ -17,9 +17,12 @@ import com.jcraft.jsch.JSchException;
 public class SshConnectionModel extends Observable {
 
 	private static String hyperionRemoteCall = "hyperion-remote ";
+	private static boolean printTraffic = true;
 
 	private static SshConnectionModel instance = null;
 	final private PiSshConnection mSshConnection;
+	
+	public boolean autoSendColorTransFormEnabled;
 
 	private SshConnectionModel() {
 		mSshConnection = new PiSshConnection();
@@ -107,10 +110,10 @@ public class SshConnectionModel extends Observable {
 	}
 
 	/**Send the color transform values via the hyperion-remote commands -s -v -g -t -b -w
-	 * @param rgbThreshold
-	 * @param rgbGamma
-	 * @param rgbBlacklevel
-	 * @param rgbWhitelevel
+	 	 * @param rgbThreshold 3 values 0.0 - 1.0
+	 * @param rgbGamma 3 values
+	 * @param rgbBlacklevel 3 values 0.0 - 1.0
+	 * @param rgbWhitelevel 3 values 0.0 - 1.0
 	 * @param hsvGain
 	 * @param hsvSaturation
 	 * @return false if there is no connection, true after the command was sent
@@ -140,6 +143,66 @@ public class SshConnectionModel extends Observable {
 		
 	}
 	
+	/**
+	 * only sends the color transform values if the autoSendColorTransFormEnabled flag is true
+	 * @see #sendColorTransformValues(float[], float[], float[], float[], float, float)
+	 * @param rgbThreshold 3 values 0.0 - 1.0
+	 * @param rgbGamma 3 values
+	 * @param rgbBlacklevel 3 values 0.0 - 1.0
+	 * @param rgbWhitelevel 3 values 0.0 - 1.0
+	 * @param hsvGain 
+	 * @param hsvSaturation
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public boolean autoSendColorTransformValues(float[] rgbThreshold, float[] rgbGamma, float[] rgbBlacklevel, float[] rgbWhitelevel, float hsvGain,
+			float hsvSaturation) throws IllegalArgumentException{
+
+		if( rgbBlacklevel.length != 3 || rgbGamma.length != 3 || rgbThreshold.length != 3 || rgbWhitelevel.length != 3){
+			throw new IllegalArgumentException();
+		}
+		if (!isConnected() || !autoSendColorTransFormEnabled)  {
+			return false;
+		}
+		
+		sendColorTransformValues(rgbThreshold, rgbGamma, rgbBlacklevel, rgbWhitelevel, hsvGain, hsvSaturation);
+		
+		return true;
+	}
+	
+	/**Double input values, see float version
+	 * @see #autoSendColorTransformValues(float[], float[], float[], float[], float, float)
+	 * @param rgbThreshold
+	 * @param rgbGamma
+	 * @param rgbBlacklevel
+	 * @param rgbWhitelevel
+	 * @param hsvGain
+	 * @param hsvSaturation
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public boolean autoSendColorTransformValues(Double[] rgbThreshold, Double[] rgbGamma, Double[] rgbBlacklevel, Double[] rgbWhitelevel, Double hsvGain,
+			Double hsvSaturation) throws IllegalArgumentException{
+		
+		float[] frgbThreshold = new float[3];
+		float[] frgbGamma = new float[3];
+		float[] frgbBlacklevel = new float[3];
+		float[] frgbWhitelevel = new float[3];
+		float fhsvGain;
+		float fhsvSaturation;
+				
+		for(int i = 0; i < 3; i++){
+			frgbThreshold[i] =  rgbThreshold[i].floatValue();
+			frgbGamma[i] = rgbGamma[i].floatValue();
+			frgbBlacklevel[i] = rgbBlacklevel[i].floatValue();
+			frgbWhitelevel[i] = rgbWhitelevel[i].floatValue();
+		}
+		fhsvGain = hsvGain.floatValue();
+		fhsvSaturation = hsvSaturation.floatValue();
+		
+		return autoSendColorTransformValues(frgbThreshold, frgbGamma, frgbBlacklevel, frgbWhitelevel, fhsvGain, fhsvSaturation);
+	}
+	
 	/**Sends the clearall command
 	 * @return false if there is no connection, true after the command was executed
 	 */
@@ -161,34 +224,46 @@ public class SshConnectionModel extends Observable {
 	private final ConnectionListener mConnectionConsoleListener = new ConnectionAdapter() {
 		@Override
 		public void commandExec(String pCommand) {
-			System.out.println("ssh: $ " + pCommand);
+			if(printTraffic){
+				System.out.println("ssh: $ " + pCommand);
+			}
 		}
 
 		@Override
 		public void commandFinished(String pCommand) {
-			//Nothing to do
+			if(printTraffic){
+				//Nothing to do
+			}
 		}
 
 		@Override
 		public void addLine(String pLine) {
-			System.out.println("ssh: " + pLine);
+			if(printTraffic){
+				System.out.println("ssh: " + pLine);
+			}
 		}
 
 		@Override
 		public void addError(String pLine) {
-			System.out.println("ssh Error: " + "\u001B[31m" + pLine);
+			if(printTraffic){
+				System.out.println("ssh Error: " + "\u001B[31m" + pLine);
+			}
 
 		}
 
 		@Override
 		public void connected() {
-			System.out.println("ssh connected");
+			if(printTraffic){
+				System.out.println("ssh connected");
+			}
 			super.connected();
 		}
 
 		@Override
 		public void disconnected() {
-			System.out.println("ssh disconnected");
+			if(printTraffic){
+				System.out.println("ssh disconnected");
+			}
 			super.disconnected();
 		}
 	};

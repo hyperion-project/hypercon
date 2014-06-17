@@ -5,8 +5,11 @@ public class SshConfig {
 	public String adress;
 	public int port;
 	public String username;
-//	public String password;
+	public String password;
 	public boolean autoUpdate;
+	public boolean colorPickerInExpertmode;
+	public boolean colorPickerShowColorWheel;
+	
 	
 	
 	public SshConfig() {
@@ -14,6 +17,8 @@ public class SshConfig {
 		port = 22;
 		autoUpdate = false;
 		username = "pi";
+		colorPickerInExpertmode = false;
+		colorPickerShowColorWheel = true;
 	}
 
 }

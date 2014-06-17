@@ -143,7 +143,7 @@ public class ConfigPanel extends JPanel {
 			mSpecificationTabs.addTab("Hardware", getHardwarePanel());
 			mSpecificationTabs.addTab("Process", getProcessPanel());
 			mSpecificationTabs.addTab("External", getExternalPanel());
-			mSpecificationTabs.addTab("Testing", getTestingPanel());
+			mSpecificationTabs.addTab("SSH", getTestingPanel());
 		}
 		return mSpecificationTabs;
 	}
@@ -208,7 +208,7 @@ public class ConfigPanel extends JPanel {
 			mTestingPanel = new JPanel();
 			mTestingPanel.setLayout(new BoxLayout(mTestingPanel, BoxLayout.Y_AXIS));
 			mTestingPanel.add(new SshConnectionPanel(sshConfig));
-			mTestingPanel.add(new ColorPickingPanel());
+			mTestingPanel.add(new SshColorPickingPanel(sshConfig));
 
 			mTestingPanel.add(Box.createVerticalGlue());
 
