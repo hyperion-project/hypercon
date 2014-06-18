@@ -24,7 +24,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.hyperion.hypercon.SshConnectionModel;
-import org.hyperion.hypercon.spec.SshConfig;
+import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
 import org.hyperion.ssh.PiSshConnection;
 
 import com.jcraft.jsch.JSchException;
@@ -35,11 +35,23 @@ import com.jcraft.jsch.JSchException;
  */
 public class SshConnectionPanel extends JPanel implements Observer {
 
-	private final SshConfig mSshConfig;
+	/**
+	 * Here the connection data is saved, eg Ip, Username,...
+	 */
+	private final SshAndColorPickerConfig mSshConfig;
+
+	/**
+	 * the model to handle the connection
+	 */
 	private final SshConnectionModel sshConnection;
 
+	/**
+	 * this is this class to get acces in the Actionlistener subclass. TODO: make acces to this class more beautiful in Actionlistener
+	 * 
+	 */
 	private final SshConnectionPanel self;
 
+	// Gui objects
 	private JLabel mAddressLabel;
 	private JTextField mAddressField;
 
@@ -59,17 +71,22 @@ public class SshConnectionPanel extends JPanel implements Observer {
 	 * 
 	 * @param pSshConfig
 	 */
-	public SshConnectionPanel(final SshConfig pSshConfig) {
+	public SshConnectionPanel(final SshAndColorPickerConfig pSshConfig) {
 		super();
 
 		self = this;
 		mSshConfig = pSshConfig;
 		sshConnection = SshConnectionModel.getInstance();
+		// Observe the connection status to enable or disable the buttons
+		// accordingly
 		sshConnection.addObserver(this);
 
 		initialise();
 	}
 
+	/**
+	 * to set the Guielements sizes
+	 */
 	@Override
 	@Transient
 	public Dimension getMaximumSize() {
@@ -77,7 +94,7 @@ public class SshConnectionPanel extends JPanel implements Observer {
 		Dimension prefSize = super.getPreferredSize();
 		return new Dimension(maxSize.width, prefSize.height);
 	}
-
+	
 	/**
 	 * Create, add and layout Gui elements
 	 */
@@ -87,21 +104,21 @@ public class SshConnectionPanel extends JPanel implements Observer {
 		mAddressLabel = new JLabel("Raspberry IP:");
 		add(mAddressLabel);
 
-		mAddressField = new JTextField(mSshConfig.adress);
+		mAddressField = new JTextField(mSshConfig.ipAdress);
 		mAddressField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				mSshConfig.adress = mAddressField.getText();
+				mSshConfig.ipAdress = mAddressField.getText();
 			}
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				mSshConfig.adress = mAddressField.getText();
+				mSshConfig.ipAdress = mAddressField.getText();
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				mSshConfig.adress = mAddressField.getText();
+				mSshConfig.ipAdress = mAddressField.getText();
 			}
 		});
 		add(mAddressField);
@@ -136,7 +153,6 @@ public class SshConnectionPanel extends JPanel implements Observer {
 		add(mUsernameField);
 
 		mPasswordLabel = new JLabel("Password:");
-		
 		add(mPasswordLabel);
 
 		mPasswordField = new JPasswordField(mSshConfig.password);
@@ -161,30 +177,28 @@ public class SshConnectionPanel extends JPanel implements Observer {
 		connectBut = new JButton("Connect");
 		connectBut.addActionListener(mActionListener);
 
-		
-
 		GroupLayout layout = new GroupLayout(this);
 		layout.setAutoCreateGaps(true);
 		setLayout(layout);
 
 		layout.setHorizontalGroup(layout
 				.createSequentialGroup()
-				.addGroup(
-						layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup()
 						.addComponent(mAddressLabel)
 						.addComponent(mPortLabel)
 						.addComponent(mUsernameLabel)
 						.addComponent(mPasswordLabel)
-						.addComponent(connectBut)
-				)
+						.addComponent(connectBut))
 				.addGroup(layout.createParallelGroup()
 						.addComponent(mAddressField)
 						.addComponent(mTcpPortSpinner)
 						.addComponent(mUsernameField)
-						.addComponent(mPasswordField)
-				));
-		
-		layout.setVerticalGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup().addComponent(mAddressLabel).addComponent(mAddressField))
+						.addComponent(mPasswordField)));
+
+		layout.setVerticalGroup(layout.createSequentialGroup()
+				.addGroup(layout.createParallelGroup()
+						.addComponent(mAddressLabel)
+						.addComponent(mAddressField))
 				.addGroup(layout.createParallelGroup()
 						.addComponent(mPortLabel)
 						.addComponent(mTcpPortSpinner))
@@ -196,15 +210,14 @@ public class SshConnectionPanel extends JPanel implements Observer {
 						.addComponent(mPasswordField))
 						.addGap(10)
 				.addGroup(layout.createParallelGroup()
-						.addComponent(connectBut)
-						)
-					
-						);
+						.addComponent(connectBut))
+
+		);
 
 	}
 
 	/**
-	 * Save selection changes i the config file
+	 * Save selection changes in the config file
 	 */
 	private final ChangeListener mChangeListener = new ChangeListener() {
 		@Override
@@ -220,16 +233,16 @@ public class SshConnectionPanel extends JPanel implements Observer {
 				if (!sshConnection.isConnected()) {
 					setConnectionFieldsAcces(false);
 					connectBut.setEnabled(false);
-					
+
 					try {
-						if(!sshConnection.connect(mAddressField.getText(), (Integer) mTcpPortSpinner.getValue(), mUsernameField.getText(),
-								mPasswordField.getPassword())){
+						if (!sshConnection.connect(mAddressField.getText(), (Integer) mTcpPortSpinner.getValue(), mUsernameField.getText(),
+								mPasswordField.getPassword())) {
 							JOptionPane.showMessageDialog(self, "Can't connect. Is all data correct?");
 							setConnectionFieldsAcces(true);
 						}
 						connectBut.setEnabled(true);
 					} catch (com.jcraft.jsch.JSchException e1) {
-						
+						System.out.println("caught the JSchException");
 						// FIXME: somehow this com.jcraft.jsch.JSchException
 						// cant be caught
 					}
@@ -242,6 +255,10 @@ public class SshConnectionPanel extends JPanel implements Observer {
 		}
 	};
 
+	/**
+	 * Enable or disable the Gui elememnts which depend on a shh connection
+	 * @param setEnabled
+	 */
 	private void setConnectionFieldsAcces(boolean setEnabled) {
 		mAddressField.setEnabled(setEnabled);
 		mTcpPortSpinner.setEnabled(setEnabled);

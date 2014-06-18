@@ -1,22 +1,28 @@
 package org.hyperion.hypercon.spec;
 
-public class SshConfig {
+/**
+ * @author Fabian Hertwig
+ *
+ */
+public class SshAndColorPickerConfig {
 	
-	public String adress;
+	public String ipAdress;
 	public int port;
 	public String username;
 	public String password;
-	public boolean autoUpdate;
 	public boolean colorPickerInExpertmode;
 	public boolean colorPickerShowColorWheel;
 	
 	
 	
-	public SshConfig() {
-		adress = "192.168.0.3";
+	/**Constructor
+	 * 
+	 */
+	public SshAndColorPickerConfig() {
+		ipAdress = "192.168.0.3";
 		port = 22;
-		autoUpdate = false;
 		username = "pi";
+		password = "raspberry";
 		colorPickerInExpertmode = false;
 		colorPickerShowColorWheel = true;
 	}

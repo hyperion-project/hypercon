@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import org.hyperion.hypercon.gui.ConfigPanel;
-import org.hyperion.hypercon.spec.SshConfig;
+import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
 import org.hyperion.hypercon.spec.TransformConfig;
 import org.hyperion.ssh.PiSshConnection;
 
@@ -37,7 +37,7 @@ public class Main {
 	public static void main(String[] pArgs) {
 		final String versionStr = Main.class.getPackage().getImplementationVersion();
 		final LedString ledString = new LedString();
-		final SshConfig  sshConfig = new SshConfig();
+		final SshAndColorPickerConfig  sshConfig = new SshAndColorPickerConfig();
 		
 		try {
 			// Configure swing to use the system default look and feel

@@ -22,7 +22,7 @@ import org.hyperion.hypercon.LedFrameFactory;
 import org.hyperion.hypercon.LedString;
 import org.hyperion.hypercon.Main;
 import org.hyperion.hypercon.SshConnectionModel;
-import org.hyperion.hypercon.spec.SshConfig;
+import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
 import org.hyperion.ssh.PiSshConnection;
 
 /**
@@ -33,7 +33,7 @@ public class ConfigPanel extends JPanel {
 
 	/** The LED configuration information*/
 	private final LedString ledString;
-	private final SshConfig sshConfig;
+	private final SshAndColorPickerConfig sshConfig;
 	
 	/** Action for write the Hyperion deamon configuration file */
 	private final Action mSaveConfigAction = new AbstractAction("Create Hyperion Configuration") {
@@ -84,7 +84,7 @@ public class ConfigPanel extends JPanel {
 	 * Constructs the configuration panel with a default initialised led-frame and configuration
 	 * @param sshConnection 
 	 */
-	public ConfigPanel(final LedString pLedString, final SshConfig pSshConfig) {
+	public ConfigPanel(final LedString pLedString, final SshAndColorPickerConfig pSshConfig) {
 		super();
 		
 		ledString = pLedString;
@@ -102,10 +102,6 @@ public class ConfigPanel extends JPanel {
 				ledString.leds = LedFrameFactory.construct(ledString.mLedFrameConfig, ledString.mProcessConfig);
 				mHyperionTv.setLeds(ledString.leds);
 				mHyperionTv.repaint();
-				if(SshConnectionModel.getInstance().isConnected()){
-					//TODO: use this to send new values to the test panel
-					
-				}
 			}
 		};
 		ledString.mLedFrameConfig.addObserver(observer);

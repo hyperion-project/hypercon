@@ -17,7 +17,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
 import org.hyperion.hypercon.SshConnectionModel;
-import org.hyperion.hypercon.spec.SshConfig;
+import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
 
 import com.bric.swing.ColorPicker;
 
@@ -34,35 +34,39 @@ public class SshColorPickingPanel extends JPanel implements Observer, PropertyCh
 	private JCheckBox autoUpdateCB;
 	private JCheckBox expertView;
 	private JCheckBox showColorWheel;
-	private SshConfig sshConfig;
+	private SshAndColorPickerConfig sshConfig;
 	
 	
 	/**Constructor
+	 * @param psshConfig 
 	 * 
 	 */
-	public SshColorPickingPanel(SshConfig psshConfig) {
+	public SshColorPickingPanel(SshAndColorPickerConfig psshConfig) {
 		super();
 		sshConfig = psshConfig;
+		
+		SshConnectionModel.getInstance().addObserver(this);
 				
 		initialise();
 	}
 	
+	/**
+	 * to set the Guielements sizes
+	 */
 	@Override
 	@Transient
 	public Dimension getMaximumSize() {
 		Dimension maxSize = super.getMaximumSize();
 		Dimension prefSize = super.getPreferredSize();
-		SshConnectionModel.getInstance().addObserver(this);
-		
 		return new Dimension(maxSize.width, prefSize.height);
 	}
-
+	
 	/**
 	 * Create Gui elements and layout
 	 */
 	private void initialise() {
 		
-		//All the Gui eleents
+		//All the Gui elements
 		setBorder(BorderFactory.createTitledBorder("Set Led Color"));
 		
 		expertView = new JCheckBox("Expertview");
@@ -82,10 +86,9 @@ public class SshColorPickingPanel extends JPanel implements Observer, PropertyCh
 		colorPicker.setHSBControlsVisible(false);
 
 		colorPicker.setMode(ColorPicker.HUE);
-		colorPicker.setMaximumSize(getMaximumSize());
 		colorPicker.setMinimumSize(new Dimension(150,150));
 		colorPicker.addPropertyChangeListener(this);
-		//TODO: make the size less static
+		//TODO: make the color picker size less static
 		colorPicker.setPreferredSize(new Dimension(200, 200));
 		colorPicker.setRGB(255, 255, 255);
 		if(!showColorWheel.isSelected()){

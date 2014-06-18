@@ -2,8 +2,6 @@ package org.hyperion.hypercon;
 
 import java.util.Observable;
 
-import javax.swing.JDialog;
-
 import org.hyperion.ssh.ConnectionAdapter;
 import org.hyperion.ssh.ConnectionListener;
 import org.hyperion.ssh.PiSshConnection;
@@ -12,7 +10,7 @@ import com.jcraft.jsch.JSchException;
 
 /**
  * @author Fabian Hertwig
- * A model between the SshConnection Panel and the SShConnection
+ * A model between the Gui and the SShConnection
  */
 public class SshConnectionModel extends Observable {
 
@@ -22,7 +20,6 @@ public class SshConnectionModel extends Observable {
 	private static SshConnectionModel instance = null;
 	final private PiSshConnection mSshConnection;
 	
-	public boolean autoSendColorTransFormEnabled;
 
 	private SshConnectionModel() {
 		mSshConnection = new PiSshConnection();
@@ -142,67 +139,7 @@ public class SshConnectionModel extends Observable {
 		return true;
 		
 	}
-	
-	/**
-	 * only sends the color transform values if the autoSendColorTransFormEnabled flag is true
-	 * @see #sendColorTransformValues(float[], float[], float[], float[], float, float)
-	 * @param rgbThreshold 3 values 0.0 - 1.0
-	 * @param rgbGamma 3 values
-	 * @param rgbBlacklevel 3 values 0.0 - 1.0
-	 * @param rgbWhitelevel 3 values 0.0 - 1.0
-	 * @param hsvGain 
-	 * @param hsvSaturation
-	 * @return
-	 * @throws IllegalArgumentException
-	 */
-	public boolean autoSendColorTransformValues(float[] rgbThreshold, float[] rgbGamma, float[] rgbBlacklevel, float[] rgbWhitelevel, float hsvGain,
-			float hsvSaturation) throws IllegalArgumentException{
 
-		if( rgbBlacklevel.length != 3 || rgbGamma.length != 3 || rgbThreshold.length != 3 || rgbWhitelevel.length != 3){
-			throw new IllegalArgumentException();
-		}
-		if (!isConnected() || !autoSendColorTransFormEnabled)  {
-			return false;
-		}
-		
-		sendColorTransformValues(rgbThreshold, rgbGamma, rgbBlacklevel, rgbWhitelevel, hsvGain, hsvSaturation);
-		
-		return true;
-	}
-	
-	/**Double input values, see float version
-	 * @see #autoSendColorTransformValues(float[], float[], float[], float[], float, float)
-	 * @param rgbThreshold
-	 * @param rgbGamma
-	 * @param rgbBlacklevel
-	 * @param rgbWhitelevel
-	 * @param hsvGain
-	 * @param hsvSaturation
-	 * @return
-	 * @throws IllegalArgumentException
-	 */
-	public boolean autoSendColorTransformValues(Double[] rgbThreshold, Double[] rgbGamma, Double[] rgbBlacklevel, Double[] rgbWhitelevel, Double hsvGain,
-			Double hsvSaturation) throws IllegalArgumentException{
-		
-		float[] frgbThreshold = new float[3];
-		float[] frgbGamma = new float[3];
-		float[] frgbBlacklevel = new float[3];
-		float[] frgbWhitelevel = new float[3];
-		float fhsvGain;
-		float fhsvSaturation;
-				
-		for(int i = 0; i < 3; i++){
-			frgbThreshold[i] =  rgbThreshold[i].floatValue();
-			frgbGamma[i] = rgbGamma[i].floatValue();
-			frgbBlacklevel[i] = rgbBlacklevel[i].floatValue();
-			frgbWhitelevel[i] = rgbWhitelevel[i].floatValue();
-		}
-		fhsvGain = hsvGain.floatValue();
-		fhsvSaturation = hsvSaturation.floatValue();
-		
-		return autoSendColorTransformValues(frgbThreshold, frgbGamma, frgbBlacklevel, frgbWhitelevel, fhsvGain, fhsvSaturation);
-	}
-	
 	/**Sends the clearall command
 	 * @return false if there is no connection, true after the command was executed
 	 */
@@ -214,7 +151,7 @@ public class SshConnectionModel extends Observable {
 		return false;
 	}
 
-	/**
+	/**Get connection status
 	 * @return
 	 */
 	public boolean isConnected() {
@@ -268,6 +205,11 @@ public class SshConnectionModel extends Observable {
 		}
 	};
 	
+	/**
+	 * array to a String in the format "a1 a2 a3 ... an" with quotes
+	 * @param array
+	 * @return
+	 */
 	private static String floatArrayToArgsString(float[] array){
 		StringBuffer buffer = new StringBuffer("\"");
 		
@@ -281,6 +223,11 @@ public class SshConnectionModel extends Observable {
 		return buffer.toString();
 	}
 	
+	/**
+	 * Convert an int to a hex value as String. Eg. 15 -> 0F , 16 -> 1F
+	 * @param i
+	 * @return
+	 */
 	private static String intToTwoValueHex(int i){
 		StringBuffer hex = new StringBuffer(Integer.toHexString(i));
 		if(hex.length() == 1){

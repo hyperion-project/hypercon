@@ -97,8 +97,8 @@ public class ColorTransformPanel extends JPanel {
 		add(getHsvPanel());
 		add(Box.createVerticalGlue());
 
+		//sshColorTransformPanel and Actionlistener for its button
 		mSshColorTransformPanel = new SshColorTransformPanel();
-//		mSshColorTransformPanel.autoUpdate.addActionListener(mActionListener);
 		mSshColorTransformPanel.sendTransform.addActionListener(mActionListener);
 		add(mSshColorTransformPanel);
 	}
@@ -258,8 +258,6 @@ public class ColorTransformPanel extends JPanel {
 			mColorConfig.mSaturationGain = (Double) mSaturationAdjustSpinner.getValue();
 			mColorConfig.mValueGain = (Double) mValueAdjustSpinner.getValue();
 			
-			sendAutoUpdateTransforms();
-
 		}
 	};
 	private final DocumentListener mDocumentListener = new DocumentListener() {
@@ -279,13 +277,12 @@ public class ColorTransformPanel extends JPanel {
 		}
 	};
 
+	/**
+	 * get the Action of the button in the SShColorTransformPanel
+	 */
 	private final ActionListener mActionListener = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//			if (e.getSource() == mSshColorTransformPanel.autoUpdate) {
-//				SshConnectionModel.getInstance().autoSendColorTransFormEnabled = mSshColorTransformPanel.autoUpdate.isSelected();
-//
-//			}
 			if(e.getSource() == mSshColorTransformPanel.sendTransform){
 				sendTransforms();
 			}
@@ -293,12 +290,9 @@ public class ColorTransformPanel extends JPanel {
 		}
 	};
 	
-	private void sendAutoUpdateTransforms(){
-		if (SshConnectionModel.getInstance().isConnected() && SshConnectionModel.getInstance().autoSendColorTransFormEnabled) {
-			sendTransforms();
-		}
-	}
-	
+	/**
+	 * get the selected color transform values and send them via the SshConnectionModel
+	 */
 	private void sendTransforms(){
 		
 			float[] rgbThreshold = new float[3];
