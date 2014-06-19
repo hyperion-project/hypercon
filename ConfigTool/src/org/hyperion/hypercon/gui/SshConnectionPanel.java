@@ -230,7 +230,7 @@ public class SshConnectionPanel extends JPanel implements Observer {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == connectBut) {
-				if (!sshConnection.isConnected()) {
+				if (connectBut.getText().equals("Connect") && !sshConnection.isConnected()) {
 					setConnectionFieldsAcces(false);
 					connectBut.setEnabled(false);
 

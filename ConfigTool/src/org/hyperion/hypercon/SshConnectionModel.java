@@ -2,6 +2,8 @@ package org.hyperion.hypercon;
 
 import java.util.Observable;
 
+import javax.swing.SwingWorker;
+
 import org.hyperion.ssh.ConnectionAdapter;
 import org.hyperion.ssh.ConnectionListener;
 import org.hyperion.ssh.PiSshConnection;
@@ -19,6 +21,8 @@ public class SshConnectionModel extends Observable {
 
 	private static SshConnectionModel instance = null;
 	final private PiSshConnection mSshConnection;
+	
+	private boolean wasConnected;
 	
 
 	private SshConnectionModel() {
@@ -155,6 +159,11 @@ public class SshConnectionModel extends Observable {
 	 * @return
 	 */
 	public boolean isConnected() {
+		if(wasConnected != mSshConnection.isConnected()){
+			wasConnected =  mSshConnection.isConnected();
+			setChanged();
+			notifyObservers();
+		}
 		return mSshConnection.isConnected();
 	}
 
@@ -235,5 +244,7 @@ public class SshConnectionModel extends Observable {
 		}
 		return hex.toString();
 	}
+	
+	
 
 }
