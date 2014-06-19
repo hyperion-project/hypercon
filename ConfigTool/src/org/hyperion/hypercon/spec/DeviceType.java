@@ -27,7 +27,7 @@ public enum DeviceType {
 	/** Paintpack USB led device */
 	paintpack("Paintpack"),
 	/** tpm2 protocol serial device */
-	tpm2("tpm2"),
+	tpm2("Serial tpm2"),
 	/** Test device for writing color values to file-output */
 	test("Test"),
 	/** No device, no output is generated */
