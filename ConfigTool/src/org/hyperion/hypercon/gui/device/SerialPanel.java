@@ -18,7 +18,7 @@ import org.hyperion.hypercon.spec.DeviceConfig;
  */
 public class SerialPanel extends DeviceTypePanel {
 
-	public static final String[] KnownOutputs = { "/dev/ttyS0", "/dev/ttyUSB0", "/dev/ttyAMA0", "/dev/null"};
+	public static final String[] KnownOutputs = { "/dev/ttyS0", "/dev/ttyUSB0", "/dev/ttyAMA0", "/dev/ttyACM0", "/dev/null"};
 
 	private JLabel mOutputLabel;
 	private JComboBox<String> mOutputCombo;

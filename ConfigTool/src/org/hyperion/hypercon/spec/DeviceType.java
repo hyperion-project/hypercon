@@ -26,6 +26,8 @@ public enum DeviceType {
 	lightpack("Lightpack"),
 	/** Paintpack USB led device */
 	paintpack("Paintpack"),
+	/** tpm2 protocol serial device */
+	tpm2("Serial tpm2"),
 	/** Test device for writing color values to file-output */
 	test("Test"),
 	/** No device, no output is generated */
@@ -66,6 +68,7 @@ public enum DeviceType {
 				break;
 			case adalight:
 			case sedu:
+			case tpm2:
 				mConfigPanel = new SerialPanel();
 				break;
 			case lightpack:
