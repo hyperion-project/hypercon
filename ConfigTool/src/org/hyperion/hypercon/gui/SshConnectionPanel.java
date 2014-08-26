@@ -10,7 +10,6 @@ import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,9 +24,6 @@ import javax.swing.event.DocumentListener;
 
 import org.hyperion.hypercon.SshConnectionModel;
 import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
-import org.hyperion.ssh.PiSshConnection;
-
-import com.jcraft.jsch.JSchException;
 
 /**
  * @author Fabian Hertwig

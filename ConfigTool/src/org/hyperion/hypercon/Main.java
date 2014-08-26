@@ -11,19 +11,12 @@ import javax.swing.UIManager;
 import org.hyperion.hypercon.gui.ConfigPanel;
 import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
 import org.hyperion.hypercon.spec.TransformConfig;
-import org.hyperion.ssh.PiSshConnection;
 
 /**
  * (static) Main-class for starting HyperCon (the Hyperion configuration file builder) as a standard 
  * JAVA application (contains the entry-point).
  */
 public class Main {
-	
-	
-	
-	
-	
-	
 	public static final String configFilename = "hypercon.dat";
 	
 	/** Some application settings (for easy/dirty access) */

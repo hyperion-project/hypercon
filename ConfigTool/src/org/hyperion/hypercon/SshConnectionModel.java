@@ -2,8 +2,6 @@ package org.hyperion.hypercon;
 
 import java.util.Observable;
 
-import javax.swing.SwingWorker;
-
 import org.hyperion.ssh.ConnectionAdapter;
 import org.hyperion.ssh.ConnectionListener;
 import org.hyperion.ssh.PiSshConnection;
