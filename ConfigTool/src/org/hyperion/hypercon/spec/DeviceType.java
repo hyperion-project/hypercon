@@ -28,6 +28,8 @@ public enum DeviceType {
 	paintpack("Paintpack"),
 	/** tpm2 protocol serial device */
 	tpm2("Serial tpm2"),
+	/** WS2801 Led String device with one continuous shift-register (1 byte per color-channel) */
+	ws2812b("ws2812b"),
 	/** Test device for writing color values to file-output */
 	test("Test"),
 	/** No device, no output is generated */
@@ -75,6 +77,7 @@ public enum DeviceType {
 				mConfigPanel = new LightPackPanel();
 				break;
 			case paintpack:
+			case ws2812b:
 			case none:
 				break;
 			}
