@@ -68,11 +68,12 @@ public class ConfigPanel extends JPanel {
 	private LedSimulationComponent mHyperionTv;
 	
 	private JTabbedPane mSpecificationTabs = null;
-	/** The left (WEST) side panel containing the diferent configuration panels */
+	/** The left (WEST) side panel containing the different configuration panels */
 	private JPanel mHardwarePanel = null;
 	private JPanel mProcessPanel = null;
 	private JPanel mExternalPanel = null;
 	private JPanel mTestingPanel = null;
+	private JPanel mGrabberPanel = null;
 
 
 	/** The button connected to mSaveConfigAction */
@@ -80,7 +81,6 @@ public class ConfigPanel extends JPanel {
 	
 	/**
 	 * Constructs the configuration panel with a default initialised led-frame and configuration
-	 * @param sshConnection 
 	 */
 	public ConfigPanel(final LedString pLedString, final SshAndColorPickerConfig pSshConfig) {
 		super();
@@ -133,9 +133,11 @@ public class ConfigPanel extends JPanel {
 	private JTabbedPane getSpecificationTabs() {
 		if (mSpecificationTabs == null) {
 			mSpecificationTabs = new JTabbedPane();
+			mSpecificationTabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 			
 			mSpecificationTabs.addTab("Hardware", getHardwarePanel());
 			mSpecificationTabs.addTab("Process", getProcessPanel());
+			mSpecificationTabs.addTab("Grabber", getGrabberPanel());
 			mSpecificationTabs.addTab("External", getExternalPanel());
 			mSpecificationTabs.addTab("SSH", getTestingPanel());
 		}
@@ -152,7 +154,7 @@ public class ConfigPanel extends JPanel {
 			mTvPanel = new JPanel();
 			mTvPanel.setLayout(new BorderLayout());
 				
-			mHyperionTv = new LedSimulationComponent(ledString.leds);
+			mHyperionTv = new LedSimulationComponent(ledString.leds, ledString.mGrabberv4l2Config);
 			mTvPanel.add(mHyperionTv, BorderLayout.CENTER);
 		}
 		return mTvPanel;
@@ -176,7 +178,7 @@ public class ConfigPanel extends JPanel {
 			mProcessPanel = new JPanel();
 			mProcessPanel.setLayout(new BoxLayout(mProcessPanel, BoxLayout.Y_AXIS));
 			
-			mProcessPanel.add(new FrameGrabberPanel(ledString.mMiscConfig));
+
 			mProcessPanel.add(new ColorSmoothingPanel(ledString.mColorConfig));
 			mProcessPanel.add(new ColorsPanel(ledString.mColorConfig));
 			mProcessPanel.add(Box.createVerticalGlue());
@@ -210,4 +212,20 @@ public class ConfigPanel extends JPanel {
 		
 		return mTestingPanel;
 	}
-}
+
+	private JPanel getGrabberPanel(){
+		if( mGrabberPanel == null){
+			mGrabberPanel = new JPanel();
+			mGrabberPanel.setLayout(new BoxLayout(mGrabberPanel, BoxLayout.Y_AXIS));
+
+			mGrabberPanel.add(new FrameGrabberPanel(ledString.mMiscConfig));
+			mGrabberPanel.add(Box.createVerticalGlue());
+
+		}
+
+		return mGrabberPanel;
+	}
+
+
+	}
+

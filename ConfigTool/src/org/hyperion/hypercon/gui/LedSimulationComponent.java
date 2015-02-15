@@ -1,11 +1,6 @@
 package org.hyperion.hypercon.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,6 +11,7 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.URL;
 import java.util.Vector;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -28,7 +24,12 @@ import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.SftpException;
+import org.hyperion.hypercon.ErrorHandling;
 import org.hyperion.hypercon.LedFrameFactory;
+import org.hyperion.hypercon.SshConnectionModel;
+import org.hyperion.hypercon.spec.Grabberv4l2Config;
 import org.hyperion.hypercon.spec.ImageProcessConfig;
 import org.hyperion.hypercon.spec.Led;
 import org.hyperion.hypercon.spec.LedFrameConstruction;
@@ -37,7 +38,19 @@ import org.hyperion.hypercon.spec.LedFrameConstruction;
 public class LedSimulationComponent extends JPanel {
 
 	private BufferedImage mTvImage = new BufferedImage(640, 480, BufferedImage.TYPE_INT_ARGB);
-	
+	private Grabberv4l2Config mGrabberConfig;
+
+	public LedSimulationComponent(Vector<Led> leds, Grabberv4l2Config mGrabberv4l2Config) {
+
+		super();
+
+		mGrabberConfig = mGrabberv4l2Config;
+
+		initialise(leds);
+
+		setLeds(leds);
+	}
+
 	private void setImage(Image pImage) {
 		mTvImage.createGraphics().drawImage(pImage, 0, 0, mTvImage.getWidth(), mTvImage.getHeight(), null);
 	}
@@ -62,12 +75,10 @@ public class LedSimulationComponent extends JPanel {
 	
 	LedTvComponent mTvComponent;
 	private int mLedCnt = 0;
-//	private Vector<Led> mleds;
-	
+
 	public LedSimulationComponent(Vector<Led> pLeds) {
 		super();
-//		mleds = pLeds;
-		
+
 		initialise(pLeds);
 		
 		setLeds(pLeds);
@@ -135,18 +146,23 @@ public class LedSimulationComponent extends JPanel {
 	}
 	
 	
-	LedSimulationWorker mWorker = null;
-	
+
 	public void setLeds(Vector<Led> pLeds) {
 		mLedCnt = pLeds == null? 0 : pLeds.size();
 		mTvComponent.setLeds(pLeds);
-		
+
+		updateLedSimulation(mTvComponent.getLeds());
+	}
+
+	LedSimulationWorker mWorker = null;
+
+	private void updateLedSimulation(Vector<Led> pLeds) {
 		synchronized (LedSimulationComponent.this) {
 			if (mWorker != null) {
 				mWorker.cancel(true);
 			}
 			mWorker = null;
-		}		
+		}
 		mWorker = new LedSimulationWorker(mTvImage, pLeds);
 		mProgressBar.setValue(0);
 		mWorker.addPropertyChangeListener(new PropertyChangeListener() {
@@ -161,9 +177,9 @@ public class LedSimulationComponent extends JPanel {
 					}
 				} else if (evt.getPropertyName() == "progress") {
 					mProgressBar.setValue(mWorker.getProgress());
-				}					
+				}
 			}
-			
+
 			private void handleWorkerDone() {
 				BufferedImage backgroundImage = null;
 				synchronized(LedSimulationComponent.this) {
@@ -173,7 +189,11 @@ public class LedSimulationComponent extends JPanel {
 					try {
 						backgroundImage = mWorker.get();
 						mWorker = null;
-					} catch (Exception e) {}
+					} catch (InterruptedException e) {
+						ErrorHandling.ShowException(e);
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					}
 				}
 				if (backgroundImage == null) {
 					return;
@@ -183,22 +203,22 @@ public class LedSimulationComponent extends JPanel {
 				int height = backgroundImage.getHeight();
 				int borderWidth  = (int) (backgroundImage.getWidth() * 0.1);
 				int borderHeight = (int) (backgroundImage.getHeight() * 0.2);
-				
+
 				mTopLeftImage.setImage(backgroundImage.getSubimage(0, 0, borderWidth, borderHeight));
 				mTopImage.setImage(backgroundImage.getSubimage(borderWidth, 0, width-2*borderWidth, borderHeight));
 				mTopRightImage.setImage(backgroundImage.getSubimage(width-borderWidth, 0, borderWidth, borderHeight));
 
 				mLeftImage.setImage(backgroundImage.getSubimage(0, borderHeight, borderWidth, height-2*borderHeight));
 				mRightImage.setImage(backgroundImage.getSubimage(width-borderWidth, borderHeight, borderWidth, height-2*borderHeight));
-				
+
 				mBottomLeftImage.setImage(backgroundImage.getSubimage(0, height-borderHeight, borderWidth, borderHeight));
 				mBottomImage.setImage(backgroundImage.getSubimage(borderWidth, height-borderHeight, width-2*borderWidth, borderHeight));
 				mBottomRightImage.setImage(backgroundImage.getSubimage(width-borderWidth, height-borderHeight, borderWidth, borderHeight));
-				
+
 				mProgressBar.setValue(100);
 				mProgressBar.setVisible(false);
 				mWorker = null;
-				
+
 				LedSimulationComponent.this.repaint();
 			}
 		});
@@ -267,11 +287,68 @@ public class LedSimulationComponent extends JPanel {
 				Image image = imageIcon.getImage();
 				
 				mTvComponent.setImage(image);
-//				setLeds(mleds);
-//				setIma
+				setImage(image);
+				updateLedSimulation(mTvComponent.getLeds());
 			} catch (Exception ex) {
-				
+				ErrorHandling.ShowException(ex);
 			}
+		}
+	};
+
+	private final Action mTakeGrabberScreenshotAction = new AbstractAction("Take grabber screenshot..."){
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			try {
+				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				if(mGrabberConfig != null){
+                    StringBuffer args = new StringBuffer();
+                    args.append("--device " + mGrabberConfig.mDevice);
+                    args.append(" --video-standard " + mGrabberConfig.mStandard.toString());
+                    args.append(" --input " + mGrabberConfig.mInput);
+                    args.append(" --width " + mGrabberConfig.mInput);
+                    args.append(" --height " + mGrabberConfig.mInput);
+                    args.append(" --crop-width " + mGrabberConfig.mInput);
+                    args.append(" --crop-height " + mGrabberConfig.mInput);
+                    args.append(" --crop-left " + mGrabberConfig.mInput);
+                    args.append(" --crop-right " + mGrabberConfig.mInput);
+                    args.append(" --crop-top " + mGrabberConfig.mInput);
+                    args.append(" --crop-bottom " + mGrabberConfig.mInput);
+                    args.append(" --size-decimator " + mGrabberConfig.mInput);
+                    args.append(" --frame-decimator " + mGrabberConfig.mInput);
+                    args.append(" --red-threshold " + mGrabberConfig.mInput);
+                    args.append(" --green-threshold " + mGrabberConfig.mInput);
+                    args.append(" --blue-threshold " + mGrabberConfig.mInput);
+                    if(mGrabberConfig.mMode == Grabberv4l2Config.DimensionModes.ThreeDSBS){
+                        args.append(" --3DSBS ");
+                    }else if(mGrabberConfig.mMode == Grabberv4l2Config.DimensionModes.ThreeDTAB){
+                        args.append(" --3DTAB ");
+                    }
+
+                    SshConnectionModel.getInstance().sendTakeScreenshot(args.toString());
+                }else{
+                    SshConnectionModel.getInstance().sendTakeScreenshot();
+                }
+
+				Image img = SshConnectionModel.getInstance().getScreenshotImage();
+
+
+				try {
+
+
+					mTvComponent.setImage(img);
+					setImage(img);
+					updateLedSimulation(mTvComponent.getLeds());
+				} catch (Exception ex) {
+					ErrorHandling.ShowException(ex);
+				}
+			} catch (Exception e1) {
+				ErrorHandling.ShowException(e1);
+			}
+
+
+			setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
 		}
 	};
 	
@@ -279,6 +356,8 @@ public class LedSimulationComponent extends JPanel {
 		if (mPopupMenu == null) {
 			mPopupMenu = new JPopupMenu();
 			mPopupMenu.add(mLoadAction);
+
+			mPopupMenu.add(mTakeGrabberScreenshotAction);
 			
 			JMenu selectMenu = new JMenu("Select Image");
 			selectMenu.add(new SelectImageAction("TestImage_01"));
@@ -291,6 +370,13 @@ public class LedSimulationComponent extends JPanel {
 			selectMenu.add(new SelectImageAction("TestImageBBB_03"));
 			mPopupMenu.add(selectMenu);
 		}
+		if(SshConnectionModel.getInstance().isConnected()){
+			mTakeGrabberScreenshotAction.setEnabled(true);
+
+		}else{
+			mTakeGrabberScreenshotAction.setEnabled(false);
+		}
+
 		return mPopupMenu;
 	}
 	
@@ -315,7 +401,7 @@ public class LedSimulationComponent extends JPanel {
 				
 				setImage(image);
 				mTvComponent.setImage(image);
-//				setLeds(mleds);
+				updateLedSimulation(mTvComponent.getLeds());
 				repaint();
 			}
 		}

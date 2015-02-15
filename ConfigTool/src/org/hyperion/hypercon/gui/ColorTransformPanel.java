@@ -21,6 +21,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.jcraft.jsch.JSchException;
+import org.hyperion.hypercon.ErrorHandling;
 import org.hyperion.hypercon.SshConnectionModel;
 import org.hyperion.hypercon.spec.TransformConfig;
 
@@ -318,9 +320,13 @@ public class ColorTransformPanel extends JPanel {
 
 			hsvGain = ((Double) mValueAdjustSpinner.getValue()).floatValue();
 			hsvSaturation = ((Double) mSaturationAdjustSpinner.getValue()).floatValue();
-			
+
+		try {
 			SshConnectionModel.getInstance().sendColorTransformValues(rgbThreshold, rgbGamma, rgbBlacklevel, rgbWhitelevel, hsvGain, hsvSaturation);
-		
+		} catch (JSchException e) {
+			ErrorHandling.ShowException(e);
+		}
+
 	}
 
 }

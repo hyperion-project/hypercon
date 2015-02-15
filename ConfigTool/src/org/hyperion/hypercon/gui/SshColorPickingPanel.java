@@ -10,12 +10,10 @@ import java.beans.Transient;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JPanel;
+import javax.swing.*;
 
+import com.jcraft.jsch.JSchException;
+import org.hyperion.hypercon.ErrorHandling;
 import org.hyperion.hypercon.SshConnectionModel;
 import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
 
@@ -155,9 +153,17 @@ public class SshColorPickingPanel extends JPanel implements Observer, PropertyCh
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == setLedColor){
 				int[] chosenColor = colorPicker.getRGB();
-				SshConnectionModel.getInstance().sendLedColor(chosenColor[0], chosenColor[1], chosenColor[2]);
+				try {
+					SshConnectionModel.getInstance().sendLedColor(chosenColor[0], chosenColor[1], chosenColor[2]);
+				} catch (JSchException e1) {
+					ErrorHandling.ShowException(e1);
+				}
 			}else if(e.getSource() == clearLedColor){
-				SshConnectionModel.getInstance().sendClear();
+				try {
+					SshConnectionModel.getInstance().sendClear();
+				} catch (JSchException e1) {
+					ErrorHandling.ShowException(e1);
+				}
 			}else if(e.getSource() == expertView){
 				colorPicker.setExpertControlsVisible(expertView.isSelected());
 				sshConfig.colorPickerInExpertmode = expertView.isSelected();
@@ -197,7 +203,11 @@ public class SshColorPickingPanel extends JPanel implements Observer, PropertyCh
 	public void propertyChange(PropertyChangeEvent evt) {
 		if(autoUpdateCB != null && autoUpdateCB.isSelected() && evt.getPropertyName().equals("selected color")){
 			int[] chosenColor = colorPicker.getRGB();
-			SshConnectionModel.getInstance().sendLedColor(chosenColor[0], chosenColor[1], chosenColor[2]);
+			try {
+				SshConnectionModel.getInstance().sendLedColor(chosenColor[0], chosenColor[1], chosenColor[2]);
+			} catch (JSchException e) {
+				ErrorHandling.ShowException(e);
+			}
 		}
 		
 	}

@@ -1,6 +1,6 @@
 package org.hyperion.hypercon.gui;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.Transient;
@@ -22,6 +22,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.jcraft.jsch.JSchException;
+import org.hyperion.hypercon.ErrorHandling;
 import org.hyperion.hypercon.SshConnectionModel;
 import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
 
@@ -226,26 +228,35 @@ public class SshConnectionPanel extends JPanel implements Observer {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == connectBut) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				if (connectBut.getText().equals("Connect") && !sshConnection.isConnected()) {
 					setConnectionFieldsAcces(false);
 					connectBut.setEnabled(false);
 
 					try {
-						if (!sshConnection.connect(mAddressField.getText(), (Integer) mTcpPortSpinner.getValue(), mUsernameField.getText(),
-								mPasswordField.getPassword())) {
-							JOptionPane.showMessageDialog(self, "Can't connect. Is all data correct?");
-							setConnectionFieldsAcces(true);
+						sshConnection.connect(mAddressField.getText(), (Integer) mTcpPortSpinner.getValue(), mUsernameField.getText(),
+								mPasswordField.getPassword());
+					} catch (JSchException e1) {
+
+						if(e1.getMessage().contains("Auth cancel")){
+							ErrorHandling.ShowMessage("Wrong username or password!");
 						}
-						connectBut.setEnabled(true);
-					} catch (com.jcraft.jsch.JSchException e1) {
-						System.out.println("caught the JSchException");
-						// FIXME: somehow this com.jcraft.jsch.JSchException
-						// cant be caught
+						else if(e1.getMessage().contains("Connection refused: connect")){
+							ErrorHandling.ShowMessage("Connection refused. Wrong port?");
+						}else if(e1.getMessage().contains("timeout: socket is not established")){
+							ErrorHandling.ShowMessage("Timeout. Wrong Ip?");
+						}else{
+							ErrorHandling.ShowException(e1);
+						}
+
 					}
+					connectBut.setEnabled(true);
+					setConnectionFieldsAcces(true);
 				} else {
 					sshConnection.disconnect();
 
 				}
+				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}
 
 		}

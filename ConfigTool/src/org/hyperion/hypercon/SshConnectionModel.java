@@ -1,7 +1,10 @@
 package org.hyperion.hypercon;
 
+import java.awt.*;
+import java.io.IOException;
 import java.util.Observable;
 
+import com.jcraft.jsch.SftpException;
 import org.hyperion.ssh.ConnectionAdapter;
 import org.hyperion.ssh.ConnectionListener;
 import org.hyperion.ssh.PiSshConnection;
@@ -15,6 +18,7 @@ import com.jcraft.jsch.JSchException;
 public class SshConnectionModel extends Observable {
 
 	private static String hyperionRemoteCall = "hyperion-remote ";
+	private static  String hyperionGrabberV4l2Call = "hyperion-v4l2 ";
 	private static boolean printTraffic = true;
 
 	private static SshConnectionModel instance = null;
@@ -78,7 +82,7 @@ public class SshConnectionModel extends Observable {
 	 * @return false if there is no connection, true after the command was sent
 	 * @throws IllegalArgumentException when the parameters don't fit
 	 */
-	public boolean sendLedColor(int red, int green, int blue) throws IllegalArgumentException {
+	public boolean sendLedColor(int red, int green, int blue) throws IllegalArgumentException, JSchException {
 		if(red < 0 || red > 255 || green < 0 || green > 255 ||blue < 0 || blue > 255){
 			throw new IllegalArgumentException();
 		}
@@ -93,7 +97,7 @@ public class SshConnectionModel extends Observable {
 	 * @return false if there is no connection, true after the command was sent
 	 * @throws IllegalArgumentException when the parameters don't fit
 	 */
-	public boolean sendLedColor(String hexValues) throws IllegalArgumentException {
+	public boolean sendLedColor(String hexValues) throws IllegalArgumentException, JSchException {
 
 		if (hexValues.length() != 6) {
 			throw new IllegalArgumentException();
@@ -119,7 +123,7 @@ public class SshConnectionModel extends Observable {
 	 * @throws IllegalArgumentException when the parameters don't fit
 	 */
 	public boolean sendColorTransformValues(float[] rgbThreshold, float[] rgbGamma, float[] rgbBlacklevel, float[] rgbWhitelevel, float hsvGain,
-			float hsvSaturation) throws IllegalArgumentException{
+			float hsvSaturation) throws IllegalArgumentException, JSchException {
 
 		if( rgbBlacklevel.length != 3 || rgbGamma.length != 3 || rgbThreshold.length != 3 || rgbWhitelevel.length != 3){
 			throw new IllegalArgumentException();
@@ -145,12 +149,58 @@ public class SshConnectionModel extends Observable {
 	/**Sends the clearall command
 	 * @return false if there is no connection, true after the command was executed
 	 */
-	public boolean sendClear(){
+	public boolean sendClear() throws JSchException {
 		if(isConnected()){
 			mSshConnection.execute(hyperionRemoteCall + "--clearall");
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 *
+	 * @return false if there is no connection, true after the command was executed
+	 */
+	public boolean sendTakeScreenshot() throws JSchException {
+		if(isConnected()){
+
+			mSshConnection.execute(hyperionGrabberV4l2Call + "--screenshot");
+			return true;
+		}
+		return false;
+	}
+
+
+
+	/**
+	 *
+	 * @return false if there is no connection, true after the command was executed
+	 */
+	public boolean sendTakeScreenshot(String hyperionV42lArguments) throws JSchException {
+		if(isConnected()){
+
+			mSshConnection.execute(hyperionGrabberV4l2Call + hyperionV42lArguments + " --screenshot");
+			return true;
+		}
+		return false;
+	}
+
+	public boolean getScreenshot() throws JSchException, SftpException {
+		if(isConnected()){
+
+			mSshConnection.getFile("./screenshot.png", ".");
+			return true;
+		}
+		return false;
+
+	}
+
+	public Image getScreenshotImage() throws JSchException, SftpException, IOException {
+		if(isConnected()){
+
+			return mSshConnection.getImage("./screenshot.png");
+		}
+		return null;
 	}
 
 	/**Get connection status
@@ -177,6 +227,13 @@ public class SshConnectionModel extends Observable {
 		public void commandFinished(String pCommand) {
 			if(printTraffic){
 				//Nothing to do
+			}
+		}
+
+		@Override
+		public void getFileFinished(String src, String dst) {
+			if(printTraffic){
+				System.out.println("sftp getFile(" + src + ", " + dst + ")");
 			}
 		}
 

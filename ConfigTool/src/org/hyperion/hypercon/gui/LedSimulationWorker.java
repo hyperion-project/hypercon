@@ -40,7 +40,11 @@ public class LedSimulationWorker extends SwingWorker<BufferedImage, Object> {
 	protected BufferedImage doInBackground() throws Exception {
 		Dimension imageDim = new Dimension(1280, 720);
 		BufferedImage backgroundImage = new BufferedImage(imageDim.width, imageDim.height, BufferedImage.TYPE_INT_ARGB);
-		
+
+		if(mLeds == null){
+			return backgroundImage;
+		}
+
 		mLedPaints.clear();
 		
 		setProgress(5);

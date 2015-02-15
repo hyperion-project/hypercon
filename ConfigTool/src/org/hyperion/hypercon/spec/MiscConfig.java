@@ -18,7 +18,7 @@ public class MiscConfig {
 	public int mBootSequenceLength_ms = 3000;
 	
 	/** Flag indicating that the Frame Grabber is enabled */
-	public boolean mFrameGrabberEnabled = true;
+	public boolean mFrameGrabberEnabled = false;
 	/** The width of 'grabbed' frames (screen shots) [pixels] */
 	public int mFrameGrabberWidth = 64;
 	/** The height of 'grabbed' frames (screen shots) [pixels] */

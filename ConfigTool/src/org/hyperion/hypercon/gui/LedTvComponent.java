@@ -22,7 +22,9 @@ public class LedTvComponent extends JComponent {
 	private final Graphics2D mImageG2d = mDisplayedImage.createGraphics();
 	
 	private final int mBorderWidth = 12;
-	
+
+
+
 	private Vector<Led> mLeds;
 
 	private Led mSelectedLed;
@@ -35,6 +37,10 @@ public class LedTvComponent extends JComponent {
 	
 	public void setLeds(Vector<Led> pLeds) {
 		mLeds = pLeds;
+	}
+
+	public Vector<Led> getLeds() {
+		return mLeds;
 	}
 	
 	public void setImage(Image pImage) {
