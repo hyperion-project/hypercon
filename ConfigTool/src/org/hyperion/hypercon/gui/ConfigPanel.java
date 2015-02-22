@@ -219,6 +219,7 @@ public class ConfigPanel extends JPanel {
 			mGrabberPanel.setLayout(new BoxLayout(mGrabberPanel, BoxLayout.Y_AXIS));
 
 			mGrabberPanel.add(new FrameGrabberPanel(ledString.mMiscConfig));
+			mGrabberPanel.add(new Grabberv4l2Panel(ledString.mGrabberv4l2Config));
 			mGrabberPanel.add(Box.createVerticalGlue());
 
 		}

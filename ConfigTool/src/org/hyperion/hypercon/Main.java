@@ -7,6 +7,7 @@ import java.io.File;
 import javax.swing.*;
 
 import org.hyperion.hypercon.gui.ConfigPanel;
+import org.hyperion.hypercon.gui.SSHTrafficPrinterFrame;
 import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
 import org.hyperion.hypercon.spec.TransformConfig;
 
@@ -61,6 +62,7 @@ public class Main {
 					System.err.println("Failed to save " + configFilename);
 				}
 				SshConnectionModel.getInstance().disconnect();
+				SSHTrafficPrinterFrame.close();
 			}
 		});
 		

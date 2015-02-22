@@ -27,7 +27,13 @@ public class ErrorHandling {
 
     public static void ShowMessage(String Message){
 
-        JOptionPane.showMessageDialog(mainframe,Message, "Error", JOptionPane.OK_OPTION);
+        JOptionPane.showMessageDialog(mainframe,Message, "Info", JOptionPane.OK_OPTION);
+
+    }
+
+    public static void ShowMessage(String Message, String title){
+
+        JOptionPane.showMessageDialog(mainframe,Message, title, JOptionPane.OK_OPTION);
 
     }
 

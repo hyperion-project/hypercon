@@ -29,10 +29,7 @@ import com.jcraft.jsch.SftpException;
 import org.hyperion.hypercon.ErrorHandling;
 import org.hyperion.hypercon.LedFrameFactory;
 import org.hyperion.hypercon.SshConnectionModel;
-import org.hyperion.hypercon.spec.Grabberv4l2Config;
-import org.hyperion.hypercon.spec.ImageProcessConfig;
-import org.hyperion.hypercon.spec.Led;
-import org.hyperion.hypercon.spec.LedFrameConstruction;
+import org.hyperion.hypercon.spec.*;
 
 
 public class LedSimulationComponent extends JPanel {
@@ -319,9 +316,9 @@ public class LedSimulationComponent extends JPanel {
                     args.append(" --red-threshold " + mGrabberConfig.mInput);
                     args.append(" --green-threshold " + mGrabberConfig.mInput);
                     args.append(" --blue-threshold " + mGrabberConfig.mInput);
-                    if(mGrabberConfig.mMode == Grabberv4l2Config.DimensionModes.ThreeDSBS){
+                    if(mGrabberConfig.mMode == DimensionModes.ThreeDSBS){
                         args.append(" --3DSBS ");
-                    }else if(mGrabberConfig.mMode == Grabberv4l2Config.DimensionModes.ThreeDTAB){
+                    }else if(mGrabberConfig.mMode == DimensionModes.ThreeDTAB){
                         args.append(" --3DTAB ");
                     }
 

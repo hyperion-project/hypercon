@@ -7,9 +7,12 @@ import java.util.Observable;
 import com.jcraft.jsch.SftpException;
 import org.hyperion.ssh.ConnectionAdapter;
 import org.hyperion.ssh.ConnectionListener;
+import org.hyperion.ssh.ConnectionMessageCollector;
 import org.hyperion.ssh.PiSshConnection;
 
 import com.jcraft.jsch.JSchException;
+
+import javax.swing.*;
 
 /**
  * @author Fabian Hertwig
@@ -268,6 +271,14 @@ public class SshConnectionModel extends Observable {
 			super.disconnected();
 		}
 	};
+
+	public void addConnectionListener(ConnectionListener listener){
+		mSshConnection.addConnectionListener(listener);
+	}
+
+	public void removeConnectionListener(ConnectionListener listener){
+		mSshConnection.removeConnectionListener(listener);
+	}
 	
 	/**
 	 * array to a String in the format "a1 a2 a3 ... an" with quotes

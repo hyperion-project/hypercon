@@ -10,36 +10,7 @@ public class Grabberv4l2Config {
 
     public boolean mGrabberv4l2Enabled = true;
 
-    public enum VideoStandard{
-        noChange("no-change"),
-        PAL("PAL"),
-        NTSC("NTSC");
 
-        private final String text;
-
-        private VideoStandard(final String text){
-            this.text = text;
-        }
-        @Override
-        public String toString() {
-            return text;
-        }
-    };
-    public enum DimensionModes{
-        TwoD("2D") ,
-        ThreeDSBS("3DSBS"),
-        ThreeDTAB("3DTAB");
-
-        private final String text;
-
-        private DimensionModes(final String text){
-            this.text = text;
-        }
-        @Override
-        public String toString() {
-            return text;
-        }
-    }
 
     public String mDevice = "/dev/video0";
     public int mInput = 0;

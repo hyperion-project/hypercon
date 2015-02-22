@@ -11,7 +11,6 @@ import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JSpinner;
@@ -43,11 +42,7 @@ public class SshConnectionPanel extends JPanel implements Observer {
 	 */
 	private final SshConnectionModel sshConnection;
 
-	/**
-	 * this is this class to get acces in the Actionlistener subclass. TODO: make acces to this class more beautiful in Actionlistener
-	 * 
-	 */
-	private final SshConnectionPanel self;
+
 
 	// Gui objects
 	private JLabel mAddressLabel;
@@ -63,6 +58,7 @@ public class SshConnectionPanel extends JPanel implements Observer {
 	private JPasswordField mPasswordField;
 
 	private JButton connectBut;
+	private JButton mTrafficBut;
 
 	/**
 	 * Constructor
@@ -72,7 +68,6 @@ public class SshConnectionPanel extends JPanel implements Observer {
 	public SshConnectionPanel(final SshAndColorPickerConfig pSshConfig) {
 		super();
 
-		self = this;
 		mSshConfig = pSshConfig;
 		sshConnection = SshConnectionModel.getInstance();
 		// Observe the connection status to enable or disable the buttons
@@ -174,6 +169,11 @@ public class SshConnectionPanel extends JPanel implements Observer {
 
 		connectBut = new JButton("Connect");
 		connectBut.addActionListener(mActionListener);
+		add(connectBut);
+
+		mTrafficBut = new JButton("Show Traffic");
+		mTrafficBut.addActionListener(mActionListener);
+		add(mTrafficBut);
 
 		GroupLayout layout = new GroupLayout(this);
 		layout.setAutoCreateGaps(true);
@@ -191,7 +191,9 @@ public class SshConnectionPanel extends JPanel implements Observer {
 						.addComponent(mAddressField)
 						.addComponent(mTcpPortSpinner)
 						.addComponent(mUsernameField)
-						.addComponent(mPasswordField)));
+						.addComponent(mPasswordField)
+						.addComponent(mTrafficBut)
+				));
 
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup()
@@ -208,7 +210,8 @@ public class SshConnectionPanel extends JPanel implements Observer {
 						.addComponent(mPasswordField))
 						.addGap(10)
 				.addGroup(layout.createParallelGroup()
-						.addComponent(connectBut))
+						.addComponent(connectBut)
+						.addComponent(mTrafficBut))
 
 		);
 
@@ -257,6 +260,8 @@ public class SshConnectionPanel extends JPanel implements Observer {
 
 				}
 				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			}else if(e.getSource().equals(mTrafficBut)){
+					SSHTrafficPrinterFrame.getInstance();
 			}
 
 		}
@@ -271,6 +276,7 @@ public class SshConnectionPanel extends JPanel implements Observer {
 		mTcpPortSpinner.setEnabled(setEnabled);
 		mUsernameField.setEnabled(setEnabled);
 		mPasswordField.setEnabled(setEnabled);
+		mTrafficBut.setEnabled(setEnabled);
 
 	}
 
