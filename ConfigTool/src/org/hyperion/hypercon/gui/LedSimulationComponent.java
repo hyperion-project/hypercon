@@ -1,5 +1,11 @@
 package org.hyperion.hypercon.gui;
 
+import org.hyperion.hypercon.ErrorHandling;
+import org.hyperion.hypercon.LedFrameFactory;
+import org.hyperion.hypercon.SshConnectionModel;
+import org.hyperion.hypercon.spec.*;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -12,24 +18,6 @@ import java.io.File;
 import java.net.URL;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JProgressBar;
-import javax.swing.SwingWorker;
-
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.SftpException;
-import org.hyperion.hypercon.ErrorHandling;
-import org.hyperion.hypercon.LedFrameFactory;
-import org.hyperion.hypercon.SshConnectionModel;
-import org.hyperion.hypercon.spec.*;
 
 
 public class LedSimulationComponent extends JPanel {
@@ -303,19 +291,17 @@ public class LedSimulationComponent extends JPanel {
                     args.append("--device " + mGrabberConfig.mDevice);
                     args.append(" --video-standard " + mGrabberConfig.mStandard.toString());
                     args.append(" --input " + mGrabberConfig.mInput);
-                    args.append(" --width " + mGrabberConfig.mInput);
-                    args.append(" --height " + mGrabberConfig.mInput);
-                    args.append(" --crop-width " + mGrabberConfig.mInput);
-                    args.append(" --crop-height " + mGrabberConfig.mInput);
-                    args.append(" --crop-left " + mGrabberConfig.mInput);
-                    args.append(" --crop-right " + mGrabberConfig.mInput);
-                    args.append(" --crop-top " + mGrabberConfig.mInput);
-                    args.append(" --crop-bottom " + mGrabberConfig.mInput);
-                    args.append(" --size-decimator " + mGrabberConfig.mInput);
-                    args.append(" --frame-decimator " + mGrabberConfig.mInput);
-                    args.append(" --red-threshold " + mGrabberConfig.mInput);
-                    args.append(" --green-threshold " + mGrabberConfig.mInput);
-                    args.append(" --blue-threshold " + mGrabberConfig.mInput);
+                    args.append(" --width " + mGrabberConfig.mWidth);
+                    args.append(" --height " + mGrabberConfig.mHeight);
+                    args.append(" --crop-left " + mGrabberConfig.mCropLeft);
+                    args.append(" --crop-right " + mGrabberConfig.mCropRight);
+                    args.append(" --crop-top " + mGrabberConfig.mCropTop);
+                    args.append(" --crop-bottom " + mGrabberConfig.mCropBottom);
+                    args.append(" --size-decimator " + mGrabberConfig.mSizeDecimation);
+                    args.append(" --frame-decimator " + mGrabberConfig.mFrameDecimation);
+                    args.append(" --red-threshold " + mGrabberConfig.mRedSignalThreshold);
+                    args.append(" --green-threshold " + mGrabberConfig.mGreenSignalThreshold);
+                    args.append(" --blue-threshold " + mGrabberConfig.mBlueSignalThreshold);
                     if(mGrabberConfig.mMode == DimensionModes.ThreeDSBS){
                         args.append(" --3DSBS ");
                     }else if(mGrabberConfig.mMode == DimensionModes.ThreeDTAB){
