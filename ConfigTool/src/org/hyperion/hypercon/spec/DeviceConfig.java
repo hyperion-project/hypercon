@@ -1,5 +1,8 @@
 package org.hyperion.hypercon.spec;
 
+import java.util.Hashtable;
+import java.util.Properties;
+
 /**
  * The device specific configuration
  */
@@ -9,10 +12,10 @@ public class DeviceConfig {
 	public String mName     = "MyPi";
 	/** The type specification of the device */
 	public DeviceType mType = DeviceType.ws2801;
-	/** The device 'file' name */
-	public String mOutput   = "/dev/spidev0.0";
-	/** The baudrate of the device */
-	public int mBaudrate    = 250000;
+	
+	/** Device (specific) properties */
+	public final Hashtable<String, Object> mDeviceProperties = new Hashtable<String, Object>();
+
 	/** The order of the color bytes */
 	public ColorByteOrder mColorByteOrder = ColorByteOrder.RGB;
 	
@@ -26,11 +29,9 @@ public class DeviceConfig {
 		
 		strBuf.append("\t/// Device configuration contains the following fields: \n");
 		strBuf.append("\t/// * 'name'       : The user friendly name of the device (only used for display purposes)\n");
-		strBuf.append("\t/// * 'type'       : The type of the device or leds (known types for now are 'ws2801', 'ldp8806',\n");
-		strBuf.append("\t///                  'lpd6803', 'sedu', 'adalight', 'lightpack', 'test' and 'none')\n");
-		strBuf.append("\t/// * 'output'     : The output specification depends on selected device. This can for example be the\n");
-		strBuf.append("\t///                  device specifier, device serial number, or the output file name\n");
-		strBuf.append("\t/// * 'rate'       : The baudrate of the output to the device\n");
+		strBuf.append("\t/// * 'type'       : The type of the device or leds (known types for now are\n"
+				+ DeviceType.listTypes() + ")\n");
+		strBuf.append("\t/// * [device type specific configuration]\n");
 		strBuf.append("\t/// * 'colorOrder' : The order of the color bytes ('rgb', 'rbg', 'bgr', etc.).\n");
 
 		strBuf.append("\t\"device\" :\n");
@@ -38,8 +39,17 @@ public class DeviceConfig {
 		
 		strBuf.append("\t\t\"name\"       : \"").append(mName).append("\",\n");
 		strBuf.append("\t\t\"type\"       : \"").append(mType.name()).append("\",\n");
-		strBuf.append("\t\t\"output\"     : \"").append(mOutput).append("\",\n");
-		strBuf.append("\t\t\"rate\"       : ").append(mBaudrate).append(",\n");
+		for (Object key : mDeviceProperties.keySet()) {
+			Object value = mDeviceProperties.get(key);
+			if (value instanceof String)
+			{
+				strBuf.append(String.format("\t\t\"%s\"     : \"%s\",\n", key, value));
+			}
+			else
+			{
+				strBuf.append(String.format("\t\t\"%s\"     : %s,\n", key, value.toString()));
+			}
+		}
 		strBuf.append("\t\t\"colorOrder\" : \"").append(mColorByteOrder.name().toLowerCase()).append("\"\n");
 		
 		strBuf.append("\t}");

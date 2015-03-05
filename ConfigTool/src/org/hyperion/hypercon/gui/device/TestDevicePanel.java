@@ -23,7 +23,12 @@ public class TestDevicePanel extends DeviceTypePanel {
 	public void setDeviceConfig(DeviceConfig pDeviceConfig) {
 		super.setDeviceConfig(pDeviceConfig);
 		
-		mFilenameField.setText(mDeviceConfig.mOutput);
+		// Make sure that the device specific configuration (and only device specific) is set
+		String output = getValue("Output", "/tmp/hyperion.out");
+		mDeviceConfig.mDeviceProperties.clear();
+		mDeviceConfig.mDeviceProperties.put("Output",   output);
+		
+		mFilenameField.setText(output);
 	}
 	
 	private void initialise() {
@@ -36,15 +41,15 @@ public class TestDevicePanel extends DeviceTypePanel {
 		mFilenameField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				mDeviceConfig.mOutput = mFilenameField.getText();
+				mDeviceConfig.mDeviceProperties.put("Output", mFilenameField.getText());
 			}
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				mDeviceConfig.mOutput = mFilenameField.getText();
+				mDeviceConfig.mDeviceProperties.put("Output", mFilenameField.getText());
 			}
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				mDeviceConfig.mOutput = mFilenameField.getText();
+				mDeviceConfig.mDeviceProperties.put("Output", mFilenameField.getText());
 			}
 		});
 		add(mFilenameField);

@@ -25,6 +25,9 @@ public class SerialPanel extends DeviceTypePanel {
 	
 	private JLabel mBaudrateLabel;
 	private JSpinner mBaudrateSpinner;
+
+	private JLabel mDelayLabel;
+	private JSpinner mDelaySpinner;
 	
 
 	public SerialPanel() {
@@ -37,8 +40,18 @@ public class SerialPanel extends DeviceTypePanel {
 	public void setDeviceConfig(DeviceConfig pDeviceConfig) {
 		super.setDeviceConfig(pDeviceConfig);
 
-		mOutputCombo.setSelectedItem(mDeviceConfig.mOutput);
-		((SpinnerNumberModel)mBaudrateSpinner.getModel()).setValue(mDeviceConfig.mBaudrate);
+		// Make sure that the device specific configuration (and only device specific) is set
+		String output = getValue("Output", KnownOutputs[0]);
+		int baudrate  = getValue("Baudrate", 100000);
+		int delay     = getValue("delayAfterConnect", 0);
+		mDeviceConfig.mDeviceProperties.clear();
+		mDeviceConfig.mDeviceProperties.put("Output",   output);
+		mDeviceConfig.mDeviceProperties.put("Baudrate", baudrate);
+		mDeviceConfig.mDeviceProperties.put("delayAfterConnect", delay);
+		
+		mOutputCombo.setSelectedItem(output);
+		((SpinnerNumberModel)mBaudrateSpinner.getModel()).setValue(baudrate);
+		((SpinnerNumberModel)mDelaySpinner.getModel()).setValue(delay);
 	}
 	
 	private void initialise() {
@@ -57,10 +70,19 @@ public class SerialPanel extends DeviceTypePanel {
 		add(mBaudrateLabel);
 		
 		mBaudrateSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 1000000, 128));
-		mBaudrateSpinner .setMaximumSize(maxDim);
+		mBaudrateSpinner.setMaximumSize(maxDim);
 		mBaudrateSpinner.addChangeListener(mChangeListener);
 		add(mBaudrateSpinner);
 	
+		mDelayLabel = new JLabel("Delay [ms]: ");
+		mDelayLabel.setMinimumSize(firstColMinDim);
+		add(mDelayLabel);
+
+		mDelaySpinner = new JSpinner(new SpinnerNumberModel(0, 0, 10000, 100));
+		mDelaySpinner.setMaximumSize(maxDim);
+		mDelaySpinner.addChangeListener(mChangeListener);
+		add(mDelaySpinner);
+		
 
 		GroupLayout layout = new GroupLayout(this);
 		layout.setAutoCreateGaps(true);
@@ -69,10 +91,12 @@ public class SerialPanel extends DeviceTypePanel {
 		layout.setHorizontalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup()
 						.addComponent(mOutputLabel)
-						.addComponent(mBaudrateLabel))
+						.addComponent(mBaudrateLabel)
+						.addComponent(mDelayLabel))
 				.addGroup(layout.createParallelGroup()
 						.addComponent(mOutputCombo)
-						.addComponent(mBaudrateSpinner))
+						.addComponent(mBaudrateSpinner)
+						.addComponent(mDelaySpinner))
 				);
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup()
@@ -81,6 +105,9 @@ public class SerialPanel extends DeviceTypePanel {
 				.addGroup(layout.createParallelGroup()
 						.addComponent(mBaudrateLabel)
 						.addComponent(mBaudrateSpinner))
+				.addGroup(layout.createParallelGroup()
+						.addComponent(mDelayLabel)
+						.addComponent(mDelaySpinner))
 				);		
 	}
 	
@@ -88,17 +115,20 @@ public class SerialPanel extends DeviceTypePanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == mOutputCombo) {
-				mDeviceConfig.mOutput = (String)mOutputCombo.getSelectedItem();
+				mDeviceConfig.mDeviceProperties.put("Output", mOutputCombo.getSelectedItem());
 			} else if (e.getSource() == mBaudrateSpinner) {
-				mDeviceConfig.mBaudrate = (Integer)mBaudrateSpinner.getValue();
+				mDeviceConfig.mDeviceProperties.put("Baudrate", mBaudrateSpinner.getValue());
+			} else if (e.getSource() == mDelaySpinner) {
+				mDeviceConfig.mDeviceProperties.put("delayAfterConnect", mDelaySpinner.getValue());
 			}
+			
 		}
 	};
 	
 	private ChangeListener mChangeListener = new ChangeListener() {
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			mDeviceConfig.mBaudrate = (Integer)mBaudrateSpinner.getValue();
+			mDeviceConfig.mDeviceProperties.put("Baudrate", mBaudrateSpinner.getValue());
 		}
 	};
 }

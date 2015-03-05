@@ -21,4 +21,30 @@ public abstract class DeviceTypePanel extends JPanel {
 		mDeviceConfig = pDeviceConfig;
 	}
 	
+	public String getValue(String pKey, String pDefault) {
+		if (!mDeviceConfig.mDeviceProperties.contains(pKey)) {
+			return pDefault;
+		}
+		return mDeviceConfig.mDeviceProperties.get(pKey).toString();
+	}
+	
+	public int getValue(String pKey, int pDefault) {
+		if (!mDeviceConfig.mDeviceProperties.contains(pKey)) {
+			return pDefault;
+		}
+		try {
+			return Integer.parseInt(mDeviceConfig.mDeviceProperties.get(pKey).toString());
+		} catch (Throwable t) {}
+		return pDefault;
+	}
+	
+	public boolean getValue(String pKey, boolean pDefault) {
+		if (!mDeviceConfig.mDeviceProperties.contains(pKey)) {
+			return pDefault;
+		}
+		try {
+			return Boolean.parseBoolean(mDeviceConfig.mDeviceProperties.get(pKey).toString());
+		} catch (Throwable t) {}
+		return pDefault;
+	}
 }

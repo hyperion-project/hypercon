@@ -18,11 +18,11 @@ public class TesConfigWriter {
 		ImageProcessConfig imageConfig = new ImageProcessConfig();
 		MiscConfig miscConfig = new MiscConfig();
 		
-		deviceConfig.mBaudrate = 4800;
-		deviceConfig.mColorByteOrder = ColorByteOrder.BGR;
 		deviceConfig.mName = "DAG";
-		deviceConfig.mOutput = "/dev/null";
 		deviceConfig.mType = DeviceType.lpd6803;
+		deviceConfig.mDeviceProperties.put("Output", "/dev/null");
+		deviceConfig.mDeviceProperties.put("Baudrate", 4800);
+		deviceConfig.mColorByteOrder = ColorByteOrder.BGR;
 		
 		
 		ConfigurationFile configFile = new ConfigurationFile();
