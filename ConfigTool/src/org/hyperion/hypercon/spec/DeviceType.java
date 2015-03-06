@@ -63,6 +63,19 @@ public enum DeviceType {
 	private DeviceType(final String name) {
 		mName        = name;
 	}
+
+	/**
+	 * Returns the type identifier as used by hyperion to determine the device type
+	 * @return
+	 */
+	public String getTypeId() {
+		if (this == hyperion_usbasp_ws2801) {
+			return "hyperion-usbasp-ws2801";
+		} else if (this == hyperion_usbasp_ws2812) {
+			return "hyperion-usbasp-ws2812";
+		}
+		return super.name();
+	}
 	
 	/**
 	 * Returns the configuration panel for the this device-type (or null if no configuration is required)
