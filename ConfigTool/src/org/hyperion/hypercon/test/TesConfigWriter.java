@@ -20,8 +20,8 @@ public class TesConfigWriter {
 		
 		deviceConfig.mName = "DAG";
 		deviceConfig.mType = DeviceType.lpd6803;
-		deviceConfig.mDeviceProperties.put("Output", "/dev/null");
-		deviceConfig.mDeviceProperties.put("Baudrate", 4800);
+		deviceConfig.mDeviceProperties.put("output", "/dev/null");
+		deviceConfig.mDeviceProperties.put("baudrate", 4800);
 		deviceConfig.mColorByteOrder = ColorByteOrder.BGR;
 		
 		

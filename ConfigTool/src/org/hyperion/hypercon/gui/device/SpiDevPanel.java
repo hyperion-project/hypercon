@@ -38,12 +38,12 @@ public class SpiDevPanel extends DeviceTypePanel {
 		super.setDeviceConfig(pDeviceConfig);
 
 		// Make sure that the device specific configuration (and only device specific) is set
-		String output = getValue("Output", KnownOutputs[0]);
-		int baudrate  = getValue("Baudrate", 1000000);
+		String output = getValue("output", KnownOutputs[0]);
+		int baudrate  = getValue("baudrate", 1000000);
 		
 		mDeviceConfig.mDeviceProperties.clear();
-		mDeviceConfig.mDeviceProperties.put("Output",   output);
-		mDeviceConfig.mDeviceProperties.put("Baudrate", baudrate);
+		mDeviceConfig.mDeviceProperties.put("output",   output);
+		mDeviceConfig.mDeviceProperties.put("baudrate", baudrate);
 		
 		mOutputCombo.setSelectedItem(output);
 		((SpinnerNumberModel)mBaudrateSpinner.getModel()).setValue(baudrate);
@@ -96,9 +96,9 @@ public class SpiDevPanel extends DeviceTypePanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == mOutputCombo && mOutputCombo.getSelectedItem() != null) {
-				mDeviceConfig.mDeviceProperties.put("Output", mOutputCombo.getSelectedItem());
+				mDeviceConfig.mDeviceProperties.put("output", mOutputCombo.getSelectedItem());
 			} else if (e.getSource() == mBaudrateSpinner) {
-				mDeviceConfig.mDeviceProperties.put("Baudrate", mBaudrateSpinner.getValue());
+				mDeviceConfig.mDeviceProperties.put("baudrate", mBaudrateSpinner.getValue());
 			}
 		}
 	};
@@ -106,7 +106,7 @@ public class SpiDevPanel extends DeviceTypePanel {
 	private ChangeListener mChangeListener = new ChangeListener() {
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			mDeviceConfig.mDeviceProperties.put("Baudrate", mBaudrateSpinner.getValue());
+			mDeviceConfig.mDeviceProperties.put("baudrate", mBaudrateSpinner.getValue());
 		}
 	};
 }
