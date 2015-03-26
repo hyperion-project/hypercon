@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create_run_jar" name="Create Runnable Jar for Project ConfigTool">
-    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
-    <!--ANT 1.7 is required                                        -->
-    <target name="create_run_jar">
-        <jar destfile="/Users/tvdzwan/Projects/hyperion/hypercon-git/deploy/HyperCon_ssh.jar" filesetmanifest="mergewithoutmain">
-            <manifest>
-                <attribute name="Main-Class" value="org.hyperion.hypercon.Main"/>
-                <attribute name="Class-Path" value="."/>
-            </manifest>
-            <fileset dir="/Users/tvdzwan/Projects/hyperion/hypercon-git/ConfigTool/classes"/>
-            <zipfileset excludes="META-INF/*.SF" src="/Users/tvdzwan/Projects/hyperion/hypercon-git/ConfigTool/lib/ColorPicker.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="/Users/tvdzwan/Projects/hyperion/hypercon-git/ConfigTool/lib/jsch-0.1.51.jar"/>
-        </jar>
-    </target>
+	<tstamp/>
+	<property name="version" value="1.0" />
+
+	<property name="deploy.dir"  value="${basedir}/../deploy" />
+
+	<target name="create_run_jar">
+		<jar destfile="${deploy.dir}/HyperCon_ssh.jar" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="org.hyperion.hypercon.Main"/>
+				<attribute name="Class-Path" value="."/>
+			</manifest>
+			<fileset dir="${basedir}/classes"/>
+			<zipfileset excludes="META-INF/*.SF" src="${basedir}/lib/ColorPicker.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="${basedir}/lib/jsch-0.1.51.jar"/>
+		</jar>
+	</target>
 </project>
