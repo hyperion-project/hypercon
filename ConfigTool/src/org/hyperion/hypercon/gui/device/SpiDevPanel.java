@@ -39,11 +39,11 @@ public class SpiDevPanel extends DeviceTypePanel {
 
 		// Make sure that the device specific configuration (and only device specific) is set
 		String output = getValue("output", KnownOutputs[0]);
-		int baudrate  = getValue("baudrate", 1000000);
+		int baudrate  = getValue("rate",   1000000);
 		
 		mDeviceConfig.mDeviceProperties.clear();
-		mDeviceConfig.mDeviceProperties.put("output",   output);
-		mDeviceConfig.mDeviceProperties.put("baudrate", baudrate);
+		mDeviceConfig.mDeviceProperties.put("output", output);
+		mDeviceConfig.mDeviceProperties.put("rate",   baudrate);
 		
 		mOutputCombo.setSelectedItem(output);
 		((SpinnerNumberModel)mBaudrateSpinner.getModel()).setValue(baudrate);
@@ -106,7 +106,7 @@ public class SpiDevPanel extends DeviceTypePanel {
 	private ChangeListener mChangeListener = new ChangeListener() {
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			mDeviceConfig.mDeviceProperties.put("baudrate", mBaudrateSpinner.getValue());
+			mDeviceConfig.mDeviceProperties.put("rate", mBaudrateSpinner.getValue());
 		}
 	};
 }

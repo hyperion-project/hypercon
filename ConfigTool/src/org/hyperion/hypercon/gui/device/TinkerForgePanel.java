@@ -41,7 +41,7 @@ public class TinkerForgePanel extends DeviceTypePanel {
 		String host = getValue("output", "127.0.0.1");
 		int port    = getValue("port", 4223);
 		String uid  = getValue("uid", "");
-		int rate    = getValue("Baudrate", 100000);
+		int rate    = getValue("rate", 100000);
 		mDeviceConfig.mDeviceProperties.clear();
 		mDeviceConfig.mDeviceProperties.put("output",   host);
 		mDeviceConfig.mDeviceProperties.put("port", port);

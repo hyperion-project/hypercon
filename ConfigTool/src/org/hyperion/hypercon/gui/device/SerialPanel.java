@@ -42,11 +42,11 @@ public class SerialPanel extends DeviceTypePanel {
 
 		// Make sure that the device specific configuration (and only device specific) is set
 		String output = getValue("output", KnownOutputs[0]);
-		int baudrate  = getValue("baudrate", 100000);
+		int baudrate  = getValue("rate", 100000);
 		int delay     = getValue("delayAfterConnect", 0);
 		mDeviceConfig.mDeviceProperties.clear();
-		mDeviceConfig.mDeviceProperties.put("output",   output);
-		mDeviceConfig.mDeviceProperties.put("baudrate", baudrate);
+		mDeviceConfig.mDeviceProperties.put("output", output);
+		mDeviceConfig.mDeviceProperties.put("rate",   baudrate);
 		mDeviceConfig.mDeviceProperties.put("delayAfterConnect", delay);
 		
 		mOutputCombo.setSelectedItem(output);
@@ -117,7 +117,7 @@ public class SerialPanel extends DeviceTypePanel {
 			if (e.getSource() == mOutputCombo) {
 				mDeviceConfig.mDeviceProperties.put("output", mOutputCombo.getSelectedItem());
 			} else if (e.getSource() == mBaudrateSpinner) {
-				mDeviceConfig.mDeviceProperties.put("baudrate", mBaudrateSpinner.getValue());
+				mDeviceConfig.mDeviceProperties.put("rate", mBaudrateSpinner.getValue());
 			} else if (e.getSource() == mDelaySpinner) {
 				mDeviceConfig.mDeviceProperties.put("delayAfterConnect", mDelaySpinner.getValue());
 			}
@@ -128,7 +128,7 @@ public class SerialPanel extends DeviceTypePanel {
 	private ChangeListener mChangeListener = new ChangeListener() {
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			mDeviceConfig.mDeviceProperties.put("baudrate", mBaudrateSpinner.getValue());
+			mDeviceConfig.mDeviceProperties.put("rate", mBaudrateSpinner.getValue());
 		}
 	};
 }

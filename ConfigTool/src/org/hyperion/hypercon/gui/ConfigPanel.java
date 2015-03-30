@@ -15,6 +15,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import org.hyperion.hypercon.ConfigurationFile;
@@ -134,10 +135,10 @@ public class ConfigPanel extends JPanel {
 		if (mSpecificationTabs == null) {
 			mSpecificationTabs = new JTabbedPane();
 			
-			mSpecificationTabs.addTab("Hardware", getHardwarePanel());
-			mSpecificationTabs.addTab("Process", getProcessPanel());
-			mSpecificationTabs.addTab("External", getExternalPanel());
-			mSpecificationTabs.addTab("SSH", getTestingPanel());
+			mSpecificationTabs.addTab("Hardware", new JScrollPane(getHardwarePanel()));
+			mSpecificationTabs.addTab("Process",  new JScrollPane(getProcessPanel()));
+			mSpecificationTabs.addTab("External", new JScrollPane(getExternalPanel()));
+			mSpecificationTabs.addTab("SSH",      new JScrollPane(getTestingPanel()));
 		}
 		return mSpecificationTabs;
 	}
