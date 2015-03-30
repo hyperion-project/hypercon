@@ -3,6 +3,7 @@ package org.hyperion.hypercon.spec;
 import org.hyperion.hypercon.gui.device.DeviceTypePanel;
 import org.hyperion.hypercon.gui.device.LightPackPanel;
 import org.hyperion.hypercon.gui.device.PhilipsHuePanel;
+import org.hyperion.hypercon.gui.device.PiBlasterPanel;
 import org.hyperion.hypercon.gui.device.SerialPanel;
 import org.hyperion.hypercon.gui.device.TestDevicePanel;
 import org.hyperion.hypercon.gui.device.SpiDevPanel;
@@ -106,11 +107,13 @@ public enum DeviceType {
 			case lightpack:
 				mConfigPanel = new LightPackPanel();
 				break;
+			case piblaster:
+				mConfigPanel = new PiBlasterPanel();
+				break;
 			case hyperion_usbasp_ws2801:
 			case hyperion_usbasp_ws2812:
 			case multi_lightpack:
 			case paintpack:
-			case piblaster:
 			case ws2812b:
 			case none:
 				break;
