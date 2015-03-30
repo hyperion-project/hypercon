@@ -22,6 +22,9 @@ public class ColorConfig {
 	/** The update frequency of the leds in Hz */
 	public double mSmoothingUpdateFrequency_Hz = 20.0;
 	
+	/** The number of periods (1/mSmoothingUpdateFrequency_Hz) to delay the update of the leds */
+	public int mUpdateDelay = 0;
+	
 	/**
 	 * Creates the JSON string of the configuration as used in the Hyperion daemon configfile
 	 * 
@@ -54,6 +57,7 @@ public class ColorConfig {
 		strBuf.append("\t///            - 'type'            The type of smoothing algorithm ('linear' or 'none')\n");
 		strBuf.append("\t///            - 'time_ms'         The time constant for smoothing algorithm in milliseconds\n");
 		strBuf.append("\t///            - 'updateFrequency' The update frequency of the leds in Hz\n");
+		strBuf.append("\t///            - 'updateDelay'     The delay of the output to leds (in periods of smoothing)\n");
 
 		strBuf.append("\t\"color\" :\n");
 		strBuf.append("\t{\n");
@@ -91,6 +95,7 @@ public class ColorConfig {
 		strBuf.append(preamble).append(String.format(Locale.ROOT, "\t\"type\"            : \"%s\",\n", (mSmoothingEnabled) ? mSmoothingType.name() : "none"));
 		strBuf.append(preamble).append(String.format(Locale.ROOT, "\t\"time_ms\"         : %d,\n", mSmoothingTime_ms));
 		strBuf.append(preamble).append(String.format(Locale.ROOT, "\t\"updateFrequency\" : %.4f\n", mSmoothingUpdateFrequency_Hz));
+		strBuf.append(preamble).append(String.format(Locale.ROOT, "\t\"updateDelay\"     : %d\n", mUpdateDelay));
 		
 		strBuf.append(preamble).append("}");
 		return strBuf.toString();

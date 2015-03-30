@@ -30,6 +30,8 @@ public class ColorSmoothingPanel extends JPanel {
 	private JSpinner mTimeSpinner;
 	private JLabel mUpdateFrequencyLabel;
 	private JSpinner mUpdateFrequencySpinner;
+	private JLabel mUpdateDelayLabel;
+	private JSpinner mUpdateDelaySpinner;
 
 	public ColorSmoothingPanel(final ColorConfig pColorConfig) {
 		super();
@@ -77,6 +79,13 @@ public class ColorSmoothingPanel extends JPanel {
 		mUpdateFrequencySpinner.addChangeListener(mChangeListener);
 		add(mUpdateFrequencySpinner);
 
+		mUpdateDelayLabel = new JLabel("Update Delay [Periods of Smoothing (1/Update Freq)]: ");
+		add(mUpdateDelayLabel);
+		
+		mUpdateDelaySpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mUpdateDelay, 0, 2048, 1));
+		mUpdateDelaySpinner.addChangeListener(mChangeListener);
+		add(mUpdateDelaySpinner);
+		
 		GroupLayout layout = new GroupLayout(this);
 		layout.setAutoCreateGaps(true);
 		setLayout(layout);
@@ -87,12 +96,14 @@ public class ColorSmoothingPanel extends JPanel {
 						.addComponent(mTypeLabel)
 						.addComponent(mTimeLabel)
 						.addComponent(mUpdateFrequencyLabel)
+						.addComponent(mUpdateDelayLabel)
 						)
 				.addGroup(layout.createParallelGroup()
 						.addComponent(mEnabledCheck)
 						.addComponent(mTypeCombo)
 						.addComponent(mTimeSpinner)
 						.addComponent(mUpdateFrequencySpinner)
+						.addComponent(mUpdateDelaySpinner)
 						));
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addComponent(mEnabledCheck)
@@ -107,6 +118,10 @@ public class ColorSmoothingPanel extends JPanel {
 				.addGroup(layout.createParallelGroup()
 						.addComponent(mUpdateFrequencyLabel)
 						.addComponent(mUpdateFrequencySpinner)
+						)
+				.addGroup(layout.createParallelGroup()
+						.addComponent(mUpdateDelayLabel)
+						.addComponent(mUpdateDelaySpinner)
 						));
 		
 		toggleEnabled(mColorConfig.mSmoothingEnabled);
@@ -119,6 +134,8 @@ public class ColorSmoothingPanel extends JPanel {
 		mTimeSpinner.setEnabled(pEnabled);
 		mUpdateFrequencyLabel.setEnabled(pEnabled);
 		mUpdateFrequencySpinner.setEnabled(pEnabled);
+		mUpdateDelayLabel.setEnabled(pEnabled);
+		mUpdateDelaySpinner.setEnabled(pEnabled);
 	}
 	
 	private final ActionListener mActionListener = new ActionListener() {
@@ -136,6 +153,7 @@ public class ColorSmoothingPanel extends JPanel {
 		public void stateChanged(ChangeEvent e) {
 			mColorConfig.mSmoothingTime_ms = (Integer)mTimeSpinner.getValue();
 			mColorConfig.mSmoothingUpdateFrequency_Hz = (Double)mUpdateFrequencySpinner.getValue();
+			mColorConfig.mUpdateDelay = (Integer)mUpdateDelaySpinner.getValue();
 		}
 	};
 }
