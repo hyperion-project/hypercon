@@ -1,18 +1,14 @@
 package org.hyperion.hypercon;
 
-import java.awt.*;
-import java.io.IOException;
-import java.util.Observable;
-
+import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 import org.hyperion.ssh.ConnectionAdapter;
 import org.hyperion.ssh.ConnectionListener;
-import org.hyperion.ssh.ConnectionMessageCollector;
 import org.hyperion.ssh.PiSshConnection;
 
-import com.jcraft.jsch.JSchException;
-
-import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.util.Observable;
 
 /**
  * @author Fabian Hertwig
@@ -173,6 +169,18 @@ public class SshConnectionModel extends Observable {
 		return false;
 	}
 
+	/**
+	 *
+	 * @return false if there is no connection, true after the command was executed
+	 */
+	public boolean sendCommand(String command) throws JSchException {
+		if(isConnected()){
+
+			mSshConnection.execute(command);
+			return true;
+		}
+		return false;
+	}
 
 
 	/**
@@ -310,7 +318,7 @@ public class SshConnectionModel extends Observable {
 		}
 		return hex.toString();
 	}
-	
-	
+
+
 
 }
