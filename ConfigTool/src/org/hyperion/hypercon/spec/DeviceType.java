@@ -1,10 +1,10 @@
 package org.hyperion.hypercon.spec;
 
-import org.hyperion.hypercon.gui.device.DeviceTypePanel;
-import org.hyperion.hypercon.gui.device.LightPackPanel;
-import org.hyperion.hypercon.gui.device.SerialPanel;
-import org.hyperion.hypercon.gui.device.TestDevicePanel;
-import org.hyperion.hypercon.gui.device.Ws2801Panel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.DeviceTypePanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.LightPackPanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.SerialPanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.TestDevicePanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.Ws2801Panel;
 
 /**
  * Enumeration of known device types
