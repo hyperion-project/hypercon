@@ -1,27 +1,18 @@
 package org.hyperion.hypercon.gui;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-
 import org.hyperion.hypercon.ConfigurationFile;
 import org.hyperion.hypercon.LedFrameFactory;
 import org.hyperion.hypercon.LedString;
 import org.hyperion.hypercon.Main;
 import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * The main-config panel of HyperCon. Includes the configuration and the panels to edit and 
@@ -205,6 +196,7 @@ public class ConfigPanel extends JPanel {
 			mTestingPanel.setLayout(new BoxLayout(mTestingPanel, BoxLayout.Y_AXIS));
 			mTestingPanel.add(new SshConnectionPanel(sshConfig));
 			mTestingPanel.add(new SshColorPickingPanel(sshConfig));
+			mTestingPanel.add(new SshCommandSenderPanel(sshConfig));
 
 			mTestingPanel.add(Box.createVerticalGlue());
 
