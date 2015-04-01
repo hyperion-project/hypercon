@@ -1,13 +1,13 @@
 package org.hyperion.hypercon.spec;
 
-import org.hyperion.hypercon.gui.device.DeviceTypePanel;
-import org.hyperion.hypercon.gui.device.LightPackPanel;
-import org.hyperion.hypercon.gui.device.PhilipsHuePanel;
-import org.hyperion.hypercon.gui.device.PiBlasterPanel;
-import org.hyperion.hypercon.gui.device.SerialPanel;
-import org.hyperion.hypercon.gui.device.TestDevicePanel;
-import org.hyperion.hypercon.gui.device.SpiDevPanel;
-import org.hyperion.hypercon.gui.device.TinkerForgePanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.DeviceTypePanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.LightPackPanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.PhilipsHuePanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.PiBlasterPanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.SerialPanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.SpiDevPanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.TestDevicePanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.TinkerForgePanel;
 
 /**
  * Enumeration of known device types

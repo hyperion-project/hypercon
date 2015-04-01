@@ -1,18 +1,15 @@
 package org.hyperion.hypercon;
 
+import org.hyperion.hypercon.spec.*;
+
+import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Vector;
 
-import org.hyperion.hypercon.spec.ColorConfig;
-import org.hyperion.hypercon.spec.DeviceConfig;
-import org.hyperion.hypercon.spec.ImageProcessConfig;
-import org.hyperion.hypercon.spec.Led;
-import org.hyperion.hypercon.spec.LedFrameConstruction;
-import org.hyperion.hypercon.spec.MiscConfig;
 /**
- * The full configuration of Hyperion with sub-items for device, color and miscelanuous items. 
+ * The full configuration of Hyperion with sub-items for device, color, grabber-v4l2 and miscelanuous items.
  */
 public class LedString {
 	/** The configuration of the output device */
@@ -29,6 +26,9 @@ public class LedString {
 	
 	/** The miscellaneous configuration (bootsequence, blackborder detector, etc) */
 	public final MiscConfig mMiscConfig = new MiscConfig();
+
+	/** The configuration for the grabber-v4l2" */
+	public final Grabberv4l2Config mGrabberv4l2Config = new Grabberv4l2Config();
 
 	/** The translation of the led frame construction and image processing to individual led configuration */
 	public Vector<Led> leds;
@@ -56,16 +56,20 @@ public class LedString {
 
 			JsonStringBuffer jsonBuf = new JsonStringBuffer(1);
 
-			ledsAppendTo(jsonBuf);
-			
-			jsonBuf.newLine();
-			
 			mProcessConfig.appendTo(jsonBuf);
 
 			jsonBuf.newLine();
 			
 			mMiscConfig.appendTo(jsonBuf);
 			
+			jsonBuf.newLine();
+
+			mGrabberv4l2Config.appendTo(jsonBuf);
+
+			jsonBuf.newLine();
+
+			ledsAppendTo(jsonBuf);
+
 			jsonBuf.newLine();
 
 			jsonBuf.addValue("endOfJson", "endOfJson", true);
@@ -101,5 +105,23 @@ public class LedString {
 			pJsonBuf.stopObject(led.equals(leds.get(leds.size()-1)));
 		}
 		pJsonBuf.stopArray(false);
+	}
+
+	public static void main(String[] pArgs) {
+
+		LedString ls = new LedString();
+		Led led = new Led();
+		led.mImageRectangle = new Rectangle(1,1,1,1);
+		led.mLedSeqNr = 0;
+		led.mLocation = new Point(1,2);
+		led.mSide = BorderSide.bottom;
+		ls.leds = new Vector<Led>();
+		ls.leds.add(led);
+		try {
+			ls.saveConfigFile("testclassconfig.json");
+
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 }

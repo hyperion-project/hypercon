@@ -27,7 +27,7 @@ public class MiscConfig {
 	public int mFrameGrabberInterval_ms = 100;
 
 	/** Flag indicating that the XBMC checker is enabled */
-	public boolean mXbmcCheckerEnabled = true;
+	public boolean mXbmcCheckerEnabled = false;
 	/** The IP-address of XBMC */
 	public String mXbmcAddress  = "127.0.0.1";
 	/** The TCP JSON-Port of XBMC */
