@@ -1,12 +1,12 @@
 package org.hyperion.hypercon;
 
+import org.hyperion.hypercon.spec.*;
+
 import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Vector;
-
-import org.hyperion.hypercon.spec.*;
 
 /**
  * The full configuration of Hyperion with sub-items for device, color, grabber-v4l2 and miscelanuous items.
@@ -27,7 +27,7 @@ public class LedString {
 	/** The miscellaneous configuration (bootsequence, blackborder detector, etc) */
 	public final MiscConfig mMiscConfig = new MiscConfig();
 
-	/** The configuration forthe grabber-v4l2" */
+	/** The configuration for the grabber-v4l2" */
 	public final Grabberv4l2Config mGrabberv4l2Config = new Grabberv4l2Config();
 
 	/** The translation of the led frame construction and image processing to individual led configuration */
