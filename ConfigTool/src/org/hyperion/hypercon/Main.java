@@ -4,11 +4,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.UIManager;
+import javax.swing.*;
 
 import org.hyperion.hypercon.gui.ConfigPanel;
+import org.hyperion.hypercon.gui.SSH_Tab.SSHTrafficPrinterFrame;
 import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
 import org.hyperion.hypercon.spec.TransformConfig;
 
@@ -39,6 +38,7 @@ public class Main {
 		
 		// Create a frame for the configuration panel
 		JFrame frame = new JFrame();
+		ErrorHandling.mainframe = frame;
 		String title = "Hyperion configuration Tool" + ((versionStr != null && !versionStr.isEmpty())? (" (" + versionStr + ")") : ""); 
 		frame.setTitle(title);
 		frame.setSize(1300, 700);
@@ -56,11 +56,13 @@ public class Main {
 					configFile.store(ledString.mColorConfig);
 					configFile.store(ledString.mMiscConfig);
 					configFile.store(sshConfig);
+					configFile.store(ledString.mGrabberv4l2Config);
 					configFile.save(configFilename);
 				} catch (Throwable t) {
 					System.err.println("Failed to save " + configFilename);
 				}
 				SshConnectionModel.getInstance().disconnect();
+				SSHTrafficPrinterFrame.close();
 			}
 		});
 		
@@ -75,6 +77,7 @@ public class Main {
 				configFile.restore(ledString.mColorConfig);
 				configFile.restore(ledString.mMiscConfig);
 				configFile.restore(sshConfig);
+				configFile.restore(ledString.mGrabberv4l2Config);
 			} catch (Throwable t) {
 				System.err.println("Failed to load " + configFilename);
 			}
@@ -88,5 +91,10 @@ public class Main {
 		
 		// Show the frame
 		frame.setVisible(true);
+	}
+
+	static void ShowError(String message){
+		new JOptionPane(message, JOptionPane.ERROR_MESSAGE);
+
 	}
 }

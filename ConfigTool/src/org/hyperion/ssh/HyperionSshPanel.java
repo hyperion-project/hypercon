@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import com.jcraft.jsch.JSchException;
+import org.hyperion.hypercon.ErrorHandling;
 
 public class HyperionSshPanel extends JPanel {
 
@@ -231,7 +232,11 @@ public class HyperionSshPanel extends JPanel {
 					}
 					ConnectionMessageCollector cmc = new ConnectionMessageCollector();
 					mSshCon.addConnectionListener(cmc);
-					mSshCon.execute("hyperiond");
+					try {
+						mSshCon.execute("hyperiond");
+					} catch (JSchException e1) {
+						ErrorHandling.ShowException(e1);
+					}
 					mSshCon.removeConnectionListener(cmc);
 					
 					if (cmc.mLines.isEmpty()) {
@@ -263,7 +268,11 @@ public class HyperionSshPanel extends JPanel {
 					}
 					ConnectionMessageCollector cmc = new ConnectionMessageCollector();
 					mSshCon.addConnectionListener(cmc);
-					mSshCon.execute("ps -e | grep hyperiond");
+					try {
+						mSshCon.execute("ps -e | grep hyperiond");
+					} catch (JSchException e1) {
+						ErrorHandling.ShowException(e1);
+					}
 					mSshCon.removeConnectionListener(cmc);
 					
 					if (cmc.mLines.isEmpty()) {
@@ -289,7 +298,11 @@ public class HyperionSshPanel extends JPanel {
 					}
 					ConnectionMessageCollector cmc = new ConnectionMessageCollector();
 					mSshCon.addConnectionListener(cmc);
-					mSshCon.execute("sudo netstat -tlp | grep 19444 | grep hyperiond");
+					try {
+						mSshCon.execute("sudo netstat -tlp | grep 19444 | grep hyperiond");
+					} catch (JSchException e1) {
+						ErrorHandling.ShowException(e1);
+					}
 					mSshCon.removeConnectionListener(cmc);
 					
 					if (cmc.mLines.isEmpty()) {
@@ -314,7 +327,11 @@ public class HyperionSshPanel extends JPanel {
 					}
 					ConnectionMessageCollector cmc = new ConnectionMessageCollector();
 					mSshCon.addConnectionListener(cmc);
-					mSshCon.execute("sudo netstat -tlp | grep 19445 | grep hyperiond");
+					try {
+						mSshCon.execute("sudo netstat -tlp | grep 19445 | grep hyperiond");
+					} catch (JSchException e1) {
+						ErrorHandling.ShowException(e1);
+					}
 					mSshCon.removeConnectionListener(cmc);
 					
 					if (cmc.mLines.isEmpty()) {
@@ -339,7 +356,11 @@ public class HyperionSshPanel extends JPanel {
 					}
 					ConnectionMessageCollector cmc = new ConnectionMessageCollector();
 					mSshCon.addConnectionListener(cmc);
-					mSshCon.execute("sudo netstat -tlp | grep 19333 | grep hyperiond");
+					try {
+						mSshCon.execute("sudo netstat -tlp | grep 19333 | grep hyperiond");
+					} catch (JSchException e1) {
+						ErrorHandling.ShowException(e1);
+					}
 					mSshCon.removeConnectionListener(cmc);
 					
 					if (cmc.mLines.isEmpty()) {
@@ -364,9 +385,13 @@ public class HyperionSshPanel extends JPanel {
 					}
 					ConnectionMessageCollector cmc = new ConnectionMessageCollector();
 					mSshCon.addConnectionListener(cmc);
-					mSshCon.execute("/sbin/initctl stop hyperion");
-					mSshCon.execute("sudo hyperiond /etc/hyperion.config.json");
-					
+					try {
+						mSshCon.execute("/sbin/initctl stop hyperion");
+						mSshCon.execute("sudo hyperiond /etc/hyperion.config.json");
+					} catch (JSchException e1) {
+						ErrorHandling.ShowException(e1);
+					}
+
 					try { Thread.sleep(5000); } catch (Throwable t) {}
 //					mSshCon.execute("sudo killall hyperiond");
 					mSshCon.removeConnectionListener(cmc);

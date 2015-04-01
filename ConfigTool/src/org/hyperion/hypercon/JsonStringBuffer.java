@@ -75,7 +75,10 @@ public class JsonStringBuffer {
 		
 		++mIndentLevel;
 	}
-	
+
+	/**
+	 * @param endOfSection
+	 */
 	public void stopObject(boolean endOfSection) {
 		--mIndentLevel;
 
@@ -87,14 +90,20 @@ public class JsonStringBuffer {
 		}
 		
 	}
-	
+
+	/**
+	 *
+	 */
 	public void stopObject() {
 		--mIndentLevel;
 
 		startLine();
 		mStrBuf.append("},\n");
 	}
-	
+
+	/**
+	 * @param pKey
+	 */
 	public void startArray(String pKey) {
 		startLine();
 		mStrBuf.append('"').append(pKey).append('"').append(" : \n");
@@ -103,7 +112,10 @@ public class JsonStringBuffer {
 		
 		++mIndentLevel;
 	}
-	
+
+	/**
+	 * @param lastValue
+	 */
 	public void stopArray(boolean lastValue) {
 		--mIndentLevel;
 
@@ -114,8 +126,13 @@ public class JsonStringBuffer {
 			mStrBuf.append("],\n");
 		}
 	}
-	
-	
+
+
+	/**
+	 * @param pKey
+	 * @param pValue
+	 * @param lastValue
+	 */
 	public void addRawValue(String pKey, String pValue, boolean lastValue) {
 		startLine();
 		mStrBuf.append('"').append(pKey).append('"').append(" : ").append(pValue);
@@ -125,7 +142,13 @@ public class JsonStringBuffer {
 			mStrBuf.append(",\n");
 		}
 	}
-	
+
+	/**
+	 *
+	 * @param pKey
+	 * @param pValue
+	 * @param lastValue
+	 */
 	public void addValue(String pKey, String pValue, boolean lastValue) {
 		startLine();
 		mStrBuf.append('"').append(pKey).append('"').append(" : ").append('"').append(pValue).append('"');
@@ -135,7 +158,13 @@ public class JsonStringBuffer {
 			mStrBuf.append(",\n");
 		}
 	}
-	
+
+	/**
+	 *
+	 * @param pKey
+	 * @param pValue
+	 * @param lastValue
+	 */
 	public void addValue(String pKey, double pValue, boolean lastValue) {
 		startLine();
 		mStrBuf.append('"').append(pKey).append('"').append(" : ").append(pValue);
@@ -145,7 +174,12 @@ public class JsonStringBuffer {
 			mStrBuf.append(",\n");
 		}
 	}
-	
+
+	/**
+	 * @param pKey
+	 * @param pValue
+	 * @param lastValue
+	 */
 	public void addValue(String pKey, int pValue, boolean lastValue) {
 		startLine();
 		mStrBuf.append('"').append(pKey).append('"').append(" : ").append(pValue);
@@ -155,7 +189,12 @@ public class JsonStringBuffer {
 			mStrBuf.append(",\n");
 		}
 	}
-	
+
+	/**
+	 * @param pKey
+	 * @param pValue
+	 * @param lastValue
+	 */
 	public void addValue(String pKey, boolean pValue, boolean lastValue) {
 		startLine();
 		mStrBuf.append('"').append(pKey).append('"').append(" : ").append(pValue);

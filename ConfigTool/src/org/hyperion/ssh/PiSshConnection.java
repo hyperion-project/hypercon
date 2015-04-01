@@ -1,31 +1,33 @@
 package org.hyperion.ssh;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Vector;
 
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
-import com.jcraft.jsch.UserInfo;
+import com.jcraft.jsch.*;
+
+import javax.imageio.ImageIO;
 
 public class PiSshConnection {
 	final JSch mJsch;
-	Session mSession;
+	static Session mSession;
 
 	public PiSshConnection() {
 		mJsch = new JSch();
 	}
 
-	public void connect(String pHostName, int pTcpPort, String pUsername, String pPassword) throws JSchException {
+	public void connect(String pHostName, int pTcpPort, String pUsername, String pPassword, int timeout) throws JSchException{
 		if (mSession != null) {
 			close();
 		}
 
 		try {
 			mSession = mJsch.getSession(pUsername, pHostName, pTcpPort);
+			mSession.setTimeout(timeout);
 			mSession.setPassword(pPassword);
 			mSession.setUserInfo(new UserInfo() {
 				@Override
@@ -65,9 +67,13 @@ public class PiSshConnection {
 				}
 			}
 		} catch (JSchException e) {
-			e.printStackTrace();
 			mSession = null;
+			throw e;
 		}
+	}
+
+	public void connect(String pHostName, int pTcpPort, String pUsername, String pPassword) throws JSchException {
+		connect( pHostName,  pTcpPort,  pUsername,  pPassword, 10000);
 
 	}
 
@@ -85,7 +91,7 @@ public class PiSshConnection {
 		}
 	}
 
-	public void execute(String pCommand) {
+	public void execute(String pCommand) throws JSchException {
 		if (mSession == null || !mSession.isConnected()) {
 			System.err.println("Can not execute on not existing or not connected session");
 			return;
@@ -111,11 +117,60 @@ public class PiSshConnection {
 			for (ConnectionListener conLin : mConnectionListeners) {
 				conLin.commandFinished(pCommand);
 			}
-		} catch (JSchException jscExc) {
-			jscExc.printStackTrace();
-		} catch (InterruptedException intExc) {
-			intExc.printStackTrace();
+
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+	}
+	public void getFile(String srcFile, String dstFile) throws SftpException, JSchException {
+		if (mSession == null || !mSession.isConnected()) {
+			System.err.println("Can not execute on not existing or not connected session");
+			return;
+		}
+
+			ChannelSftp channel = (ChannelSftp) mSession.openChannel("sftp");
+
+
+			for (ConnectionListener cl : mConnectionListeners) {
+				cl.getFile(srcFile,dstFile);
+			}
+
+			channel.connect();
+
+			channel.get(srcFile, dstFile);
+
+			channel.disconnect();
+
+			for (ConnectionListener conLin : mConnectionListeners) {
+				conLin.getFileFinished(srcFile, dstFile);
+			}
+
+	}
+
+	public Image getImage(String srcFile) throws JSchException, SftpException, IOException {
+		if (mSession == null || !mSession.isConnected()) {
+			System.err.println("Can not execute on not existing or not connected session");
+			return null;
+		}
+
+		ChannelSftp channel = (ChannelSftp) mSession.openChannel("sftp");
+
+
+		for (ConnectionListener cl : mConnectionListeners) {
+			cl.getFile(srcFile,"java.awt.Image");
+		}
+
+		channel.connect();
+
+		Image img = ImageIO.read(channel.get(srcFile));
+
+		channel.disconnect();
+
+		for (ConnectionListener conLin : mConnectionListeners) {
+			conLin.getFileFinished(srcFile, "image");
+		}
+		return img;
+
 	}
 
 	private final OutputStream mOutputStream = new OutputStream() {
@@ -171,5 +226,94 @@ public class PiSshConnection {
 
 	public void removeConnectionListener(ConnectionListener pListener) {
 		mConnectionListeners.remove(pListener);
+	}
+
+	public static void main(String[] pArgs) {
+		PiSshConnection con = new PiSshConnection();
+		try {
+			ConnectionAdapter ca = new ConnectionAdapter() {
+				boolean printTraffic = true;
+
+				@Override
+				public void commandExec(String pCommand) {
+					if(printTraffic){
+						System.out.println("ssh: $ " + pCommand);
+					}
+				}
+
+				@Override
+				public void commandFinished(String pCommand) {
+					if(printTraffic){
+						//Nothing to do
+					}
+				}
+
+				@Override
+				public void getFileFinished(String src, String dst) {
+					if(printTraffic){
+						System.out.println("sftp getFile(" + src + ", " + dst + ")");
+					}
+				}
+
+				@Override
+				public void addLine(String pLine) {
+					if(printTraffic){
+						System.out.println("ssh: " + pLine);
+					}
+				}
+
+				@Override
+				public void addError(String pLine) {
+					if(printTraffic){
+						System.out.println("ssh Error: " + "\u001B[31m" + pLine);
+					}
+
+				}
+
+				@Override
+				public void connected() {
+					if(printTraffic){
+						System.out.println("ssh connected");
+					}
+					super.connected();
+				}
+
+				@Override
+				public void disconnected() {
+					if(printTraffic){
+						System.out.println("ssh disconnected");
+					}
+					super.disconnected();
+				}
+			};
+
+			con.addConnectionListener(ca);
+			con.connect("192.168.178.32", 22, "pi", ".", 10000);
+
+			//con.execute("hyperion-v4l2 --screenshot");
+			ChannelSftp channel = (ChannelSftp) mSession.openChannel("sftp");
+
+
+
+			channel.connect();
+			Image img = ImageIO.read(channel.get("./screenshot.png"));
+
+			channel.disconnect();
+
+			/*
+			try {
+				con.getFile("./screenshot.png", ".");
+			} catch (SftpException e) {
+				e.printStackTrace();
+			}
+			*/
+			con.close();
+		} catch (JSchException e) {
+			e.printStackTrace();
+		} catch (SftpException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
