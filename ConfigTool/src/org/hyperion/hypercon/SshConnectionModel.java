@@ -181,7 +181,18 @@ public class SshConnectionModel extends Observable {
 		}
 		return false;
 	}
+    /**
+     *
+     * @return false if there is no connection, true after the command was executed
+     */
+    public boolean sendCommandInNewThread(String command) throws JSchException {
+        if(isConnected()){
 
+            mSshConnection.executeInThread(command);
+            return true;
+        }
+        return false;
+    }
 
 	/**
 	 *

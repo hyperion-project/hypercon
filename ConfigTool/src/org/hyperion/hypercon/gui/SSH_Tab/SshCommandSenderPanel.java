@@ -156,7 +156,7 @@ public class SshCommandSenderPanel extends JPanel implements Observer {
                     mSshConfig.sshCommands.add(new SshCommand(commands_cb.getSelectedItem().toString()));
                 }
                 try {
-                    sshConnection.sendCommand(commands_cb.getSelectedItem().toString());
+                    sshConnection.sendCommandInNewThread(commands_cb.getSelectedItem().toString());
                 } catch (JSchException e1) {
                     ErrorHandling.ShowException(e1);
                 }
