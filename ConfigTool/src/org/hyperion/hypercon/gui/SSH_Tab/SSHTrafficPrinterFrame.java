@@ -77,7 +77,6 @@ public class SSHTrafficPrinterFrame extends JFrame implements ConnectionListener
 
         add(scrollPane, BorderLayout.CENTER);
         setSize(new Dimension(300,200));
-        setAlwaysOnTop(true);
     }
 
     @Override

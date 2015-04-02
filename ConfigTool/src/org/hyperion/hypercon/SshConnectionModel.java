@@ -16,7 +16,9 @@ import java.util.Observable;
  */
 public class SshConnectionModel extends Observable {
 
-	private static String hyperionRemoteCall = "hyperion-remote ";
+
+
+    private static String hyperionRemoteCall = "hyperion-remote ";
 	private static  String hyperionGrabberV4l2Call = "hyperion-v4l2 ";
 	private static boolean printTraffic = true;
 
@@ -40,6 +42,14 @@ public class SshConnectionModel extends Observable {
 		}
 		return instance;
 	}
+
+    public static void setHyperionRemoteCall(String hyperionRemoteCall) {
+        SshConnectionModel.hyperionRemoteCall = hyperionRemoteCall;
+    }
+
+    public static void setHyperionGrabberV4l2Call(String hyperionGrabberV4l2Call) {
+        SshConnectionModel.hyperionGrabberV4l2Call = hyperionGrabberV4l2Call;
+    }
 
 	/**Tries to establish a connection
 	 * @param hostName
