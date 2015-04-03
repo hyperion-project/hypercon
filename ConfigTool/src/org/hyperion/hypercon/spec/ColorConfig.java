@@ -94,7 +94,7 @@ public class ColorConfig {
 		strBuf.append(preamble).append("{\n");
 		strBuf.append(preamble).append(String.format(Locale.ROOT, "\t\"type\"            : \"%s\",\n", (mSmoothingEnabled) ? mSmoothingType.name() : "none"));
 		strBuf.append(preamble).append(String.format(Locale.ROOT, "\t\"time_ms\"         : %d,\n", mSmoothingTime_ms));
-		strBuf.append(preamble).append(String.format(Locale.ROOT, "\t\"updateFrequency\" : %.4f\n", mSmoothingUpdateFrequency_Hz));
+		strBuf.append(preamble).append(String.format(Locale.ROOT, "\t\"updateFrequency\" : %.4f,\n", mSmoothingUpdateFrequency_Hz));
 		strBuf.append(preamble).append(String.format(Locale.ROOT, "\t\"updateDelay\"     : %d\n", mUpdateDelay));
 		
 		strBuf.append(preamble).append("}");
