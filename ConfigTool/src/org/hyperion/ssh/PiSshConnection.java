@@ -91,6 +91,21 @@ public class PiSshConnection {
 		}
 	}
 
+    public void executeInThread(final String command){
+
+        Thread thread = new Thread(){
+            public void run(){
+                try {
+                    execute(command);
+                } catch (JSchException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        thread.start();
+
+    }
 	public void execute(String pCommand) throws JSchException {
 		if (mSession == null || !mSession.isConnected()) {
 			System.err.println("Can not execute on not existing or not connected session");
@@ -109,8 +124,15 @@ public class PiSshConnection {
 			}
 			channel.connect();
 
-			while (!channel.isClosed()) {
+            int waitedTimeToCloseChannel = 0;
+			while (!channel.isClosed() || !channel.isEOF()) {
 				Thread.sleep(100);
+                waitedTimeToCloseChannel += 100;
+
+//                if(waitedTimeToCloseChannel > 30000){
+//                    break;
+//                }
+
 			}
 			channel.disconnect();
 
@@ -316,4 +338,5 @@ public class PiSshConnection {
 			e.printStackTrace();
 		}
 	}
+
 }

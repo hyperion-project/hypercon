@@ -144,11 +144,19 @@ public class SshCommandSenderPanel extends JPanel implements Observer {
             }
 
             if (e.getSource() == send_but && commands_cb.getSelectedItem() != null) {
-                if(!mSshConfig.sshCommands.contains(commands_cb.getSelectedItem())){
+
+                boolean commandAlreadyInList = false;
+                for (SshCommand sshCommand : mSshConfig.sshCommands) {
+                    if(sshCommand.getCommand().equals(commands_cb.getSelectedItem().toString())){
+                        commandAlreadyInList = true;
+                    }
+                }
+
+                if(!commandAlreadyInList){
                     mSshConfig.sshCommands.add(new SshCommand(commands_cb.getSelectedItem().toString()));
                 }
                 try {
-                    sshConnection.sendCommand(commands_cb.getSelectedItem().toString());
+                    sshConnection.sendCommandInNewThread(commands_cb.getSelectedItem().toString());
                 } catch (JSchException e1) {
                     ErrorHandling.ShowException(e1);
                 }

@@ -15,6 +15,7 @@ public class SshAndColorPickerConfig {
 	public boolean colorPickerInExpertmode;
 	public boolean colorPickerShowColorWheel;
 	public Vector<SshCommand> sshCommands;
+    public HyperionRemoteCalls.SystemTypes selectedSystemType;
 	
 	
 	
@@ -35,6 +36,8 @@ public class SshAndColorPickerConfig {
 		sshCommands.add(new SshCommand("sudo service hyperion stop"));
 		sshCommands.add(new SshCommand("sudo service hyperion restart"));
 		sshCommands.add(new SshCommand("sudo killall hyperionv4l2"));
+
+        selectedSystemType = HyperionRemoteCalls.SystemTypes.raspbian;
 
 	}
 

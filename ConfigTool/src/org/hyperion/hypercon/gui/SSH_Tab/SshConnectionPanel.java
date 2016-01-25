@@ -16,6 +16,7 @@ import javax.swing.event.DocumentListener;
 import com.jcraft.jsch.JSchException;
 import org.hyperion.hypercon.ErrorHandling;
 import org.hyperion.hypercon.SshConnectionModel;
+import org.hyperion.hypercon.spec.HyperionRemoteCalls;
 import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
 
 /**
@@ -37,6 +38,9 @@ public class SshConnectionPanel extends JPanel implements Observer {
 
 
 	// Gui objects
+    private JLabel mSystemLabel;
+    private JComboBox<String> mSystemCB;
+
 	private JLabel mAddressLabel;
 	private JTextField mAddressField;
 
@@ -87,6 +91,14 @@ public class SshConnectionPanel extends JPanel implements Observer {
 	 */
 	private void initialise() {
 		setBorder(BorderFactory.createTitledBorder("Ssh Connection"));
+
+        String systemTooltip = "This will change the hyperion remote call specific for the selected system";
+        mSystemLabel = new JLabel("System:");
+        mSystemLabel.setToolTipText(systemTooltip);
+        mSystemCB = new JComboBox<>(HyperionRemoteCalls.getSystemTypesAsVecor());
+        mSystemCB.addActionListener(mActionListener);
+        mSystemCB.setSelectedItem(mSshConfig.selectedSystemType.toString());
+        mSystemCB.setToolTipText(systemTooltip);
 
 		mAddressLabel = new JLabel("Raspberry IP:");
 		add(mAddressLabel);
@@ -174,26 +186,31 @@ public class SshConnectionPanel extends JPanel implements Observer {
 		setLayout(layout);
 
 		layout.setHorizontalGroup(layout
-				.createSequentialGroup()
-				.addGroup(layout.createParallelGroup()
-						.addComponent(mAddressLabel)
-						.addComponent(mPortLabel)
-						.addComponent(mUsernameLabel)
-						.addComponent(mPasswordLabel)
-						.addComponent(connectBut))
-				.addGroup(layout.createParallelGroup()
-						.addComponent(mAddressField)
-						.addComponent(mTcpPortSpinner)
-						.addComponent(mUsernameField)
-						.addComponent(mPasswordField)
-						.addComponent(mTrafficBut)
-				));
+                .createSequentialGroup()
+                .addGroup(layout.createParallelGroup()
+                        .addComponent(mSystemLabel)
+                        .addComponent(mAddressLabel)
+                        .addComponent(mPortLabel)
+                        .addComponent(mUsernameLabel)
+                        .addComponent(mPasswordLabel)
+                        .addComponent(connectBut))
+                .addGroup(layout.createParallelGroup()
+                        .addComponent(mSystemCB)
+                        .addComponent(mAddressField)
+                        .addComponent(mTcpPortSpinner)
+                        .addComponent(mUsernameField)
+                        .addComponent(mPasswordField)
+                        .addComponent(mTrafficBut)
+                ));
 
 		layout.setVerticalGroup(layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup()
-						.addComponent(mAddressLabel)
-						.addComponent(mAddressField))
-				.addGroup(layout.createParallelGroup()
+                .addGroup(layout.createParallelGroup()
+                        .addComponent(mSystemLabel)
+                        .addComponent(mSystemCB))
+                        .addGroup(layout.createParallelGroup()
+                                .addComponent(mAddressLabel)
+                                .addComponent(mAddressField))
+                        .addGroup(layout.createParallelGroup()
 						.addComponent(mPortLabel)
 						.addComponent(mTcpPortSpinner))
 				.addGroup(layout.createParallelGroup()
@@ -227,7 +244,6 @@ public class SshConnectionPanel extends JPanel implements Observer {
 			if (e.getSource() == connectBut) {
 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				if (connectBut.getText().equals("Connect") && !sshConnection.isConnected()) {
-					setConnectionFieldsAcces(false);
 					connectBut.setEnabled(false);
 
 					try {
@@ -248,7 +264,6 @@ public class SshConnectionPanel extends JPanel implements Observer {
 
 					}
 					connectBut.setEnabled(true);
-					setConnectionFieldsAcces(true);
 				} else {
 					sshConnection.disconnect();
 
@@ -257,6 +272,15 @@ public class SshConnectionPanel extends JPanel implements Observer {
 			}else if(e.getSource().equals(mTrafficBut)){
 					SSHTrafficPrinterFrame.getInstance();
 			}
+            else if(e.getSource().equals(mSystemCB)){
+                try {
+                    mSshConfig.selectedSystemType = HyperionRemoteCalls.fromString(mSystemCB.getSelectedItem().toString());
+                    SshConnectionModel.setHyperionRemoteCall(HyperionRemoteCalls.getHyperionRemoteCallForSystemType(mSshConfig.selectedSystemType));
+                    SshConnectionModel.setHyperionGrabberV4l2Call(HyperionRemoteCalls.getGrabberv4l2CallForSystemType(mSshConfig.selectedSystemType));
+                } catch (Exception e1) {
+                    ErrorHandling.ShowException(e1);
+                }
+            }
 
 		}
 	};
@@ -270,8 +294,6 @@ public class SshConnectionPanel extends JPanel implements Observer {
 		mTcpPortSpinner.setEnabled(setEnabled);
 		mUsernameField.setEnabled(setEnabled);
 		mPasswordField.setEnabled(setEnabled);
-		mTrafficBut.setEnabled(setEnabled);
-
 	}
 
 	@Override
