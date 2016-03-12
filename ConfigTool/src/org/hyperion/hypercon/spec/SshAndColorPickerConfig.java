@@ -16,7 +16,7 @@ public class SshAndColorPickerConfig {
 	public boolean colorPickerShowColorWheel;
 	public Vector<SshCommand> sshCommands;
     public HyperionRemoteCalls.SystemTypes selectedSystemType;
-	
+    public String InputPath;
 	
 	
 	/**Constructor
@@ -29,6 +29,7 @@ public class SshAndColorPickerConfig {
 		password = "raspberry";
 		colorPickerInExpertmode = false;
 		colorPickerShowColorWheel = true;
+		InputPath = ("\\folder\\subfolder").toString();
 
 		sshCommands = new Vector<>();
 

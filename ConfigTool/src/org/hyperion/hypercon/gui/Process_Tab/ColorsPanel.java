@@ -16,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.ColorConfig;
 import org.hyperion.hypercon.spec.TransformConfig;
 
@@ -45,7 +46,7 @@ public class ColorsPanel extends JPanel {
 	
 	private void initialise() {
 		setLayout(new BorderLayout(10,10));
-		setBorder(BorderFactory.createTitledBorder("Colors"));
+		setBorder(BorderFactory.createTitledBorder(language.getString("process.colors.title"))); //$NON-NLS-1$
 		
 		add(getControlPanel(), BorderLayout.NORTH);
 		
@@ -79,10 +80,10 @@ public class ColorsPanel extends JPanel {
 		return mControlPanel;
 	}
 	
-	private final Action mAddAction = new AbstractAction("Add") {
+	private final Action mAddAction = new AbstractAction(language.getString("process.colors.addlabel")) { //$NON-NLS-1$
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String newId = JOptionPane.showInputDialog("Give an identifier for the new color-transform:");
+			String newId = JOptionPane.showInputDialog(language.getString("process.colors.giveanidentifiermessage")); //$NON-NLS-1$
 			if (newId == null || newId.isEmpty()) {
 				// No proper value given
 				return;
@@ -100,7 +101,7 @@ public class ColorsPanel extends JPanel {
 			mDelTransformButton.setEnabled(true);
 		}
 	};
-	private final Action mDelAction = new AbstractAction("Del") {
+	private final Action mDelAction = new AbstractAction(language.getString("process.colors.deletelabel")) { //$NON-NLS-1$
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			TransformConfig config = (TransformConfig) mTransformCombo.getSelectedItem();

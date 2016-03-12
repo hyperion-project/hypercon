@@ -8,7 +8,6 @@ import java.beans.Transient;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -18,8 +17,11 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.GroupLayout.Alignment;
 
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.MiscConfig;
+
 
 public class XbmcPanel extends JPanel {
 
@@ -34,17 +36,17 @@ public class XbmcPanel extends JPanel {
 	private JSpinner mTcpPortSpinner;
 	
 	private JLabel mMenuLabel;
-	private JComboBox<String> mMenuCombo;
+	private JCheckBox mMenuCheck;
 	private JLabel mVideoLabel;
-	private JComboBox<String> mVideoCombo;
+	private JCheckBox mVideoCheck;
 	private JLabel mPictureLabel;
-	private JComboBox<String> mPictureCombo;
+	private JCheckBox mPictureCheck;
 	private JLabel mAudioLabel;
-	private JComboBox<String> mAudioCombo;
+	private JCheckBox mAudioCheck;
 	private JLabel mScreensaverLabel;
-	private JComboBox<String> mScreensaverCombo;
+	private JCheckBox mScreensaverCheck;
 	private JLabel mEnable3DLabel;
-	private JComboBox<String> mEnable3DCombo;
+	private JCheckBox mEnable3DCeck;
 	
 	public XbmcPanel(final MiscConfig pMiscConfig) {
 		super();
@@ -63,14 +65,14 @@ public class XbmcPanel extends JPanel {
 	}
 
 	private void initialise() {
-		setBorder(BorderFactory.createTitledBorder("XBMC Checker"));
+		setBorder(BorderFactory.createTitledBorder(language.getString("external.kodi.kodititle"))); //$NON-NLS-1$
 		
-		mXbmcCheck = new JCheckBox("Enabled");
+		mXbmcCheck = new JCheckBox(language.getString("general.phrase.enabled")); //$NON-NLS-1$
 		mXbmcCheck.setSelected(mMiscConfig.mXbmcCheckerEnabled);
 		mXbmcCheck.addActionListener(mActionListener);
 		add(mXbmcCheck);
 		
-		mAddressLabel = new JLabel("Server address:");
+		mAddressLabel = new JLabel(language.getString("external.kodi.serveradrlabel")); //$NON-NLS-1$
 		add(mAddressLabel);
 		
 		mAddressField = new JTextField(mMiscConfig.mXbmcAddress);
@@ -90,7 +92,7 @@ public class XbmcPanel extends JPanel {
 		});
 		add(mAddressField);
 		
-		mTcpPortLabel = new JLabel("TCP port:");
+		mTcpPortLabel = new JLabel(language.getString("external.kodi.portlabel")); //$NON-NLS-1$
 		add(mTcpPortLabel);
 		
 		mTcpPortSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mXbmcTcpPort, 1, 65535, 1));
@@ -98,121 +100,124 @@ public class XbmcPanel extends JPanel {
 		add(mTcpPortSpinner);
 		
 		
-		mMenuLabel = new JLabel("XBMC Menu");
+		mMenuLabel = new JLabel(language.getString("external.kodi.menulabel")); //$NON-NLS-1$
 		add(mMenuLabel);
-		
-		mMenuCombo = new JComboBox<>(new String[] {"On", "Off"});
-		mMenuCombo.setSelectedItem(mMiscConfig.mMenuOn? "On": "Off");
-		mMenuCombo.setToolTipText("Enables('On') or disables('Off') the ambi-light in the XBMC Menu");
-		mMenuCombo.addActionListener(mActionListener);
-		add(mMenuCombo);
 
-		mVideoLabel = new JLabel("Video");
+		mMenuCheck = new JCheckBox(); //$NON-NLS-1$
+		mMenuCheck.setSelected(mMiscConfig.mXbmcCheckerEnabled);
+		mMenuCheck.setToolTipText(language.getString("external.kodi.menutooltip")); //$NON-NLS-1$
+		mMenuCheck.addActionListener(mActionListener);
+		add(mMenuCheck);
+		
+		mVideoLabel = new JLabel(language.getString("external.kodi.videolabel")); //$NON-NLS-1$
 		add(mVideoLabel);
 
-		mVideoCombo = new JComboBox<>(new String[] {"On", "Off"});
-		mVideoCombo.setSelectedItem(mMiscConfig.mVideoOn? "On": "Off");
-		mVideoCombo.setToolTipText("Enables('On') or disables('Off') the ambi-light during video playback");
-		mVideoCombo.addActionListener(mActionListener);
-		add(mVideoCombo);
+		mVideoCheck = new JCheckBox(); //$NON-NLS-1$
+		mVideoCheck.setSelected(mMiscConfig.mXbmcCheckerEnabled);
+		mVideoCheck.setToolTipText(language.getString("external.kodi.videotooltip")); //$NON-NLS-1$
+		mVideoCheck.addActionListener(mActionListener);
+		add(mVideoCheck);		
+		
 
-		mPictureLabel = new JLabel("Picture");
+		mPictureLabel = new JLabel(language.getString("external.kodi.picturelabel")); //$NON-NLS-1$
 		add(mPictureLabel);
 		
-		mPictureCombo = new JComboBox<>(new String[] {"On", "Off"});
-		mPictureCombo.setSelectedItem(mMiscConfig.mPictureOn? "On": "Off");
-		mPictureCombo.setToolTipText("Enables('On') or disables('Off') the ambi-light when viewing pictures");
-		mPictureCombo.addActionListener(mActionListener);
-		add(mPictureCombo);
 
-		mAudioLabel = new JLabel("Audio");
+		mPictureCheck = new JCheckBox(); //$NON-NLS-1$
+		mPictureCheck.setSelected(mMiscConfig.mXbmcCheckerEnabled);
+		mPictureCheck.setToolTipText(language.getString("external.kodi.picturetooltip")); //$NON-NLS-1$
+		mPictureCheck.addActionListener(mActionListener);
+		add(mPictureCheck);	
+		
+		mAudioLabel = new JLabel(language.getString("external.kodi.audiolabel")); //$NON-NLS-1$
 		add(mAudioLabel);
-		
-		mAudioCombo = new JComboBox<>(new String[] {"On", "Off"});
-		mAudioCombo.setSelectedItem(mMiscConfig.mAudioOn? "On": "Off");
-		mAudioCombo.setToolTipText("Enables('On') or disables('Off') the ambi-light when listing to audio");
-		mAudioCombo.addActionListener(mActionListener);
-		add(mAudioCombo);
-		
-		mScreensaverLabel = new JLabel("Screensaver");
+			
+		mAudioCheck = new JCheckBox(); //$NON-NLS-1$
+		mAudioCheck.setSelected(mMiscConfig.mXbmcCheckerEnabled);
+		mAudioCheck.setToolTipText(language.getString("external.kodi.audiotooltip")); //$NON-NLS-1$
+		mAudioCheck.addActionListener(mActionListener);
+		add(mAudioCheck);			
+
+		mScreensaverLabel = new JLabel(language.getString("external.kodi.screensaverlabel")); //$NON-NLS-1$
 		add(mScreensaverLabel);
-		
-		mScreensaverCombo = new JComboBox<>(new String[] {"On", "Off"});
-		mScreensaverCombo.setSelectedItem(mMiscConfig.mScreensaverOn? "On": "Off");
-		mScreensaverCombo.setToolTipText("Enables('On') or disables('Off') the ambi-light when the XBMC screensaver is active");
-		mScreensaverCombo.addActionListener(mActionListener);
-		add(mScreensaverCombo);
-		
-		mEnable3DLabel = new JLabel("3D checking");
+
+		mScreensaverCheck = new JCheckBox(); //$NON-NLS-1$
+		mScreensaverCheck.setSelected(mMiscConfig.mXbmcCheckerEnabled);
+		mScreensaverCheck.setToolTipText(language.getString("external.kodi.sreensavertooltip")); //$NON-NLS-1$
+		mScreensaverCheck.addActionListener(mActionListener);
+		add(mScreensaverCheck);					
+
+		mEnable3DLabel = new JLabel(language.getString("external.kodi.3dchecklabel")); //$NON-NLS-1$
 		add(mEnable3DLabel);
-		
-		mEnable3DCombo = new JComboBox<>(new String[] {"On", "Off"});
-		mEnable3DCombo.setSelectedItem(mMiscConfig.m3DCheckingEnabled ? "On": "Off");
-		mEnable3DCombo.setToolTipText("Enables('On') or disables('Off') switching to 3D mode when a 3D video file is started");
-		mEnable3DCombo.addActionListener(mActionListener);
-		add(mEnable3DCombo);
-		
+	
+		mEnable3DCeck = new JCheckBox(); //$NON-NLS-1$
+		mEnable3DCeck.setSelected(mMiscConfig.mXbmcCheckerEnabled);
+		mEnable3DCeck.setToolTipText(language.getString("external.kodi.3dchecktooltip")); //$NON-NLS-1$
+		mEnable3DCeck.addActionListener(mActionListener);
+		add(mEnable3DCeck);			
+
 		GroupLayout layout = new GroupLayout(this);
+		layout.setHorizontalGroup(
+			layout.createParallelGroup()
+				.addGroup(layout.createSequentialGroup()
+					.addGroup(layout.createParallelGroup()
+						.addComponent(mXbmcCheck)
+						.addComponent(mAddressLabel)
+						.addComponent(mTcpPortLabel))
+					.addGroup(layout.createParallelGroup()
+//						.addComponent(mXbmcCheck)
+						.addComponent(mAddressField)
+						.addComponent(mTcpPortSpinner)))
+				.addGroup(layout.createSequentialGroup()
+						.addGroup(layout.createParallelGroup()
+								.addComponent(mMenuLabel)
+								.addComponent(mVideoLabel)
+								.addComponent(mPictureLabel))
+						.addGroup(layout.createParallelGroup()
+								.addComponent(mMenuCheck)
+								.addComponent(mVideoCheck)
+								.addComponent(mPictureCheck))
+						.addGap(15)
+						.addGroup(layout.createParallelGroup()
+								.addComponent(mAudioLabel)
+								.addComponent(mScreensaverLabel)
+								.addComponent(mEnable3DLabel))						
+						.addGroup(layout.createParallelGroup()
+								.addComponent(mAudioCheck)
+								.addComponent(mScreensaverCheck)
+								.addComponent(mEnable3DCeck))								
+								)						
+					
+						);
+		layout.setVerticalGroup(
+			layout.createParallelGroup()
+				.addGroup(layout.createSequentialGroup()
+					.addComponent(mXbmcCheck)
+					.addGroup(layout.createParallelGroup(Alignment.CENTER)
+						.addComponent(mAddressLabel)
+						.addComponent(mAddressField))
+					.addGroup(layout.createParallelGroup(Alignment.CENTER)
+						.addComponent(mTcpPortLabel)
+						.addComponent(mTcpPortSpinner))
+					.addGroup(layout.createParallelGroup(Alignment.CENTER)
+						.addComponent(mMenuLabel)
+						.addComponent(mMenuCheck)
+						.addComponent(mAudioLabel)
+						.addComponent(mAudioCheck))
+					.addGroup(layout.createParallelGroup(Alignment.CENTER)
+						.addComponent(mVideoLabel)
+						.addComponent(mVideoCheck)
+						.addComponent(mScreensaverLabel)
+						.addComponent(mScreensaverCheck))
+					.addGroup(layout.createParallelGroup(Alignment.CENTER)
+						.addComponent(mPictureLabel)
+						.addComponent(mPictureCheck)
+						.addComponent(mEnable3DLabel)
+						.addComponent(mEnable3DCeck))
+						)
+		);
 		layout.setAutoCreateGaps(true);
 		setLayout(layout);
-		
-		layout.setHorizontalGroup(layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup()
-						.addComponent(mXbmcCheck)
-						.addComponent(mAddressLabel)
-						.addComponent(mTcpPortLabel)
-						.addComponent(mMenuLabel)
-						.addComponent(mVideoLabel)
-						.addComponent(mPictureLabel)
-						.addComponent(mAudioLabel)
-						.addComponent(mScreensaverLabel)
-						.addComponent(mEnable3DLabel)
-						)
-				.addGroup(layout.createParallelGroup()
-						.addComponent(mXbmcCheck)
-						.addComponent(mAddressField)
-						.addComponent(mTcpPortSpinner)
-						.addComponent(mMenuCombo)
-						.addComponent(mVideoCombo)
-						.addComponent(mPictureCombo)
-						.addComponent(mAudioCombo)
-						.addComponent(mScreensaverCombo)
-						.addComponent(mEnable3DCombo)
-						));
-		layout.setVerticalGroup(layout.createSequentialGroup()
-				.addComponent(mXbmcCheck)
-				.addGroup(layout.createParallelGroup()
-						.addComponent(mAddressLabel)
-						.addComponent(mAddressField)
-						)
-				.addGroup(layout.createParallelGroup()
-						.addComponent(mTcpPortLabel)
-						.addComponent(mTcpPortSpinner)
-						)
-				.addGroup(layout.createParallelGroup()
-						.addComponent(mMenuLabel)
-						.addComponent(mMenuCombo)
-						)
-				.addGroup(layout.createParallelGroup()
-						.addComponent(mVideoLabel)
-						.addComponent(mVideoCombo)
-						)
-				.addGroup(layout.createParallelGroup()
-						.addComponent(mPictureLabel)
-						.addComponent(mPictureCombo)
-						)
-				.addGroup(layout.createParallelGroup()
-						.addComponent(mAudioLabel)
-						.addComponent(mAudioCombo)
-						)
-				.addGroup(layout.createParallelGroup()
-						.addComponent(mScreensaverLabel)
-						.addComponent(mScreensaverCombo)
-						)
-				.addGroup(layout.createParallelGroup()
-						.addComponent(mEnable3DLabel)
-						.addComponent(mEnable3DCombo)
-						));
 
 		toggleEnabled(mMiscConfig.mXbmcCheckerEnabled);
 	}
@@ -225,17 +230,17 @@ public class XbmcPanel extends JPanel {
 		mTcpPortLabel.setEnabled(pEnabled);
 		
 		mMenuLabel.setEnabled(pEnabled);
-		mMenuCombo.setEnabled(pEnabled);
+		mMenuCheck.setEnabled(pEnabled);
 		mVideoLabel.setEnabled(pEnabled);
-		mVideoCombo.setEnabled(pEnabled);
+		mVideoCheck.setEnabled(pEnabled);
 		mPictureLabel.setEnabled(pEnabled);
-		mPictureCombo.setEnabled(pEnabled);
+		mPictureCheck.setEnabled(pEnabled);
 		mAudioLabel.setEnabled(pEnabled);
-		mAudioCombo.setEnabled(pEnabled);
+		mAudioCheck.setEnabled(pEnabled);
 		mScreensaverLabel.setEnabled(pEnabled);
-		mScreensaverCombo.setEnabled(pEnabled);
+		mScreensaverCheck.setEnabled(pEnabled);
 		mEnable3DLabel.setEnabled(pEnabled);
-		mEnable3DCombo.setEnabled(pEnabled);
+		mEnable3DCeck.setEnabled(pEnabled);
 	}
 	
 	private final ChangeListener mChangeListener = new ChangeListener() {
@@ -249,13 +254,12 @@ public class XbmcPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			mMiscConfig.mXbmcCheckerEnabled = mXbmcCheck.isSelected();
-
-			mMiscConfig.mMenuOn = (mMenuCombo.getSelectedItem() == "On");
-			mMiscConfig.mVideoOn = (mVideoCombo.getSelectedItem() == "On");
-			mMiscConfig.mPictureOn = (mPictureCombo.getSelectedItem() == "On");
-			mMiscConfig.mAudioOn = (mAudioCombo.getSelectedItem() == "On");
-			mMiscConfig.mScreensaverOn = (mScreensaverCombo.getSelectedItem() == "On");
-			mMiscConfig.m3DCheckingEnabled = (mEnable3DCombo.getSelectedItem() == "On");
+			mMiscConfig.mMenuOn = mMenuCheck.isSelected();
+			mMiscConfig.mVideoOn = mVideoCheck.isSelected();
+			mMiscConfig.mPictureOn = mPictureCheck.isSelected();
+			mMiscConfig.mAudioOn = mAudioCheck.isSelected();
+			mMiscConfig.mScreensaverOn = mScreensaverCheck.isSelected();
+			mMiscConfig.m3DCheckingEnabled = mEnable3DCeck.isSelected();
 
 			toggleEnabled(mMiscConfig.mXbmcCheckerEnabled);
 		}

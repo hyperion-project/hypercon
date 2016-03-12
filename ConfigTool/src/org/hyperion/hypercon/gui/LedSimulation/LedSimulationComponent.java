@@ -3,6 +3,7 @@ package org.hyperion.hypercon.gui.LedSimulation;
 import org.hyperion.hypercon.ErrorHandling;
 import org.hyperion.hypercon.LedFrameFactory;
 import org.hyperion.hypercon.SshConnectionModel;
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.*;
 
 import javax.swing.*;
@@ -40,7 +41,7 @@ public class LedSimulationComponent extends JPanel {
 		mTvImage.createGraphics().drawImage(pImage, 0, 0, mTvImage.getWidth(), mTvImage.getHeight(), null);
 	}
 	{
-		Image image = new ImageIcon(LedSimulationComponent.class.getResource("TestImage_01.png")).getImage();
+		Image image = new ImageIcon(LedSimulationComponent.class.getResource("TestImage_01.png")).getImage(); //$NON-NLS-1$
 		mTvImage.createGraphics().drawImage(image, 0, 0, mTvImage.getWidth(), mTvImage.getHeight(), null);
 	}
 
@@ -153,14 +154,14 @@ public class LedSimulationComponent extends JPanel {
 		mWorker.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName() == "state") {
+				if (evt.getPropertyName() == "state") { //$NON-NLS-1$
 					if (evt.getNewValue() == SwingWorker.StateValue.STARTED) {
 						mProgressBar.setVisible(true);
 					} else if (evt.getNewValue() == SwingWorker.StateValue.DONE) {
 						handleWorkerDone();
 						mProgressBar.setVisible(false);
 					}
-				} else if (evt.getPropertyName() == "progress") {
+				} else if (evt.getPropertyName() == "progress") { //$NON-NLS-1$
 					mProgressBar.setValue(mWorker.getProgress());
 				}
 			}
@@ -217,8 +218,8 @@ public class LedSimulationComponent extends JPanel {
         Graphics2D gCopy = (Graphics2D)g.create();
         gCopy.setXORMode(Color.WHITE);
         gCopy.setFont(gCopy.getFont().deriveFont(20.0f));
-        String ledCntStr = "Led count: " + mLedCnt;
-        gCopy.drawString(ledCntStr, getWidth()-150.0f, getHeight()-10.0f);
+        String ledCntStr = language.getString("general.ledcountlabel") + mLedCnt; //$NON-NLS-1$
+        gCopy.drawString(ledCntStr, getWidth()-175.0f, getHeight()-10.0f);
 	}
 	
 	public static void main(String[] pArgs) {
@@ -254,7 +255,7 @@ public class LedSimulationComponent extends JPanel {
 	};
 	
 	private JPopupMenu mPopupMenu;
-	private final Action mLoadAction = new AbstractAction("Load image...") {
+	private final Action mLoadAction = new AbstractAction(language.getString("general.loadimagelabel")) { //$NON-NLS-1$
 		JFileChooser mImageChooser;
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -280,7 +281,7 @@ public class LedSimulationComponent extends JPanel {
 		}
 	};
 
-	private final Action mTakeGrabberScreenshotAction = new AbstractAction("Take grabber screenshot..."){
+	private final Action mTakeGrabberScreenshotAction = new AbstractAction(language.getString("general.takegrabberscreenshotlabel")){ //$NON-NLS-1$
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
@@ -288,24 +289,24 @@ public class LedSimulationComponent extends JPanel {
 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				if(mGrabberConfig != null){
                     StringBuffer args = new StringBuffer();
-                    args.append("--device " + mGrabberConfig.mDevice);
-                    args.append(" --video-standard " + mGrabberConfig.mStandard.toString());
-                    args.append(" --input " + mGrabberConfig.mInput);
-                    args.append(" --width " + mGrabberConfig.mWidth);
-                    args.append(" --height " + mGrabberConfig.mHeight);
-                    args.append(" --crop-left " + mGrabberConfig.mCropLeft);
-                    args.append(" --crop-right " + mGrabberConfig.mCropRight);
-                    args.append(" --crop-top " + mGrabberConfig.mCropTop);
-                    args.append(" --crop-bottom " + mGrabberConfig.mCropBottom);
-                    args.append(" --size-decimator " + mGrabberConfig.mSizeDecimation);
-                    args.append(" --frame-decimator " + mGrabberConfig.mFrameDecimation);
-                    args.append(" --red-threshold " + mGrabberConfig.mRedSignalThreshold);
-                    args.append(" --green-threshold " + mGrabberConfig.mGreenSignalThreshold);
-                    args.append(" --blue-threshold " + mGrabberConfig.mBlueSignalThreshold);
+                    args.append("--device " + mGrabberConfig.mDevice); //$NON-NLS-1$
+                    args.append(" --video-standard " + mGrabberConfig.mStandard.toString()); //$NON-NLS-1$
+                    args.append(" --input " + mGrabberConfig.mInput); //$NON-NLS-1$
+                    args.append(" --width " + mGrabberConfig.mWidth); //$NON-NLS-1$
+                    args.append(" --height " + mGrabberConfig.mHeight); //$NON-NLS-1$
+                    args.append(" --crop-left " + mGrabberConfig.mCropLeft); //$NON-NLS-1$
+                    args.append(" --crop-right " + mGrabberConfig.mCropRight); //$NON-NLS-1$
+                    args.append(" --crop-top " + mGrabberConfig.mCropTop); //$NON-NLS-1$
+                    args.append(" --crop-bottom " + mGrabberConfig.mCropBottom); //$NON-NLS-1$
+                    args.append(" --size-decimator " + mGrabberConfig.mSizeDecimation); //$NON-NLS-1$
+                    args.append(" --frame-decimator " + mGrabberConfig.mFrameDecimation); //$NON-NLS-1$
+                    args.append(" --red-threshold " + mGrabberConfig.mRedSignalThreshold); //$NON-NLS-1$
+                    args.append(" --green-threshold " + mGrabberConfig.mGreenSignalThreshold); //$NON-NLS-1$
+                    args.append(" --blue-threshold " + mGrabberConfig.mBlueSignalThreshold); //$NON-NLS-1$
                     if(mGrabberConfig.mMode == DimensionModes.ThreeDSBS){
-                        args.append(" --3DSBS ");
+                        args.append(" --3DSBS "); //$NON-NLS-1$
                     }else if(mGrabberConfig.mMode == DimensionModes.ThreeDTAB){
-                        args.append(" --3DTAB ");
+                        args.append(" --3DTAB "); //$NON-NLS-1$
                     }
 
                     SshConnectionModel.getInstance().sendTakeScreenshot(args.toString());
@@ -342,15 +343,15 @@ public class LedSimulationComponent extends JPanel {
 
 			mPopupMenu.add(mTakeGrabberScreenshotAction);
 			
-			JMenu selectMenu = new JMenu("Select Image");
-			selectMenu.add(new SelectImageAction("TestImage_01"));
-			selectMenu.add(new SelectImageAction("TestImage_02"));
-			selectMenu.add(new SelectImageAction("TestImage_03"));
-			selectMenu.add(new SelectImageAction("TestImage_04"));
-			selectMenu.add(new SelectImageAction("TestImage_05"));
-			selectMenu.add(new SelectImageAction("TestImageBBB_01"));
-			selectMenu.add(new SelectImageAction("TestImageBBB_02"));
-			selectMenu.add(new SelectImageAction("TestImageBBB_03"));
+			JMenu selectMenu = new JMenu(language.getString("general.selectimagelabel")); //$NON-NLS-1$
+			selectMenu.add(new SelectImageAction("TestImage_01")); //$NON-NLS-1$
+			selectMenu.add(new SelectImageAction("TestImage_02")); //$NON-NLS-1$
+			selectMenu.add(new SelectImageAction("TestImage_03")); //$NON-NLS-1$
+			selectMenu.add(new SelectImageAction("TestImage_04")); //$NON-NLS-1$
+			selectMenu.add(new SelectImageAction("TestImage_05")); //$NON-NLS-1$
+			selectMenu.add(new SelectImageAction("TestImageBBB_01")); //$NON-NLS-1$
+			selectMenu.add(new SelectImageAction("TestImageBBB_02")); //$NON-NLS-1$
+			selectMenu.add(new SelectImageAction("TestImageBBB_03")); //$NON-NLS-1$
 			mPopupMenu.add(selectMenu);
 		}
 		if(SshConnectionModel.getInstance().isConnected()){
@@ -390,9 +391,9 @@ public class LedSimulationComponent extends JPanel {
 		}
 		
 		ImageIcon loadImage() {
-			URL imageUrl = LedSimulationComponent.class.getResource(mImageName + ".png");
+			URL imageUrl = LedSimulationComponent.class.getResource(mImageName + ".png"); //$NON-NLS-1$
 			if (imageUrl == null) {
-				System.out.println("Failed to load image: " + mImageName);
+				System.out.println(language.getString("general.failedtoloadimagelabel") + mImageName); //$NON-NLS-1$
 				return null;
 			}
 			return new ImageIcon(imageUrl);

@@ -16,6 +16,7 @@ import javax.swing.event.DocumentListener;
 import com.jcraft.jsch.JSchException;
 import org.hyperion.hypercon.ErrorHandling;
 import org.hyperion.hypercon.SshConnectionModel;
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.HyperionRemoteCalls;
 import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
 
@@ -90,17 +91,17 @@ public class SshConnectionPanel extends JPanel implements Observer {
 	 * Create, add and layout Gui elements
 	 */
 	private void initialise() {
-		setBorder(BorderFactory.createTitledBorder("Ssh Connection"));
+		setBorder(BorderFactory.createTitledBorder(language.getString("ssh.sshconnection.title"))); //$NON-NLS-1$
 
-        String systemTooltip = "This will change the hyperion remote call specific for the selected system";
-        mSystemLabel = new JLabel("System:");
+        String systemTooltip = language.getString("ssh.sshconnection.systemtooltip"); //$NON-NLS-1$
+        mSystemLabel = new JLabel(language.getString("ssh.sshconnection.systemlabel")); //$NON-NLS-1$
         mSystemLabel.setToolTipText(systemTooltip);
         mSystemCB = new JComboBox<>(HyperionRemoteCalls.getSystemTypesAsVecor());
         mSystemCB.addActionListener(mActionListener);
         mSystemCB.setSelectedItem(mSshConfig.selectedSystemType.toString());
         mSystemCB.setToolTipText(systemTooltip);
 
-		mAddressLabel = new JLabel("Raspberry IP:");
+		mAddressLabel = new JLabel(language.getString("ssh.sshconnection.rpiiplabel")); //$NON-NLS-1$
 		add(mAddressLabel);
 
 		mAddressField = new JTextField(mSshConfig.ipAdress);
@@ -122,14 +123,14 @@ public class SshConnectionPanel extends JPanel implements Observer {
 		});
 		add(mAddressField);
 
-		mPortLabel = new JLabel("Port:");
+		mPortLabel = new JLabel(language.getString("ssh.sshconnection.portlabel")); //$NON-NLS-1$
 		add(mPortLabel);
 
 		mTcpPortSpinner = new JSpinner(new SpinnerNumberModel(mSshConfig.port, 1, 65535, 1));
 		mTcpPortSpinner.addChangeListener(mChangeListener);
 		add(mTcpPortSpinner);
 
-		mUsernameLabel = new JLabel("Username:");
+		mUsernameLabel = new JLabel(language.getString("ssh.sshconnection.usernamelabel")); //$NON-NLS-1$
 		add(mUsernameLabel);
 
 		mUsernameField = new JTextField(mSshConfig.username);
@@ -151,7 +152,7 @@ public class SshConnectionPanel extends JPanel implements Observer {
 		});
 		add(mUsernameField);
 
-		mPasswordLabel = new JLabel("Password:");
+		mPasswordLabel = new JLabel(language.getString("ssh.sshconnection.passwordlabel")); //$NON-NLS-1$
 		add(mPasswordLabel);
 
 		mPasswordField = new JPasswordField(mSshConfig.password);
@@ -177,7 +178,7 @@ public class SshConnectionPanel extends JPanel implements Observer {
 		connectBut.addActionListener(mActionListener);
 		add(connectBut);
 
-		mTrafficBut = new JButton("Show Traffic");
+		mTrafficBut = new JButton(language.getString("ssh.sshconnection.showtrafficbutton")); //$NON-NLS-1$
 		mTrafficBut.addActionListener(mActionListener);
 		add(mTrafficBut);
 
@@ -243,7 +244,7 @@ public class SshConnectionPanel extends JPanel implements Observer {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == connectBut) {
 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-				if (connectBut.getText().equals("Connect") && !sshConnection.isConnected()) {
+				if (connectBut.getText().equals("Connect") && !sshConnection.isConnected()) { //$NON-NLS-1$
 					connectBut.setEnabled(false);
 
 					try {
@@ -251,13 +252,13 @@ public class SshConnectionPanel extends JPanel implements Observer {
 								mPasswordField.getPassword());
 					} catch (JSchException e1) {
 
-						if(e1.getMessage().contains("Auth cancel")){
-							ErrorHandling.ShowMessage("Wrong username or password!");
+						if(e1.getMessage().contains("Auth cancel")){ //$NON-NLS-1$
+							ErrorHandling.ShowMessage(language.getString("ssh.sshconnection.wrongusernameorpwdmessage")); //$NON-NLS-1$
 						}
-						else if(e1.getMessage().contains("Connection refused: connect")){
-							ErrorHandling.ShowMessage("Connection refused. Wrong port?");
-						}else if(e1.getMessage().contains("timeout: socket is not established")){
-							ErrorHandling.ShowMessage("Timeout. Wrong Ip?");
+						else if(e1.getMessage().contains("Connection refused: connect")){ //$NON-NLS-1$
+							ErrorHandling.ShowMessage(language.getString("ssh.sshconnection.connectionrefusedmessage")); //$NON-NLS-1$
+						}else if(e1.getMessage().contains("timeout: socket is not established")){ //$NON-NLS-1$
+							ErrorHandling.ShowMessage(language.getString("ssh.sshconnection.timeoutwrongipmessage")); //$NON-NLS-1$
 						}else{
 							ErrorHandling.ShowException(e1);
 						}
@@ -277,6 +278,8 @@ public class SshConnectionPanel extends JPanel implements Observer {
                     mSshConfig.selectedSystemType = HyperionRemoteCalls.fromString(mSystemCB.getSelectedItem().toString());
                     SshConnectionModel.setHyperionRemoteCall(HyperionRemoteCalls.getHyperionRemoteCallForSystemType(mSshConfig.selectedSystemType));
                     SshConnectionModel.setHyperionGrabberV4l2Call(HyperionRemoteCalls.getGrabberv4l2CallForSystemType(mSshConfig.selectedSystemType));
+                    SshConnectionModel.setHyperionInstallCall(HyperionRemoteCalls.getHyperionInstallCallForSystemType(mSshConfig.selectedSystemType));
+                    SshConnectionModel.setHyperionRemoveCall(HyperionRemoteCalls.getHyperionRemoveCallForSystemType(mSshConfig.selectedSystemType));
                 } catch (Exception e1) {
                     ErrorHandling.ShowException(e1);
                 }

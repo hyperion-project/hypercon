@@ -26,29 +26,6 @@ public class Grabberv4l2Config {
 	public double mGreenSignalThreshold = 0.0;
 	public double mBlueSignalThreshold = 0.0;
 
-	/*
-	 * /// Configuration for the embedded V4L2 grabber /// * device : V4L2
-	 * Device to use [default="/dev/video0"] /// * input : V4L2 input to use
-	 * [default=0] /// * standard : Video standard (no-change/PAL/NTSC)
-	 * [default="no-change"] /// * width : V4L2 width to set [default=-1] /// *
-	 * height : V4L2 height to set [default=-1] /// * frameDecimation : Frame
-	 * decimation factor [default=2] /// * sizeDecimation : Size decimation
-	 * factor [default=8] /// * priority : Hyperion priority channel
-	 * [default=800] /// * mode : 3D mode to use 2D/3DSBS/3DTAB (note: no
-	 * autodetection) [default="2D"] /// * cropLeft : Cropping from the left
-	 * [default=0] /// * cropRight : Cropping from the right [default=0] /// *
-	 * cropTop : Cropping from the top [default=0] /// * cropBottom : Cropping
-	 * from the bottom [default=0] /// * redSignalThreshold : Signal threshold
-	 * for the red channel between 0.0 and 1.0 [default=0.0] /// *
-	 * greenSignalThreshold : Signal threshold for the green channel between 0.0
-	 * and 1.0 [default=0.0] /// * blueSignalThreshold : Signal threshold for
-	 * the blue channel between 0.0 and 1.0 [default=0.0] "grabber-v4l2" : {
-	 * "device" : "/dev/video0", "input" : 0, "standard" : "PAL", "width" : 640,
-	 * "height" : 480, "frameDecimation" : 2, "sizeDecimation" : 8, "priority" :
-	 * 1000, "mode" : "2D", "cropLeft" : 26, "cropRight" : 27, "cropTop" : 20,
-	 * "cropBottom" : 20, "redSignalThreshold" : 0.1, "greenSignalThreshold" :
-	 * 0.1, "blueSignalThreshold" : 0.1 },
-	 */
 
 	public void appendTo(JsonStringBuffer strBuf) {
 		String grabberv4l2Comment = "Configuration for the embedded V4L2 grabber\n"

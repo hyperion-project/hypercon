@@ -21,13 +21,13 @@ public class ErrorHandling {
         e.printStackTrace(new PrintWriter(sw));
         String exceptionAsString = sw.toString();
 
-        JOptionPane.showMessageDialog(mainframe, e.getMessage() + "\n\n" + exceptionAsString, "Error", JOptionPane.OK_OPTION);
+        JOptionPane.showMessageDialog(mainframe, e.getMessage() + "\n\n" + exceptionAsString, "Error", JOptionPane.OK_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 
     }
 
     public static void ShowMessage(String Message){
 
-        JOptionPane.showMessageDialog(mainframe,Message, "Info", JOptionPane.OK_OPTION);
+        JOptionPane.showMessageDialog(mainframe,Message, "Info", JOptionPane.OK_OPTION); //$NON-NLS-1$
 
     }
 

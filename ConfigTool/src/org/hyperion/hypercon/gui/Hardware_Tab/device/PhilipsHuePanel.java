@@ -6,11 +6,13 @@ import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.DeviceConfig;
 
 public class PhilipsHuePanel extends DeviceTypePanel {
@@ -55,7 +57,7 @@ public class PhilipsHuePanel extends DeviceTypePanel {
 	}
 	
 	private void initialise() {
-		mHostLabel = new JLabel("Host: ");
+		mHostLabel = new JLabel(language.getString("hardware.leddevice.host"));
 		mHostLabel.setMinimumSize(firstColMinDim);
 		add(mHostLabel);
 		
@@ -77,7 +79,7 @@ public class PhilipsHuePanel extends DeviceTypePanel {
 		});		
 		add(mHostField);
 	
-		mUsernameLabel = new JLabel("Username: ");
+		mUsernameLabel = new JLabel(language.getString("hardware.leddevice.usernamelabel"));
 		mUsernameLabel.setMinimumSize(firstColMinDim);
 		add(mUsernameLabel);
 
@@ -99,7 +101,7 @@ public class PhilipsHuePanel extends DeviceTypePanel {
 		});		
 		add(mUsernameField);
 		
-		mSwitchOffOnBlackLabel = new JLabel("Switch off on black: ");
+		mSwitchOffOnBlackLabel = new JLabel(language.getString("hardware.leddevice.switchoffonblack"));
 		mSwitchOffOnBlackLabel.setMinimumSize(firstColMinDim);
 		add(mSwitchOffOnBlackLabel);
 		
@@ -108,7 +110,7 @@ public class PhilipsHuePanel extends DeviceTypePanel {
 		mSwitchOffOnBlackBox.addChangeListener(mChangeListener);
 		add(mSwitchOffOnBlackBox);
 		
-		mTransitionTimeLabel = new JLabel("Transition time [x100ms]: ");
+		mTransitionTimeLabel = new JLabel(language.getString("hardware.leddevice.transitiontime"));
 		mTransitionTimeLabel.setMinimumSize(firstColMinDim);
 		add(mTransitionTimeLabel);
 
@@ -135,16 +137,16 @@ public class PhilipsHuePanel extends DeviceTypePanel {
 						.addComponent(mTransitionTimeSpinner))
 				);
 		layout.setVerticalGroup(layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mHostLabel)
 						.addComponent(mHostField))
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mUsernameLabel)
 						.addComponent(mUsernameField))
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mSwitchOffOnBlackLabel)
 						.addComponent(mSwitchOffOnBlackBox))
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mTransitionTimeLabel)
 						.addComponent(mTransitionTimeSpinner))
 				);		

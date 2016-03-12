@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.hyperion.hypercon.SshConnectionModel;
+import org.hyperion.hypercon.language.language;
 
 public class SshColorTransformPanel extends JPanel implements Observer {
 	
@@ -21,10 +22,10 @@ public class SshColorTransformPanel extends JPanel implements Observer {
 	}
 	
 	private void initialise(){
-		setBorder(BorderFactory.createTitledBorder("SSH"));
+//		setBorder(BorderFactory.createTitledBorder(language.getString("process.ssh.title"))); //$NON-NLS-1$
 
-		sendTransform = new JButton("Send Color Transform");
-		sendTransform.setToolTipText("Set the transform values temporarily via SSH. You have to create and copy a configuration file to set them permanently!");
+		sendTransform = new JButton(language.getString("process.ssh.sendcolortransformlabel")); //$NON-NLS-1$
+		sendTransform.setToolTipText(language.getString("process.ssh.sendcolortransformtooltip")); //$NON-NLS-1$
 		add(sendTransform);
 		
 		setGuiElementsEnabled(SshConnectionModel.getInstance().isConnected());

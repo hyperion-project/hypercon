@@ -21,7 +21,7 @@ public class LedTvComponent extends JComponent {
 	private final BufferedImage mDisplayedImage = new BufferedImage(1280, 720, BufferedImage.TYPE_INT_ARGB);
 	private final Graphics2D mImageG2d = mDisplayedImage.createGraphics();
 	
-	private final int mBorderWidth = 12;
+	private final int mBorderWidth = 18;
 
 
 

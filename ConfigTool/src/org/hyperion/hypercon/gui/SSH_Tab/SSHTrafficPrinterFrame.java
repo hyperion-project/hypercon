@@ -76,7 +76,7 @@ public class SSHTrafficPrinterFrame extends JFrame implements ConnectionListener
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
         add(scrollPane, BorderLayout.CENTER);
-        setSize(new Dimension(300,200));
+        setSize(new Dimension(820,600));
     }
 
     @Override
@@ -143,7 +143,8 @@ public class SSHTrafficPrinterFrame extends JFrame implements ConnectionListener
 
     @Override
     public void addError(String pLine) {
-        txtArea.append("ssh error: \t" + pLine + "\n");
+    	txtArea.append("ssh out: \t" + pLine + "\n");
+//      txtArea.append("ssh error: \t" + pLine + "\n");
         txtArea.setCaretPosition(txtArea.getDocument().getLength());
 
 

@@ -11,15 +11,17 @@ import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.GroupLayout.Alignment;
 
 import org.hyperion.hypercon.gui.Hardware_Tab.device.DeviceTypePanel;
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.ColorByteOrder;
 import org.hyperion.hypercon.spec.DeviceConfig;
 import org.hyperion.hypercon.spec.DeviceType;
 
 public class DevicePanel extends JPanel {
 
-	public static final String[] KnownOutputs = {"/dev/spidev0.0", "/dev/spidev0.1", "/dev/ttyS0", "/dev/ttyUSB0", "/dev/ttyprintk", "/home/pi/test.out", "/dev/null"};
+	public static final String[] KnownOutputs = {"/dev/spidev0.0", "/dev/spidev0.1", "/dev/ttyS0", "/dev/ttyUSB0", "/dev/ttyprintk", "/home/pi/test.out", "/dev/null"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 
 	private final DeviceConfig mDeviceConfig;
 	
@@ -48,9 +50,9 @@ public class DevicePanel extends JPanel {
 	}
 
 	private void initialise() {
-		setBorder(BorderFactory.createTitledBorder("Device"));
+		setBorder(BorderFactory.createTitledBorder(language.getString("hardware.device.title"))); //$NON-NLS-1$
 		
-		mTypeLabel = new JLabel("Type: ");
+		mTypeLabel = new JLabel(language.getString("hardware.device.typlabel")); //$NON-NLS-1$
 		mTypeLabel.setMinimumSize(new Dimension(80, 10));
 		add(mTypeLabel);
 		
@@ -68,7 +70,7 @@ public class DevicePanel extends JPanel {
 		}
 		add(mDevicePanel);
 		
-		mRgbLabel = new JLabel("RGB Byte Order: ");
+		mRgbLabel = new JLabel(language.getString("hardware.device.rgborderlabel")); //$NON-NLS-1$
 		mRgbLabel.setMinimumSize(new Dimension(80, 10));
 		add(mRgbLabel);
 		
@@ -89,7 +91,7 @@ public class DevicePanel extends JPanel {
 				.addGroup(layout.createSequentialGroup()
 						.addComponent(mRgbLabel)
 						.addComponent(mRgbCombo)));
-		layout.setVerticalGroup(layout.createParallelGroup()
+		layout.setVerticalGroup(layout.createParallelGroup(Alignment.CENTER)
 				.addGroup(layout.createSequentialGroup()
 						.addComponent(mTypeLabel)
 						.addComponent(mDevicePanel)

@@ -3,9 +3,11 @@ package org.hyperion.hypercon.gui.Hardware_Tab.device;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.DeviceConfig;
 
 public class LightPackPanel extends DeviceTypePanel {
@@ -32,7 +34,7 @@ public class LightPackPanel extends DeviceTypePanel {
 	}
 	
 	private void initialise() {
-		mSerialNoLabel = new JLabel("Serial #: ");
+		mSerialNoLabel = new JLabel(language.getString("hardware.leddevice.serialno"));
 		mSerialNoLabel.setMinimumSize(firstColMinDim);
 		add(mSerialNoLabel);
 		
@@ -60,7 +62,7 @@ public class LightPackPanel extends DeviceTypePanel {
 		layout.setHorizontalGroup(layout.createSequentialGroup()
 				.addComponent(mSerialNoLabel)
 				.addComponent(mSerialNoField));
-		layout.setVerticalGroup(layout.createParallelGroup()
+		layout.setVerticalGroup(layout.createParallelGroup(Alignment.CENTER)
 				.addComponent(mSerialNoLabel)
 				.addComponent(mSerialNoField));
 	}

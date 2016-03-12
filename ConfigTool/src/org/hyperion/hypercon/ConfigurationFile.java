@@ -49,7 +49,7 @@ public class ConfigurationFile {
 //		try (OutputStream out = new DeflaterOutputStream(new FileOutputStream(pFilename))) {
 //		try (OutputStream out = new GZIPOutputStream(new FileOutputStream(pFilename))) {
 		try (OutputStream out = (new FileOutputStream(pFilename))) {
-			mProps.store(out, "Pesistent settings file for HyperCon");
+			mProps.store(out, "Pesistent settings file for HyperCon"); //$NON-NLS-1$
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -61,7 +61,7 @@ public class ConfigurationFile {
 	 * @param pObj The object to store
 	 */
 	public void store(Object pObj) {
-		store(pObj, pObj.getClass().getSimpleName(), "");
+		store(pObj, pObj.getClass().getSimpleName(), ""); //$NON-NLS-1$
 	}
 	
 	/**
@@ -78,11 +78,11 @@ public class ConfigurationFile {
 		// Iterate each variable
 		for (Field field : fields) {
 			if (!Modifier.isPublic(field.getModifiers())) {
-				System.out.println("Unable to synchronise non-public field(" + field.getName() + ") in configuration structure(" + className + ")");
+				System.out.println("Unable to synchronise non-public field(" + field.getName() + ") in configuration structure(" + className + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				continue;
 			}
 			
-			String key = preamble + "." + field.getName() + postamble;
+			String key = preamble + "." + field.getName() + postamble; //$NON-NLS-1$
 			try {
 				Object value = field.get(pObj);
 				
@@ -96,14 +96,14 @@ public class ConfigurationFile {
 					mProps.setProperty(key, (String)value);
 				} else if (field.getType() == Color.class) {
 					Color color = (Color)value;
-					mProps.setProperty(key, String.format("[%d; %d; %d]", color.getRed(), color.getGreen(), color.getBlue()));
+					mProps.setProperty(key, String.format("[%d; %d; %d]", color.getRed(), color.getGreen(), color.getBlue())); //$NON-NLS-1$
 				} else if (value.getClass().isEnum()) {
 					mProps.setProperty(key, ((Enum<?>)value).name());
 				} else if (value instanceof Vector) {
 					@SuppressWarnings("unchecked")
 					Vector<Object> v = (Vector<Object>) value; 
 					for (int i=0; i<v.size(); ++i) {
-						store(v.get(i), key + "[" + i + "]", "");
+						store(v.get(i), key + "[" + i + "]", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					}
 				} else if (field.getType() == Object.class) {
 					if (value instanceof Boolean) {
@@ -114,12 +114,12 @@ public class ConfigurationFile {
 						mProps.setProperty(key, Double.toString((double) value));
 					} else if (value instanceof Color) {
 						Color color = (Color)value;
-						mProps.setProperty(key, String.format("[%d; %d; %d]", color.getRed(), color.getGreen(), color.getBlue()));
+						mProps.setProperty(key, String.format("[%d; %d; %d]", color.getRed(), color.getGreen(), color.getBlue())); //$NON-NLS-1$
 					} else if (value instanceof String) {
 						mProps.setProperty(key, '"' + (String)value + '"');
 					}
 				} else {
-					System.out.println("Might not be able to load: " + key + " = " + value.toString());
+					System.out.println("Might not be able to load: " + key + " = " + value.toString()); //$NON-NLS-1$ //$NON-NLS-2$
 					mProps.setProperty(key, value.toString());
 				}
 			} catch (Throwable t) {} 
@@ -143,7 +143,7 @@ public class ConfigurationFile {
 	 */
 	public void restore(Object pObj, Properties pProps) {
 		String className = pObj.getClass().getSimpleName();
-		restore(pObj, pProps, className + ".");
+		restore(pObj, pProps, className + "."); //$NON-NLS-1$
 	}
 	
 	/**
@@ -174,7 +174,7 @@ public class ConfigurationFile {
 				// Iterate through the properties to find the indices of the vector
 				int i=0;
 				while (true) {
-					String curIndexKey = pPreamble + field.getName() + "[" + i + "]";
+					String curIndexKey = pPreamble + field.getName() + "[" + i + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 					Properties elemProps = new Properties();
 					// Find all the elements for the current vector index
 					for (Object keyObj : pProps.keySet()) {
@@ -197,16 +197,16 @@ public class ConfigurationFile {
 					try {
 						newElement = vectorElementClass.getConstructor().newInstance();
 					} catch (Throwable t) {
-						System.err.println("Failed to find empty default constructor for " + vectorElementClass.getName());
+						System.err.println("Failed to find empty default constructor for " + vectorElementClass.getName()); //$NON-NLS-1$
 						break;
 					}
 					if (newElement == null) {
-						System.err.println("Failed to construct instance for " + vectorElementClass.getName());
+						System.err.println("Failed to construct instance for " + vectorElementClass.getName()); //$NON-NLS-1$
 						break;
 					}
 					
 					// Restore the instance members from the collected properties
-					restore(newElement, elemProps, "");
+					restore(newElement, elemProps, ""); //$NON-NLS-1$
 					
 					// Add the instance to the vector
 					vector.addElement(newElement);
@@ -220,7 +220,7 @@ public class ConfigurationFile {
 			String key = pPreamble + field.getName();
 			String value = pProps.getProperty(key);
 			if (value == null) {
-				System.out.println("Persistent settings does not contain value for " + key);
+				System.out.println("Persistent settings does not contain value for " + key); //$NON-NLS-1$
 				continue;
 			}
 
@@ -232,22 +232,22 @@ public class ConfigurationFile {
 				} else if (field.getType() == double.class) {
 					field.set(pObj, Double.parseDouble(value));
 				} else if (field.getType() == Color.class) {
-					String[] channelValues = value.substring(1, value.length()-1).split(";");
+					String[] channelValues = value.substring(1, value.length()-1).split(";"); //$NON-NLS-1$
 					field.set(pObj, new Color(Integer.parseInt(channelValues[0].trim()), Integer.parseInt(channelValues[1].trim()), Integer.parseInt(channelValues[2].trim())));
 				} else if (field.getType() == String.class) {
 					field.set(pObj, value);
 				} else if (field.getType().isEnum()) {
-					Method valMet = field.getType().getMethod("valueOf", String.class);
+					Method valMet = field.getType().getMethod("valueOf", String.class); //$NON-NLS-1$
 					Object enumVal = valMet.invoke(null, value);
 					field.set(pObj, enumVal);
 				} else if (field.getType() == Object.class) {
 					// We can not infer from the type of the field, let's try the actual stored value
 					if (value.isEmpty()) {
 						// We will never known ...
-					} else if (value.startsWith("[") && value.endsWith("]")) {
-						String[] channelValues = value.substring(1, value.length()-1).split(";");
+					} else if (value.startsWith("[") && value.endsWith("]")) { //$NON-NLS-1$ //$NON-NLS-2$
+						String[] channelValues = value.substring(1, value.length()-1).split(";"); //$NON-NLS-1$
 						field.set(pObj, new Color(Integer.parseInt(channelValues[0].trim()), Integer.parseInt(channelValues[1].trim()), Integer.parseInt(channelValues[2].trim())));
-					} else if (value.startsWith("\"") && value.endsWith("\"")) {
+					} else if (value.startsWith("\"") && value.endsWith("\"")) { //$NON-NLS-1$ //$NON-NLS-2$
 						field.set(pObj, value.substring(1, value.length()-1));
 					} else {
 						try {
@@ -269,7 +269,7 @@ public class ConfigurationFile {
 					}
 				}
 			} catch (Throwable t) {
-				System.out.println("Failed to parse value(" + value + ") for " + key);
+				System.out.println("Failed to parse value(" + value + ") for " + key); //$NON-NLS-1$ //$NON-NLS-2$
 				t.printStackTrace();
 			}
 		}		

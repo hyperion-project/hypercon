@@ -2,9 +2,7 @@ package org.hyperion.hypercon.spec;
 
 import java.util.Observable;
 
-import org.hyperion.hypercon.JsonStringBuffer;
 import org.hyperion.hypercon.LedFrameFactory;
-
 /**
  * Configuration parameters for the image processing. These settings are translated using the 
  * {@link LedFrameFactory} to configuration items used in the Hyperion daemon configfile.
@@ -24,11 +22,6 @@ public class ImageProcessConfig extends Observable {
 
 	/** The fraction of overlap from one to another led */
 	public double mOverlapFraction = 0.0;
-	
-	/** Flag indicating that black borders are excluded in the image processing */
-	public boolean mBlackBorderRemoval = true;
-	/** Threshold for the blackborder detector */
-	public double mBlackBorderThreshold = 0.01;
 	
 	/**
 	 * Returns the horizontal depth (top and bottom) of the image integration as a fraction of the 
@@ -143,55 +136,4 @@ public class ImageProcessConfig extends Observable {
 			setChanged();
 		}
 	}
-
-	/**
-	 * Returns the black border removal flag
-	 * @return True if black border removal is enabled else false
-	 */
-	public boolean isBlackBorderRemoval() {
-		return mBlackBorderRemoval;
-	}
-
-	/**
-	 * Sets the black border removal flag
-	 * @param pBlackBorderRemoval True if black border removal is enabled else false
-	 */
-	public void setBlackBorderRemoval(boolean pBlackBorderRemoval) {
-		if (mBlackBorderRemoval != pBlackBorderRemoval) {
-			mBlackBorderRemoval = pBlackBorderRemoval;
-			setChanged();
-		}
-	}
-
-	/** 
-	 * Sets the blackborder threshold
-	 * @param pThreshold the threshold value [0 .. 1]
-	 */
-	public void setBlackborderThreshold(double pThreshold) {
-		if (mBlackBorderThreshold != pThreshold) {
-			mBlackBorderThreshold = pThreshold;
-			setChanged();
-		}
-	}
-	
-	/**
-	 * @return The black border threshold
-	 */
-	public double getBlackborderThreshold() {
-		return mBlackBorderThreshold;
-	}
-	
-	public void appendTo(JsonStringBuffer pJsonBuf) {
-		String comment = 
-				"The black border configuration, contains the following items: \n" +
-				" * enable    : true if the detector should be activated\n" +
-				" * threshold : Value below which a pixel is regarded as black (value between 0.0 and 1.0)\n";
-		pJsonBuf.writeComment(comment);
-		
-		pJsonBuf.startObject("blackborderdetector");
-		pJsonBuf.addValue("enable", mBlackBorderRemoval, false);
-		pJsonBuf.addValue("threshold", mBlackBorderThreshold, true);
-		pJsonBuf.stopObject();
-	}
-	
 }

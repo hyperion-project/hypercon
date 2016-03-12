@@ -13,9 +13,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.ColorConfig;
 import org.hyperion.hypercon.spec.ColorSmoothingType;
 
@@ -50,14 +52,14 @@ public class ColorSmoothingPanel extends JPanel {
 	}
 
 	private void initialise() {
-		setBorder(BorderFactory.createTitledBorder("Smoothing"));
+		setBorder(BorderFactory.createTitledBorder(language.getString("process.smoothing.title"))); //$NON-NLS-1$
 		
-		mEnabledCheck = new JCheckBox("Enabled");
+		mEnabledCheck = new JCheckBox(language.getString("general.phrase.enabled")); //$NON-NLS-1$
 		mEnabledCheck.setSelected(mColorConfig.mSmoothingEnabled);
 		mEnabledCheck.addActionListener(mActionListener);
 		add(mEnabledCheck);
 		
-		mTypeLabel = new JLabel("Type: ");
+		mTypeLabel = new JLabel(language.getString("process.smoothing.typlabel")); //$NON-NLS-1$
 		add(mTypeLabel);
 		
 		mTypeCombo = new JComboBox<>(ColorSmoothingType.values());
@@ -65,25 +67,25 @@ public class ColorSmoothingPanel extends JPanel {
 		mTypeCombo.addActionListener(mActionListener);
 		add(mTypeCombo);
 		
-		mTimeLabel = new JLabel("Time [ms]: ");
+		mTimeLabel = new JLabel(language.getString("process.smoothing.timelabel")); //$NON-NLS-1$
 		add(mTimeLabel);
 		
 		mTimeSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mSmoothingTime_ms, 1, 600, 100));
 		mTimeSpinner.addChangeListener(mChangeListener);
 		add(mTimeSpinner);
 		
-		mUpdateFrequencyLabel = new JLabel("Update Freq. [Hz]: ");
+		mUpdateFrequencyLabel = new JLabel(language.getString("process.smoothing.updatefreqlabel")); //$NON-NLS-1$
 		add(mUpdateFrequencyLabel);
 		
 		mUpdateFrequencySpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mSmoothingUpdateFrequency_Hz, 1, 100, 1));
 		mUpdateFrequencySpinner.addChangeListener(mChangeListener);
 		add(mUpdateFrequencySpinner);
 
-		mUpdateDelayLabel = new JLabel("Update Delay: ");
+		mUpdateDelayLabel = new JLabel(language.getString("process.smoothing.updatedelaylabel")); //$NON-NLS-1$
 		add(mUpdateDelayLabel);
 		
 		mUpdateDelaySpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mUpdateDelay, 0, 2048, 1));
-		mUpdateDelaySpinner.setToolTipText("[Periods of Smoothing (1/Update Freq)]");
+		mUpdateDelaySpinner.setToolTipText(language.getString("process.smoothing.updatedelaytooltip")); //$NON-NLS-1$
 		mUpdateDelaySpinner.addChangeListener(mChangeListener);
 		add(mUpdateDelaySpinner);
 		
@@ -108,19 +110,19 @@ public class ColorSmoothingPanel extends JPanel {
 						));
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addComponent(mEnabledCheck)
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mTypeLabel)
 						.addComponent(mTypeCombo)
 						)
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mTimeLabel)
 						.addComponent(mTimeSpinner)
 						)
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mUpdateFrequencyLabel)
 						.addComponent(mUpdateFrequencySpinner)
 						)
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mUpdateDelayLabel)
 						.addComponent(mUpdateDelaySpinner)
 						));

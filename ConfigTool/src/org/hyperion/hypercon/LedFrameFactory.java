@@ -60,7 +60,7 @@ public class LedFrameFactory {
 		}
 		
 		// Construct the top-left led (if top-left is enabled)
-		if (frameSpec.topCorners) {
+		if (frameSpec.topleftCorner) {
 			mLeds.add(createLed(frameSpec, processConfig, iLed, 0.0, 0.0, processConfig.getOverlapFraction(), BorderSide.top_left));
 			iLed = increase(frameSpec, iLed);
 		}
@@ -83,7 +83,7 @@ public class LedFrameFactory {
 		}
 		
 		// Construct the top-right led (if top-right is enabled)
-		if (frameSpec.topCorners) {
+		if (frameSpec.toprightCorner) {
 			mLeds.add(createLed(frameSpec, processConfig, iLed, 1.0, 0.0, processConfig.getOverlapFraction(), BorderSide.top_right));
 			iLed = increase(frameSpec, iLed);
 		}
@@ -106,7 +106,7 @@ public class LedFrameFactory {
 		}
 		
 		// Construct the bottom-right led (if bottom-right is enabled)
-		if (frameSpec.bottomCorners) {
+		if (frameSpec.bottomrightCorner) {
 			mLeds.add(createLed(frameSpec, processConfig, iLed, 1.0, 1.0, processConfig.getOverlapFraction(), BorderSide.bottom_right));
 			iLed = increase(frameSpec, iLed);
 		}
@@ -119,7 +119,7 @@ public class LedFrameFactory {
 
 			for (int iBottom=(ledCnt-1); iBottom>=0; --iBottom) {
 				// Special case for the bottom-gap
-				if (iBottom > (frameSpec.bottomLedCnt-1)/2 && iBottom < ledCnt - frameSpec.bottomLedCnt/2) {
+				if (iBottom > (frameSpec.bottomLedCnt-1)/2 && iBottom < ledCnt - frameSpec.bottomLedCnt/2 ) { 
 					continue;
 				}
 				// Compute the location of this led
@@ -133,7 +133,7 @@ public class LedFrameFactory {
 		}
 		
 		// Construct the bottom-left led (if bottom-left is enabled)
-		if (frameSpec.bottomCorners) {
+		if (frameSpec.bottomleftCorner) {
 			mLeds.add(createLed(frameSpec, processConfig, iLed, 0.0, 1.0, processConfig.getOverlapFraction(), BorderSide.bottom_left));
 			iLed = increase(frameSpec, iLed);
 		}
@@ -185,8 +185,9 @@ public class LedFrameFactory {
 		
 		double xFrac      = pProcessSpec.getVerticalGap() + (1.0-2*pProcessSpec.getVerticalGap()) * x_frac;	
 		double yFrac      = pProcessSpec.getHorizontalGap() + (1.0-2*pProcessSpec.getHorizontalGap()) * y_frac;	
-		double widthFrac  = ((1.0-2*pProcessSpec.getVerticalGap())/pFrameSpec.topLedCnt * (1.0 + overlap_frac))/2.0;
-		double heightFrac = ((1.0-2*pProcessSpec.getHorizontalGap())/pFrameSpec.leftLedCnt * (1.0 + overlap_frac))/2.0;
+		double widthtopbottomFrac  = ((1.0-2*pProcessSpec.getVerticalGap())/pFrameSpec.topLedCnt * (1.0 + overlap_frac))/2.0;
+		double heightleftFrac = ((1.0-2*pProcessSpec.getHorizontalGap())/pFrameSpec.leftLedCnt * (1.0 + overlap_frac))/2.0;
+		double heightrightFrac = ((1.0-2*pProcessSpec.getHorizontalGap())/pFrameSpec.rightLedCnt * (1.0 + overlap_frac))/2.0;
 		
 		double horizontalDepth = Math.min(1.0 - pProcessSpec.getHorizontalGap(), pProcessSpec.getHorizontalDepth());
 		double verticalDepth = Math.min(1.0 - pProcessSpec.getVerticalGap(), pProcessSpec.getVerticalDepth());
@@ -225,8 +226,8 @@ public class LedFrameFactory {
 			break;
 		}
 		case top:{
-			double intXmin_frac = Math.max(0.0, xFrac-widthFrac);
-			double intXmax_frac = Math.min(xFrac+widthFrac, 1.0);
+			double intXmin_frac = Math.max(0.0, xFrac-widthtopbottomFrac);
+			double intXmax_frac = Math.min(xFrac+widthtopbottomFrac, 1.0);
 			led.mImageRectangle = new Rectangle2D.Double(
 					intXmin_frac, 
 					pProcessSpec.getHorizontalGap(), 
@@ -237,8 +238,8 @@ public class LedFrameFactory {
 		}
 		case bottom:
 		{
-			double intXmin_frac = Math.max(0.0, xFrac-widthFrac);
-			double intXmax_frac = Math.min(xFrac+widthFrac, 1.0);
+			double intXmin_frac = Math.max(0.0, xFrac-widthtopbottomFrac);
+			double intXmax_frac = Math.min(xFrac+widthtopbottomFrac, 1.0);
 			
 			led.mImageRectangle = new Rectangle2D.Double(
 					intXmin_frac, 
@@ -248,8 +249,8 @@ public class LedFrameFactory {
 			break;
 		}
 		case left: {
-			double intYmin_frac = Math.max(0.0, yFrac-heightFrac);
-			double intYmax_frac = Math.min(yFrac+heightFrac, 1.0);
+			double intYmin_frac = Math.max(0.0, yFrac-heightleftFrac);
+			double intYmax_frac = Math.min(yFrac+heightleftFrac, 1.0);
 			led.mImageRectangle = new Rectangle2D.Double(
 					pProcessSpec.getVerticalGap(), 
 					intYmin_frac, 
@@ -258,8 +259,8 @@ public class LedFrameFactory {
 			break;
 		}
 		case right:
-			double intYmin_frac = Math.max(0.0, yFrac-heightFrac);
-			double intYmax_frac = Math.min(yFrac+heightFrac, 1.0);
+			double intYmin_frac = Math.max(0.0, yFrac-heightrightFrac);
+			double intYmax_frac = Math.min(yFrac+heightrightFrac, 1.0);
 			led.mImageRectangle = new Rectangle2D.Double(
 					1.0-pProcessSpec.getVerticalGap()-verticalDepth, 
 					intYmin_frac, 

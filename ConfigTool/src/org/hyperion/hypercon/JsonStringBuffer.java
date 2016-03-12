@@ -13,7 +13,7 @@ public class JsonStringBuffer {
 	public JsonStringBuffer() {
 		this(0);
 
-		mStrBuf.append("{\n");
+		mStrBuf.append("{\n"); 
 		++mIndentLevel;
 	}
 	
@@ -31,26 +31,26 @@ public class JsonStringBuffer {
 		for (int i=0; i<mIndentLevel; ++i) {
 			mStrBuf.append('\t');
 		}
-		mStrBuf.append("\"end-of-json\" : \"end-of-json\"\n");
+		mStrBuf.append("\"end-of-json\" : \"end-of-json\"\n"); 
 		
 		--mIndentLevel;
 		if (mIndentLevel != mStartIndentLevel) {
-			System.err.println("Json write closed in incorrect state!");
+			System.err.println("Json write closed in incorrect state!"); 
 		}
 		for (int i=0; i<mIndentLevel; ++i) {
 			mStrBuf.append('\t');
 		}
-		mStrBuf.append("}\n");
+		mStrBuf.append("}\n"); 
 	}
 	
 	public void writeComment(String pComment) {
-		String[] commentLines = pComment.split("\\r?\\n");
+		String[] commentLines = pComment.split("\\r?\\n"); 
 
 		for (String commentLine : commentLines) {
 			for (int i=0; i<mIndentLevel; ++i) {
 				mStrBuf.append('\t');
 			}
-			mStrBuf.append("/// ").append(commentLine).append('\n');
+			mStrBuf.append("/// ").append(commentLine).append('\n'); 
 		}
 	}
 	
@@ -59,7 +59,7 @@ public class JsonStringBuffer {
 	}
 	
 	private void startLine() {
-		if (mComment) mStrBuf.append("// ");
+		if (mComment) mStrBuf.append("// "); 
 		for (int i=0; i<mIndentLevel; ++i) {
 			mStrBuf.append('\t');
 		}
@@ -68,10 +68,10 @@ public class JsonStringBuffer {
 	public void startObject(String pKey) {
 		if (!pKey.isEmpty()) {
 			startLine();
-			mStrBuf.append('"').append(pKey).append('"').append(" : \n");
+			mStrBuf.append('"').append(pKey).append('"').append(" : \n"); 
 		}
 		startLine();
-		mStrBuf.append("{\n");
+		mStrBuf.append("{\n"); 
 		
 		++mIndentLevel;
 	}
@@ -84,9 +84,9 @@ public class JsonStringBuffer {
 
 		startLine();
 		if (endOfSection) {
-			mStrBuf.append("}\n");
+			mStrBuf.append("}\n"); 
 		} else {
-			mStrBuf.append("},\n");
+			mStrBuf.append("},\n"); 
 		}
 		
 	}
@@ -98,7 +98,7 @@ public class JsonStringBuffer {
 		--mIndentLevel;
 
 		startLine();
-		mStrBuf.append("},\n");
+		mStrBuf.append("},\n"); 
 	}
 
 	/**
@@ -106,9 +106,9 @@ public class JsonStringBuffer {
 	 */
 	public void startArray(String pKey) {
 		startLine();
-		mStrBuf.append('"').append(pKey).append('"').append(" : \n");
+		mStrBuf.append('"').append(pKey).append('"').append(" : \n"); 
 		startLine();
-		mStrBuf.append("[\n");
+		mStrBuf.append("[\n"); 
 		
 		++mIndentLevel;
 	}
@@ -121,9 +121,9 @@ public class JsonStringBuffer {
 
 		startLine();
 		if (lastValue) {
-			mStrBuf.append("]\n");
+			mStrBuf.append("]\n"); 
 		} else {
-			mStrBuf.append("],\n");
+			mStrBuf.append("],\n"); 
 		}
 	}
 
@@ -135,11 +135,11 @@ public class JsonStringBuffer {
 	 */
 	public void addRawValue(String pKey, String pValue, boolean lastValue) {
 		startLine();
-		mStrBuf.append('"').append(pKey).append('"').append(" : ").append(pValue);
+		mStrBuf.append('"').append(pKey).append('"').append(" : ").append(pValue); 
 		if (lastValue) {
-			mStrBuf.append("\n");
+			mStrBuf.append("\n"); 
 		} else {
-			mStrBuf.append(",\n");
+			mStrBuf.append(",\n"); 
 		}
 	}
 
@@ -151,14 +151,45 @@ public class JsonStringBuffer {
 	 */
 	public void addValue(String pKey, String pValue, boolean lastValue) {
 		startLine();
-		mStrBuf.append('"').append(pKey).append('"').append(" : ").append('"').append(pValue).append('"');
+		mStrBuf.append('"').append(pKey).append('"').append(" : ").append('"').append(pValue).append('"'); 
 		if (lastValue) {
-			mStrBuf.append("\n");
+			mStrBuf.append("\n"); 
 		} else {
-			mStrBuf.append(",\n");
+			mStrBuf.append(",\n"); 
 		}
 	}
-
+	/**
+	 *
+	 * @param pKey
+	 * @param pValue
+	 * @param pValue1
+	 * @param pValue2
+	 * @param lastValue
+	 */
+	public void addArrayRGB(String pKey, int pValue, int pValue1, int pValue2, boolean lastValue) {
+		startLine();
+		mStrBuf.append('"').append(pKey).append('"').append(" : ").append('[').append(pValue).append(',').append(pValue1).append(',').append(pValue2).append(']'); 
+		if (lastValue) {
+			mStrBuf.append("\n"); 
+		} else {
+			mStrBuf.append(",\n"); 
+		}
+	}
+	/**
+	 *
+	 * @param pKey
+	 * @param pValue
+	 * @param lastValue
+	 */
+	public void addArray(String pKey, String pValue, boolean lastValue) {
+		startLine();
+		mStrBuf.append('"').append(pKey).append('"').append(" : ").append('[').append(pValue).append(']'); 
+		if (lastValue) {
+			mStrBuf.append("\n"); 
+		} else {
+			mStrBuf.append(",\n"); 
+		}
+	}
 	/**
 	 *
 	 * @param pKey
@@ -167,11 +198,11 @@ public class JsonStringBuffer {
 	 */
 	public void addValue(String pKey, double pValue, boolean lastValue) {
 		startLine();
-		mStrBuf.append('"').append(pKey).append('"').append(" : ").append(pValue);
+		mStrBuf.append('"').append(pKey).append('"').append(" : ").append(pValue); 
 		if (lastValue) {
-			mStrBuf.append("\n");
+			mStrBuf.append("\n"); 
 		} else {
-			mStrBuf.append(",\n");
+			mStrBuf.append(",\n"); 
 		}
 	}
 
@@ -182,11 +213,11 @@ public class JsonStringBuffer {
 	 */
 	public void addValue(String pKey, int pValue, boolean lastValue) {
 		startLine();
-		mStrBuf.append('"').append(pKey).append('"').append(" : ").append(pValue);
+		mStrBuf.append('"').append(pKey).append('"').append(" : ").append(pValue); 
 		if (lastValue) {
-			mStrBuf.append("\n");
+			mStrBuf.append("\n"); 
 		} else {
-			mStrBuf.append(",\n");
+			mStrBuf.append(",\n"); 
 		}
 	}
 
@@ -197,11 +228,11 @@ public class JsonStringBuffer {
 	 */
 	public void addValue(String pKey, boolean pValue, boolean lastValue) {
 		startLine();
-		mStrBuf.append('"').append(pKey).append('"').append(" : ").append(pValue);
+		mStrBuf.append('"').append(pKey).append('"').append(" : ").append(pValue); 
 		if (lastValue) {
-			mStrBuf.append("\n");
+			mStrBuf.append("\n"); 
 		} else {
-			mStrBuf.append(",\n");
+			mStrBuf.append(",\n"); 
 		}
 	}
 	
@@ -215,9 +246,9 @@ public class JsonStringBuffer {
 		startLine();
 		mStrBuf.append('"').append(pValue).append('"');
 		if (pLastValue) {
-			mStrBuf.append("\n");
+			mStrBuf.append("\n"); 
 		} else {
-			mStrBuf.append(",\n");
+			mStrBuf.append(",\n"); 
 		}
 	}
 	
@@ -229,31 +260,37 @@ public class JsonStringBuffer {
 	public static void main(String[] pArgs) {
 		JsonStringBuffer jsonBuf = new JsonStringBuffer();
 		
-		String comment = "Device configuration contains the following fields: \n" +
-				"* 'name'       : The user friendly name of the device (only used for display purposes) \n" +
-				"* 'type'       : The type of the device or leds (known types for now are 'ws2801', 'lpd6803', 'sedu', 'test' and 'none') \n" +
-				"* 'output'     : The output specification depends on selected device \n" +
-				"                  - 'ws2801' this is the device (eg '/dev/spidev0.0 or /dev/ttyS0') \n" +
-				"                 - 'test' this is the file used to write test output (eg '/home/pi/hyperion.out') \n" +
-				"* 'rate'       : The baudrate of the output to the device \n" +
-				"* 'colorOrder' : The order of the color bytes ('rgb', 'rbg', 'bgr', etc.). \n";
+		String comment = "Device configuration contains the following fields: \n" + 
+				"* 'name'       : The user friendly name of the device (only used for display purposes) \n" + 
+				"* 'type'       : The type of the device or leds (known types for now are \n" +
+				"				'apa102', 'lightpack', 'philipshue', 'ws2801', 'lpd6803', 'sedu', 'test' and 'none') \n" + 
+				"* 'output'     : The output specification depends on selected device \n" + 
+				"                  - 'ws2801' this is the device (eg '/dev/spidev0.0 or /dev/ttyS0') \n" + 
+				"                 - 'test' this is the file used to write test output (eg '/home/pi/hyperion.out') \n" + 
+				"* 'rate'       : The baudrate of the output to the device \n" + 
+				"* 'colorOrder' : The order of the color bytes ('rgb', 'rbg', 'bgr', etc.). \n" + 
+				"\n" + 
+				" Specific of Philips Hue: \n" + 
+				"* 'username'   : The name of user registred on the Philips Hue Bridge \n" + 
+				"* 'switchOffOnBlack' : Define if Hue light switch off when black is detected \n" + 
+				"* 'transitiontime' : Set the time of transition between color of Hue light \n" ; 		
 		jsonBuf.writeComment(comment);
 		
-		jsonBuf.startObject("device");
-		jsonBuf.addValue("name", "MyPi", false);
-		jsonBuf.addValue("type", "ws2801", false);
-		jsonBuf.addValue("output", "/dev/spidev0.0", false);
-		jsonBuf.addValue("rate", 1000000, false);
-		jsonBuf.addValue("colorOrder", "rgb", true);
+		jsonBuf.startObject("device"); 
+		jsonBuf.addValue("name", "MyPi", false);  
+		jsonBuf.addValue("type", "ws2801", false);  
+		jsonBuf.addValue("output", "/dev/spidev0.0", false);  
+		jsonBuf.addValue("rate", 1000000, false); 
+		jsonBuf.addValue("colorOrder", "rgb", true);  
 		jsonBuf.stopObject();
 		
 		jsonBuf.toggleComment(true);
-		jsonBuf.startObject("device");
-		jsonBuf.addValue("name", "MyPi", false);
-		jsonBuf.addValue("type", "ws2801", false);
-		jsonBuf.addValue("output", "/dev/spidev0.0", false);
-		jsonBuf.addValue("rate", 1000000, false);
-		jsonBuf.addValue("colorOrder", "rgb", true);
+		jsonBuf.startObject("device"); 
+		jsonBuf.addValue("name", "MyPi", false);  
+		jsonBuf.addValue("type", "ws2801", false);  
+		jsonBuf.addValue("output", "/dev/spidev0.0", false);  
+		jsonBuf.addValue("rate", 1000000, false); 
+		jsonBuf.addValue("colorOrder", "rgb", true);  
 		jsonBuf.stopObject();
 		jsonBuf.toggleComment(false);
 

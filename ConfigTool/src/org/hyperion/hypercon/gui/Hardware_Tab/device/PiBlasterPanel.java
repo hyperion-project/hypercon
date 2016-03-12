@@ -3,9 +3,11 @@ package org.hyperion.hypercon.gui.Hardware_Tab.device;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.DeviceConfig;
 
 public class PiBlasterPanel extends DeviceTypePanel {
@@ -38,7 +40,7 @@ public class PiBlasterPanel extends DeviceTypePanel {
 	}
 	
 	private void initialise() {
-		mOutputLabel = new JLabel("Host: ");
+		mOutputLabel = new JLabel(language.getString("hardware.leddevice.host"));
 		mOutputLabel.setMinimumSize(firstColMinDim);
 		add(mOutputLabel);
 		
@@ -60,7 +62,7 @@ public class PiBlasterPanel extends DeviceTypePanel {
 		});		
 		add(mOutputField);
 		
-		mAssignmentLabel = new JLabel("Baudrate: ");
+		mAssignmentLabel = new JLabel(language.getString("hardware.leddevice.baudrate"));
 		mAssignmentLabel.setMinimumSize(firstColMinDim);
 		add(mAssignmentLabel);
 		
@@ -96,10 +98,10 @@ public class PiBlasterPanel extends DeviceTypePanel {
 						.addComponent(mAssignmentField))
 				);
 		layout.setVerticalGroup(layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mOutputLabel)
 						.addComponent(mOutputField))
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mAssignmentLabel)
 						.addComponent(mAssignmentField))
 				);		

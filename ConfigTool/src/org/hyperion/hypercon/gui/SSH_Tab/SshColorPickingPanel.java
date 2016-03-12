@@ -15,6 +15,7 @@ import javax.swing.*;
 import com.jcraft.jsch.JSchException;
 import org.hyperion.hypercon.ErrorHandling;
 import org.hyperion.hypercon.SshConnectionModel;
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
 
 import com.bric.swing.ColorPicker;
@@ -65,14 +66,14 @@ public class SshColorPickingPanel extends JPanel implements Observer, PropertyCh
 	private void initialise() {
 		
 		//All the Gui elements
-		setBorder(BorderFactory.createTitledBorder("Set Led Color"));
+		setBorder(BorderFactory.createTitledBorder(language.getString("ssh.colorpicker.title"))); //$NON-NLS-1$
 		
-		expertView = new JCheckBox("Expertview");
+		expertView = new JCheckBox(language.getString("ssh.colorpicker.expertviewlabel")); //$NON-NLS-1$
 		expertView.setSelected(sshConfig.colorPickerInExpertmode);
 		expertView.addActionListener(mActionListener);
 		add(expertView);
 		
-		showColorWheel = new JCheckBox("Colorwheel");
+		showColorWheel = new JCheckBox(language.getString("ssh.colorpicker.colorwheellabel")); //$NON-NLS-1$
 		showColorWheel.setSelected(sshConfig.colorPickerShowColorWheel);
 		showColorWheel.addActionListener(mActionListener);
 		add(showColorWheel);
@@ -96,15 +97,15 @@ public class SshColorPickingPanel extends JPanel implements Observer, PropertyCh
 		}
 		add(colorPicker, BorderLayout.CENTER);
 		
-		autoUpdateCB = new JCheckBox("Auto Update");
-		autoUpdateCB.setToolTipText("Automatically send new color selections, this may be a bit slow and laggy!");
+		autoUpdateCB = new JCheckBox(language.getString("ssh.colorpicker.autoupdatebutton")); //$NON-NLS-1$
+		autoUpdateCB.setToolTipText(language.getString("ssh.colorpicker.autoupdatetooltip")); //$NON-NLS-1$
 		add(autoUpdateCB);
 		
-		setLedColor = new JButton("Set Led Color");
+		setLedColor = new JButton(language.getString("ssh.colorpicker.setledcolorbutton")); //$NON-NLS-1$
 		setLedColor.addActionListener(mActionListener);
 		add(setLedColor);
 		
-		clearLedColor = new JButton("Clear");
+		clearLedColor = new JButton(language.getString("ssh.colorpicker.clearbutton")); //$NON-NLS-1$
 		clearLedColor.addActionListener(mActionListener);
 		add(clearLedColor);
 		
@@ -201,7 +202,7 @@ public class SshColorPickingPanel extends JPanel implements Observer, PropertyCh
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if(autoUpdateCB != null && autoUpdateCB.isSelected() && evt.getPropertyName().equals("selected color")){
+		if(autoUpdateCB != null && autoUpdateCB.isSelected() && evt.getPropertyName().equals("selected color")){ //$NON-NLS-1$
 			int[] chosenColor = colorPicker.getRGB();
 			try {
 				SshConnectionModel.getInstance().sendLedColor(chosenColor[0], chosenColor[1], chosenColor[2]);

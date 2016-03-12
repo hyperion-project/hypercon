@@ -3,6 +3,7 @@ package org.hyperion.hypercon.gui.SSH_Tab;
 import com.jcraft.jsch.JSchException;
 import org.hyperion.hypercon.ErrorHandling;
 import org.hyperion.hypercon.SshConnectionModel;
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
 import org.hyperion.hypercon.spec.SshCommand;
 
@@ -62,7 +63,7 @@ public class SshCommandSenderPanel extends JPanel implements Observer {
      */
     private void initialise() {
 
-        setBorder(BorderFactory.createTitledBorder("Ssh Commands"));
+        setBorder(BorderFactory.createTitledBorder(language.getString("ssh.sshcommand.title"))); //$NON-NLS-1$
 
 
         commands_cb = new JComboBox<>();
@@ -75,11 +76,11 @@ public class SshCommandSenderPanel extends JPanel implements Observer {
         commands_cb.addActionListener(mActionListener);
         add(commands_cb);
 
-        send_but = new JButton("Send");
+        send_but = new JButton(language.getString("ssh.sshcommand.sendbutton")); //$NON-NLS-1$
         send_but.addActionListener(mActionListener);
         add(send_but);
 
-        del_but = new JButton("Delete");
+        del_but = new JButton(language.getString("ssh.sshcommand.deletebutton")); //$NON-NLS-1$
         del_but.addActionListener(mActionListener);
         add(del_but);
 
@@ -110,7 +111,6 @@ public class SshCommandSenderPanel extends JPanel implements Observer {
 
     }
 
-
     /**
      * Enable or disable the Gui elememnts which depend on a shh connection
      * @param setEnabled
@@ -137,7 +137,7 @@ public class SshCommandSenderPanel extends JPanel implements Observer {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            if (e.getActionCommand() == "comboBoxEdited") {
+            if (e.getActionCommand() == "comboBoxEdited") { //$NON-NLS-1$
                 if(commands_cb.getSelectedIndex() == -1){
                     commands_cb.addItem(String.valueOf(commands_cb.getSelectedItem()));
                 }

@@ -14,7 +14,7 @@ public class ColorConfig {
 		mTransforms.add(new TransformConfig());
 	}
 	
-	public boolean mSmoothingEnabled = false;
+	public boolean mSmoothingEnabled = true;
 	/** The type of smoothing algorithm */
 	public ColorSmoothingType mSmoothingType = ColorSmoothingType.linear;
 	/** The time constant for smoothing algorithm in milliseconds */

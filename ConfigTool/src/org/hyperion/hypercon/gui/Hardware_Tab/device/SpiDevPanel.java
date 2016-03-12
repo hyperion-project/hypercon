@@ -10,7 +10,9 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.GroupLayout.Alignment;
 
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.DeviceConfig;
 
 /**
@@ -50,7 +52,7 @@ public class SpiDevPanel extends DeviceTypePanel {
 	}
 	
 	private void initialise() {
-		mOutputLabel = new JLabel("Output: ");
+		mOutputLabel = new JLabel(language.getString("hardware.leddevice.output"));
 		mOutputLabel.setMinimumSize(firstColMinDim);
 		add(mOutputLabel);
 		
@@ -60,7 +62,7 @@ public class SpiDevPanel extends DeviceTypePanel {
 		mOutputCombo.addActionListener(mActionListener);
 		add(mOutputCombo);
 		
-		mBaudrateLabel = new JLabel("Baudrate: ");
+		mBaudrateLabel = new JLabel(language.getString("hardware.leddevice.baudrate"));
 		mBaudrateLabel.setMinimumSize(firstColMinDim);
 		add(mBaudrateLabel);
 		
@@ -83,10 +85,10 @@ public class SpiDevPanel extends DeviceTypePanel {
 						.addComponent(mBaudrateSpinner))
 				);
 		layout.setVerticalGroup(layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mOutputLabel)
 						.addComponent(mOutputCombo))
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mBaudrateLabel)
 						.addComponent(mBaudrateSpinner))
 				);		

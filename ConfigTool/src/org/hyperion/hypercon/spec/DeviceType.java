@@ -16,6 +16,7 @@ public enum DeviceType {
 	apa102("APA102"),
 	/** Adalight device */
 	adalight("Adalight"),
+	AdalightApa102("AdalightAPA102"),
 	ambiled("AmbiLed"),
 	atmo("Atmo"),
 	hyperion_usbasp_ws2801("Hyperion-USBASP-WS2801"),
@@ -98,6 +99,7 @@ public enum DeviceType {
 				mConfigPanel = new TestDevicePanel();
 				break;
 			case adalight:
+			case AdalightApa102:
 			case ambiled:
 			case atmo:
 			case sedu:

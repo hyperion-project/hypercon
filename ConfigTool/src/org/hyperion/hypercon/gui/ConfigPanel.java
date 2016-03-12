@@ -1,34 +1,28 @@
 package org.hyperion.hypercon.gui;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
-import org.hyperion.hypercon.ConfigurationFile;
 import org.hyperion.hypercon.LedFrameFactory;
 import org.hyperion.hypercon.LedString;
-import org.hyperion.hypercon.Main;
-import org.hyperion.hypercon.gui.External_Tab.EffectEnginePanel;
+import org.hyperion.hypercon.gui.LoadSaveCreatePanel;
+import org.hyperion.hypercon.gui.External_Tab.BootEffectPanel;
 import org.hyperion.hypercon.gui.External_Tab.InterfacePanel;
 import org.hyperion.hypercon.gui.External_Tab.XbmcPanel;
+import org.hyperion.hypercon.gui.External_Tab.ForwardPanel;
 import org.hyperion.hypercon.gui.Grabber_Tab.FrameGrabberPanel;
 import org.hyperion.hypercon.gui.Grabber_Tab.Grabberv4l2Panel;
 import org.hyperion.hypercon.gui.Hardware_Tab.DevicePanel;
 import org.hyperion.hypercon.gui.Hardware_Tab.ImageProcessPanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.BlackBorderPanel;
 import org.hyperion.hypercon.gui.Hardware_Tab.LedFramePanel;
 import org.hyperion.hypercon.gui.LedSimulation.LedSimulationComponent;
 import org.hyperion.hypercon.gui.Process_Tab.ColorSmoothingPanel;
@@ -36,8 +30,9 @@ import org.hyperion.hypercon.gui.Process_Tab.ColorsPanel;
 import org.hyperion.hypercon.gui.SSH_Tab.SshColorPickingPanel;
 import org.hyperion.hypercon.gui.SSH_Tab.SshCommandSenderPanel;
 import org.hyperion.hypercon.gui.SSH_Tab.SshConnectionPanel;
+import org.hyperion.hypercon.gui.SSH_Tab.SshManageHyperionPanel;
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
-
 /**
  * The main-config panel of HyperCon. Includes the configuration and the panels to edit and 
  * write-out the configuration. This can be placed on JFrame, JDialog or JApplet as required.
@@ -45,38 +40,10 @@ import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
 public class ConfigPanel extends JPanel {
 
 	/** The LED configuration information*/
+//	final LedString leddString = new LedString();
 	private final LedString ledString;
 	private final SshAndColorPickerConfig sshConfig;
-	
-	/** Action for write the Hyperion deamon configuration file */
-	private final Action mSaveConfigAction = new AbstractAction("Create Hyperion Configuration") {
-		JFileChooser fileChooser = new JFileChooser();
-		{
-			fileChooser.setSelectedFile(new File("hyperion.config.json"));
-		}
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (fileChooser.showSaveDialog(ConfigPanel.this) != JFileChooser.APPROVE_OPTION) {
-				return;
-			}
-
-			try {
-				ledString.saveConfigFile(fileChooser.getSelectedFile().getAbsolutePath());
-				
-				ConfigurationFile configFile = new ConfigurationFile();
-				configFile.store(ledString.mDeviceConfig);
-				configFile.store(ledString.mLedFrameConfig);
-				configFile.store(ledString.mProcessConfig);
-				configFile.store(ledString.mColorConfig);
-				configFile.store(ledString.mMiscConfig);
-				configFile.save(Main.configFilename);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
-	};
-	
+		
 	/** The panel for containing the example 'Hyperion TV' */
 	private JPanel mTvPanel;
 	/** The simulated 'Hyperion TV' */
@@ -84,6 +51,7 @@ public class ConfigPanel extends JPanel {
 	
 	private JTabbedPane mSpecificationTabs = null;
 	/** The left (WEST) side panel containing the different configuration panels */
+	private JPanel mLoadSaveCreatePanel = null;
 	private JPanel mHardwarePanel = null;
 	private JPanel mProcessPanel = null;
 	private JPanel mExternalPanel = null;
@@ -91,9 +59,6 @@ public class ConfigPanel extends JPanel {
 	private JPanel mGrabberPanel = null;
 
 
-	/** The button connected to mSaveConfigAction */
-	private JButton mSaveConfigButton;
-	
 	/**
 	 * Constructs the configuration panel with a default initialised led-frame and configuration
 	 */
@@ -138,11 +103,11 @@ public class ConfigPanel extends JPanel {
 		mWestPanel.add(getSpecificationTabs(), BorderLayout.CENTER);
 		
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-		mSaveConfigButton = new JButton(mSaveConfigAction);
-		panel.add(mSaveConfigButton, BorderLayout.SOUTH);
+		panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));		
+		
 		mWestPanel.add(panel, BorderLayout.SOUTH);
-
+		mWestPanel.add(getSaveLoadCreatePanel(), BorderLayout.SOUTH);			
+		
 		return mWestPanel;
 	}
 	private JTabbedPane getSpecificationTabs() {
@@ -150,14 +115,27 @@ public class ConfigPanel extends JPanel {
 			mSpecificationTabs = new JTabbedPane();
 			mSpecificationTabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 			
-			mSpecificationTabs.addTab("Hardware", new JScrollPane(getHardwarePanel()));
-			mSpecificationTabs.addTab("Process",  new JScrollPane(getProcessPanel()));
-			mSpecificationTabs.addTab("Grabber",  new JScrollPane(getGrabberPanel()));
-			mSpecificationTabs.addTab("External", new JScrollPane(getExternalPanel()));
-			mSpecificationTabs.addTab("SSH",      new JScrollPane(getTestingPanel()));
+			mSpecificationTabs.addTab(language.getString("general.tab.hardware"), new JScrollPane(getHardwarePanel())); //$NON-NLS-1$
+			mSpecificationTabs.addTab(language.getString("general.tab.process"),  new JScrollPane(getProcessPanel())); //$NON-NLS-1$
+			mSpecificationTabs.addTab(language.getString("general.tab.grabber"),  new JScrollPane(getGrabberPanel())); //$NON-NLS-1$
+			mSpecificationTabs.addTab(language.getString("general.tab.external"), new JScrollPane(getExternalPanel())); //$NON-NLS-1$
+			mSpecificationTabs.addTab(language.getString("general.tab.ssh"),      new JScrollPane(getTestingPanel())); //$NON-NLS-1$
 		}
 		return mSpecificationTabs;
 	}
+	
+	/* Add save/load/create config to main panel*/
+	private JPanel getSaveLoadCreatePanel() {
+		if (mLoadSaveCreatePanel == null) {
+			mLoadSaveCreatePanel = new JPanel();
+			mLoadSaveCreatePanel.setLayout(new BoxLayout(mLoadSaveCreatePanel, BoxLayout.Y_AXIS));
+			
+			mLoadSaveCreatePanel.add(new LoadSaveCreatePanel(ledString));
+			mLoadSaveCreatePanel.add(Box.createVerticalGlue());
+		}
+		return mLoadSaveCreatePanel;
+	}
+	
 	
 	/**
 	 * Created, if not exists, and returns the panel holding the simulated 'Hyperion TV'
@@ -183,6 +161,7 @@ public class ConfigPanel extends JPanel {
 			mHardwarePanel.add(new DevicePanel(ledString.mDeviceConfig));
 			mHardwarePanel.add(new LedFramePanel(ledString.mLedFrameConfig));
 			mHardwarePanel.add(new ImageProcessPanel(ledString.mProcessConfig));
+			mHardwarePanel.add(new BlackBorderPanel(ledString.mBlackBorderConfig));
 			mHardwarePanel.add(Box.createVerticalGlue());
 		}
 		return mHardwarePanel;
@@ -196,6 +175,7 @@ public class ConfigPanel extends JPanel {
 
 			mProcessPanel.add(new ColorSmoothingPanel(ledString.mColorConfig));
 			mProcessPanel.add(new ColorsPanel(ledString.mColorConfig));
+	//		mProcessPanel.add(new SshColorTransformPanel
 			mProcessPanel.add(Box.createVerticalGlue());
 		}
 		return mProcessPanel;
@@ -208,7 +188,8 @@ public class ConfigPanel extends JPanel {
 			
 			mExternalPanel.add(new XbmcPanel(ledString.mMiscConfig));
 			mExternalPanel.add(new InterfacePanel(ledString.mMiscConfig));
-			mExternalPanel.add(new EffectEnginePanel(ledString.mMiscConfig));
+			mExternalPanel.add(new BootEffectPanel(ledString.mMiscConfig));
+			mExternalPanel.add(new ForwardPanel(ledString.mMiscConfig));
 			mExternalPanel.add(Box.createVerticalGlue());
 		}
 		return mExternalPanel;
@@ -221,7 +202,8 @@ public class ConfigPanel extends JPanel {
 			mTestingPanel.add(new SshConnectionPanel(sshConfig));
 			mTestingPanel.add(new SshColorPickingPanel(sshConfig));
 			mTestingPanel.add(new SshCommandSenderPanel(sshConfig));
-
+			mTestingPanel.add(new SshManageHyperionPanel(sshConfig));
+			
 			mTestingPanel.add(Box.createVerticalGlue());
 
 		}
@@ -242,7 +224,4 @@ public class ConfigPanel extends JPanel {
 
 		return mGrabberPanel;
 	}
-
-
-	}
-
+}

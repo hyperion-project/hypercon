@@ -9,6 +9,7 @@ import org.hyperion.ssh.PiSshConnection;
 import java.awt.*;
 import java.io.IOException;
 import java.util.Observable;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Fabian Hertwig
@@ -18,8 +19,10 @@ public class SshConnectionModel extends Observable {
 
 
 
-    private static String hyperionRemoteCall = "hyperion-remote ";
-	private static  String hyperionGrabberV4l2Call = "hyperion-v4l2 ";
+    private static String hyperionRemoteCall = "hyperion-remote "; //$NON-NLS-1$
+	private static  String hyperionGrabberV4l2Call = "hyperion-v4l2 "; //$NON-NLS-1$
+	private static  String hyperionInstallCall = "hyperion-v4l2 "; //$NON-NLS-1$
+	private static  String hyperionRemoveCall = "hyperion-v4l2 "; //$NON-NLS-1$
 	private static boolean printTraffic = true;
 
 	private static SshConnectionModel instance = null;
@@ -50,7 +53,13 @@ public class SshConnectionModel extends Observable {
     public static void setHyperionGrabberV4l2Call(String hyperionGrabberV4l2Call) {
         SshConnectionModel.hyperionGrabberV4l2Call = hyperionGrabberV4l2Call;
     }
-
+    
+    public static void setHyperionInstallCall(String hyperionInstallCall) {
+        SshConnectionModel.hyperionInstallCall = hyperionInstallCall;
+    }
+    public static void setHyperionRemoveCall(String hyperionRemoveCall) {
+        SshConnectionModel.hyperionRemoveCall = hyperionRemoveCall;
+    }
 	/**Tries to establish a connection
 	 * @param hostName
 	 * @param port
@@ -116,7 +125,7 @@ public class SshConnectionModel extends Observable {
 			return false;
 		}
 
-		mSshConnection.execute(hyperionRemoteCall + " -c " + hexValues);
+		mSshConnection.execute(hyperionRemoteCall + " -c " + hexValues); //$NON-NLS-1$
 		return true;
 
 	}
@@ -149,8 +158,8 @@ public class SshConnectionModel extends Observable {
 		    -w, --whitelevel <arg>       Set the whitelevel of the leds (requires 3 space seperated values which are normally between 0.0 and 1.0)
 
 		 */
-		mSshConnection.execute(hyperionRemoteCall + "-s " + hsvSaturation + " -v " + hsvGain + " -g " + floatArrayToArgsString(rgbGamma) + 
-				" -t " + floatArrayToArgsString(rgbThreshold) + " -b " + floatArrayToArgsString(rgbBlacklevel) + " -w " + floatArrayToArgsString(rgbWhitelevel));
+		mSshConnection.execute(hyperionRemoteCall + "-s " + hsvSaturation + " -v " + hsvGain + " -g " + floatArrayToArgsString(rgbGamma) +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				" -t " + floatArrayToArgsString(rgbThreshold) + " -b " + floatArrayToArgsString(rgbBlacklevel) + " -w " + floatArrayToArgsString(rgbWhitelevel)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		return true;
 		
 	}
@@ -160,7 +169,7 @@ public class SshConnectionModel extends Observable {
 	 */
 	public boolean sendClear() throws JSchException {
 		if(isConnected()){
-			mSshConnection.execute(hyperionRemoteCall + "--clearall");
+			mSshConnection.execute(hyperionRemoteCall + "--clearall"); //$NON-NLS-1$
 			return true;
 		}
 		return false;
@@ -173,7 +182,7 @@ public class SshConnectionModel extends Observable {
 	public boolean sendTakeScreenshot() throws JSchException {
 		if(isConnected()){
 
-			mSshConnection.execute(hyperionGrabberV4l2Call + "--screenshot");
+			mSshConnection.execute(hyperionGrabberV4l2Call + "--screenshot"); //$NON-NLS-1$
 			return true;
 		}
 		return false;
@@ -187,6 +196,41 @@ public class SshConnectionModel extends Observable {
 		if(isConnected()){
 
 			mSshConnection.execute(command);
+			return true;
+		}
+		return false;
+	}
+	/**
+	 *
+	 * @return false if there is no connection, true after the command was executed
+	 */
+	public boolean sendInstallMessage() throws JSchException {
+		if(isConnected()){	
+			mSshConnection.execute("Install/Update Hyperion, this may take a while. The output is generated, when the script is ready! Just wait!");
+			return true;
+		}
+		return false;
+	}
+	/**
+	 *
+	 * @return false if there is no connection, true after the command was executed
+	 */
+	public boolean sendInstall() throws JSchException {
+		if(isConnected()){
+			System.out.println("Install/Update Hyperion, this may take a while. The output is generated, when the script is ready! Just wait!"); //$NON-NLS-1$
+			
+			mSshConnection.execute(hyperionInstallCall);
+			return true;
+		}
+		return false;
+	}
+	/**
+	 *
+	 * @return false if there is no connection, true after the command was executed
+	 */
+	public boolean sendRemove() throws JSchException {
+		if(isConnected()){
+			mSshConnection.execute(hyperionRemoveCall);
 			return true;
 		}
 		return false;
@@ -211,7 +255,7 @@ public class SshConnectionModel extends Observable {
 	public boolean sendTakeScreenshot(String hyperionV42lArguments) throws JSchException {
 		if(isConnected()){
 
-			mSshConnection.execute(hyperionGrabberV4l2Call + hyperionV42lArguments + " --screenshot");
+			mSshConnection.execute(hyperionGrabberV4l2Call + hyperionV42lArguments + " --screenshot"); //$NON-NLS-1$
 			return true;
 		}
 		return false;
@@ -220,7 +264,7 @@ public class SshConnectionModel extends Observable {
 	public boolean getScreenshot() throws JSchException, SftpException {
 		if(isConnected()){
 
-			mSshConnection.getFile("./screenshot.png", ".");
+			mSshConnection.getFile("./screenshot.png", "."); //$NON-NLS-1$ //$NON-NLS-2$
 			return true;
 		}
 		return false;
@@ -230,7 +274,7 @@ public class SshConnectionModel extends Observable {
 	public Image getScreenshotImage() throws JSchException, SftpException, IOException {
 		if(isConnected()){
 
-			return mSshConnection.getImage("./screenshot.png");
+			return mSshConnection.getImage("./screenshot.png"); //$NON-NLS-1$
 		}
 		return null;
 	}
@@ -251,7 +295,7 @@ public class SshConnectionModel extends Observable {
 		@Override
 		public void commandExec(String pCommand) {
 			if(printTraffic){
-				System.out.println("ssh: $ " + pCommand);
+				System.out.println("ssh: $ " + pCommand); //$NON-NLS-1$
 			}
 		}
 
@@ -265,21 +309,21 @@ public class SshConnectionModel extends Observable {
 		@Override
 		public void getFileFinished(String src, String dst) {
 			if(printTraffic){
-				System.out.println("sftp getFile(" + src + ", " + dst + ")");
+				System.out.println("sftp getFile(" + src + ", " + dst + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 		}
 
 		@Override
 		public void addLine(String pLine) {
 			if(printTraffic){
-				System.out.println("ssh: " + pLine);
+				System.out.println("ssh: " + pLine); //$NON-NLS-1$
 			}
 		}
 
 		@Override
 		public void addError(String pLine) {
 			if(printTraffic){
-				System.out.println("ssh Error: " + "\u001B[31m" + pLine);
+				System.out.println("ssh Error: " + "\u001B[31m" + pLine); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 		}
@@ -287,7 +331,7 @@ public class SshConnectionModel extends Observable {
 		@Override
 		public void connected() {
 			if(printTraffic){
-				System.out.println("ssh connected");
+				System.out.println("ssh connected"); //$NON-NLS-1$
 			}
 			super.connected();
 		}
@@ -295,7 +339,7 @@ public class SshConnectionModel extends Observable {
 		@Override
 		public void disconnected() {
 			if(printTraffic){
-				System.out.println("ssh disconnected");
+				System.out.println("ssh disconnected"); //$NON-NLS-1$
 			}
 			super.disconnected();
 		}
@@ -315,15 +359,15 @@ public class SshConnectionModel extends Observable {
 	 * @return
 	 */
 	private static String floatArrayToArgsString(float[] array){
-		StringBuffer buffer = new StringBuffer("\"");
+		StringBuffer buffer = new StringBuffer("\""); //$NON-NLS-1$
 		
 		for (float f : array) {
 			buffer.append(f);
-			buffer.append(" ");
+			buffer.append(" "); //$NON-NLS-1$
 			
 		}
-		buffer.deleteCharAt(buffer.lastIndexOf(" "));
-		buffer.append("\"");
+		buffer.deleteCharAt(buffer.lastIndexOf(" ")); //$NON-NLS-1$
+		buffer.append("\""); //$NON-NLS-1$
 		return buffer.toString();
 	}
 	
@@ -335,7 +379,7 @@ public class SshConnectionModel extends Observable {
 	private static String intToTwoValueHex(int i){
 		StringBuffer hex = new StringBuffer(Integer.toHexString(i));
 		if(hex.length() == 1){
-			hex.insert(0, "0");
+			hex.insert(0, "0"); //$NON-NLS-1$
 		}
 		return hex.toString();
 	}

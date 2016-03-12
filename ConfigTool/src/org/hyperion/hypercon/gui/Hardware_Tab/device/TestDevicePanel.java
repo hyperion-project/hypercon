@@ -5,7 +5,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.GroupLayout.Alignment;
 
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.DeviceConfig;
 
 public class TestDevicePanel extends DeviceTypePanel {
@@ -32,7 +34,7 @@ public class TestDevicePanel extends DeviceTypePanel {
 	}
 	
 	private void initialise() {
-		mFilenameLabel = new JLabel("Filename: ");
+		mFilenameLabel = new JLabel(language.getString("hardware.leddevice.filename"));
 		mFilenameLabel.setMinimumSize(firstColMinDim);
 		add(mFilenameLabel);
 		
@@ -60,7 +62,7 @@ public class TestDevicePanel extends DeviceTypePanel {
 		layout.setHorizontalGroup(layout.createSequentialGroup()
 				.addComponent(mFilenameLabel)
 				.addComponent(mFilenameField));
-		layout.setVerticalGroup(layout.createParallelGroup()
+		layout.setVerticalGroup(layout.createParallelGroup(Alignment.CENTER)
 				.addComponent(mFilenameLabel)
 				.addComponent(mFilenameField));
 	}

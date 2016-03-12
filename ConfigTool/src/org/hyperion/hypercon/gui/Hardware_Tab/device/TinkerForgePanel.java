@@ -9,7 +9,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.GroupLayout.Alignment;
 
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.DeviceConfig;
 
 public class TinkerForgePanel extends DeviceTypePanel {
@@ -55,7 +57,7 @@ public class TinkerForgePanel extends DeviceTypePanel {
 	}
 	
 	private void initialise() {
-		mHostLabel = new JLabel("Host: ");
+		mHostLabel = new JLabel(language.getString("hardware.leddevice.host"));
 		mHostLabel.setMinimumSize(firstColMinDim);
 		add(mHostLabel);
 		
@@ -77,7 +79,7 @@ public class TinkerForgePanel extends DeviceTypePanel {
 		});		
 		add(mHostField);
 		
-		mPortLabel = new JLabel("Baudrate: ");
+		mPortLabel = new JLabel(language.getString("hardware.leddevice.baudrate"));
 		mPortLabel.setMinimumSize(firstColMinDim);
 		add(mPortLabel);
 		
@@ -86,7 +88,7 @@ public class TinkerForgePanel extends DeviceTypePanel {
 		mPortSpinner.addChangeListener(mChangeListener);
 		add(mPortSpinner);
 	
-		mUidLabel = new JLabel("UID: ");
+		mUidLabel = new JLabel(language.getString("hardware.leddevice.uid"));
 		mUidLabel.setMinimumSize(firstColMinDim);
 		add(mUidLabel);
 
@@ -108,7 +110,7 @@ public class TinkerForgePanel extends DeviceTypePanel {
 		});		
 		add(mUidField);
 		
-		mRateLabel = new JLabel("Rate: ");
+		mRateLabel = new JLabel(language.getString("hardware.leddevice.rate"));
 		mRateLabel.setMinimumSize(firstColMinDim);
 		add(mRateLabel);
 
@@ -135,16 +137,16 @@ public class TinkerForgePanel extends DeviceTypePanel {
 						.addComponent(mRateSpinner))
 				);
 		layout.setVerticalGroup(layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mHostLabel)
 						.addComponent(mHostField))
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mPortLabel)
 						.addComponent(mPortSpinner))
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mUidLabel)
 						.addComponent(mUidField))
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mRateLabel)
 						.addComponent(mRateSpinner))
 				);		

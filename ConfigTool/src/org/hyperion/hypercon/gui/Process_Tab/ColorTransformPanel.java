@@ -1,15 +1,11 @@
 package org.hyperion.hypercon.gui.Process_Tab;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.Transient;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,7 +20,9 @@ import javax.swing.event.DocumentListener;
 import com.jcraft.jsch.JSchException;
 import org.hyperion.hypercon.ErrorHandling;
 import org.hyperion.hypercon.SshConnectionModel;
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.TransformConfig;
+import javax.swing.GroupLayout.Alignment;
 
 /**
  * Configuration panel for the ColorConfig.
@@ -34,15 +32,16 @@ import org.hyperion.hypercon.spec.TransformConfig;
 public class ColorTransformPanel extends JPanel {
 
 	private final Dimension maxDim = new Dimension(1024, 20);
+	private final Dimension maxSpinnerDim = new Dimension(1024, 20);
 	private final double spinnerChangeValue = 0.01;
 
 	private final TransformConfig mColorConfig;
 
-	private JPanel mIndexPanel;
+//	private JPanel mIndexPanel;
 	private JLabel mIndexLabel;
+	private JLabel mDummyLabel;
 	private JTextField mIndexField;
 
-	private JPanel mRgbTransformPanel;
 	private JLabel mThresholdLabel;
 	private JLabel mGammaLabel;
 	private JLabel mBlacklevelLabel;
@@ -63,7 +62,6 @@ public class ColorTransformPanel extends JPanel {
 	private JSpinner mBlueBlacklevelSpinner;
 	private JSpinner mBlueWhitelevelSpinner;
 
-	private JPanel mHsvTransformPanel;
 	private JLabel mSaturationAdjustLabel;
 	private JSpinner mSaturationAdjustSpinner;
 	private JLabel mValueAdjustLabel;
@@ -88,156 +86,213 @@ public class ColorTransformPanel extends JPanel {
 	}
 
 	private void initialise() {
-		setBorder(BorderFactory.createTitledBorder("Transform [" + mColorConfig.mId + "]"));
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-		add(getIndexPanel());
-		add(Box.createVerticalStrut(10));
-		add(getRgbPanel());
-		add(Box.createVerticalStrut(10));
-		add(getHsvPanel());
-		add(Box.createVerticalGlue());
+		setBorder(BorderFactory.createTitledBorder(language.getString("process.transform.title") + " [" + mColorConfig.mId + "]")); //$NON-NLS-1$ //$NON-NLS-2$
 
 		//sshColorTransformPanel and Actionlistener for its button
 		mSshColorTransformPanel = new SshColorTransformPanel();
 		mSshColorTransformPanel.sendTransform.addActionListener(mActionListener);
 		add(mSshColorTransformPanel);
-	}
 
-	private JPanel getIndexPanel() {
-		if (mIndexPanel == null) {
-			mIndexPanel = new JPanel();
-			mIndexPanel.setMaximumSize(new Dimension(1024, 25));
-			mIndexPanel.setLayout(new BorderLayout(10, 10));
-
-			mIndexLabel = new JLabel("Indices:");
-			mIndexPanel.add(mIndexLabel, BorderLayout.WEST);
+			mIndexLabel = new JLabel(language.getString("process.transform.indicieslabel")); //$NON-NLS-1$
+			add(mIndexLabel);
 
 			mIndexField = new JTextField(mColorConfig.mLedIndexString);
-			mIndexField.setToolTipText("Comma seperated indices or index ranges (eg '1-10, 13, 14, 17-19'); Special case '*', which means all leds");
+			mIndexField.setToolTipText(language.getString("process.transform.indiciestooltip")); //$NON-NLS-1$
+			mIndexField.setMaximumSize(maxDim);
 			mIndexField.getDocument().addDocumentListener(mDocumentListener);
-			mIndexPanel.add(mIndexField, BorderLayout.CENTER);
-		}
-		return mIndexPanel;
-	}
+			add(mIndexField);
 
-	private JPanel getRgbPanel() {
-		if (mRgbTransformPanel == null) {
-			mRgbTransformPanel = new JPanel();
+			mDummyLabel = new JLabel("");
+			add(mDummyLabel);
+			
+			mThresholdLabel = new JLabel(language.getString("process.transform.treshlabel")); //$NON-NLS-1$
+			mThresholdLabel.setToolTipText(language.getString("process.transform.treshlabeltooltip"));
+			add(mThresholdLabel);
 
-			GridLayout layout = new GridLayout(0, 5);
-			// GroupLayout layout = new GroupLayout(mRgbTransformPanel);
-			mRgbTransformPanel.setLayout(layout);
+			mGammaLabel = new JLabel(language.getString("process.transform.gammalabel")); //$NON-NLS-1$
+			mGammaLabel.setToolTipText(language.getString("process.transform.gammalabeltooltip"));
+			add(mGammaLabel);
 
-			mRgbTransformPanel.add(Box.createHorizontalBox());
+			mBlacklevelLabel = new JLabel(language.getString("process.transform.blacklvllabel")); //$NON-NLS-1$
+			mBlacklevelLabel.setToolTipText(language.getString("process.transform.blacklvllabeltooltip"));			
+			add(mBlacklevelLabel);
 
-			mThresholdLabel = new JLabel("Thres.");
-			mRgbTransformPanel.add(mThresholdLabel);
+			mWhitelevelLabel = new JLabel(language.getString("process.transform.whitelvllabel")); //$NON-NLS-1$
+			mWhitelevelLabel.setToolTipText(language.getString("process.transform.whitelvllabeltooltip"));		
+			add(mWhitelevelLabel);
 
-			mGammaLabel = new JLabel("Gamma");
-			mRgbTransformPanel.add(mGammaLabel);
-
-			mBlacklevelLabel = new JLabel("Blacklvl");
-			mRgbTransformPanel.add(mBlacklevelLabel);
-
-			mWhitelevelLabel = new JLabel("Whitelvl");
-			mRgbTransformPanel.add(mWhitelevelLabel);
-
-			mRedTransformLabel = new JLabel("RED");
-			mRgbTransformPanel.add(mRedTransformLabel);
+			mRedTransformLabel = new JLabel(language.getString("process.transform.redlabel")); //$NON-NLS-1$
+			add(mRedTransformLabel);
 			mRedThresholdSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mRedThreshold, 0.0, 1.0, spinnerChangeValue));
-			mRedThresholdSpinner.setMaximumSize(maxDim);
+			mRedThresholdSpinner.setMaximumSize(maxSpinnerDim);
 			mRedThresholdSpinner.addChangeListener(mChangeListener);
-			mRgbTransformPanel.add(mRedThresholdSpinner);
+			add(mRedThresholdSpinner);
 			mRedGammaSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mRedGamma, 0.0, 100.0, spinnerChangeValue));
-			mRedGammaSpinner.setMaximumSize(maxDim);
+			mRedGammaSpinner.setMaximumSize(maxSpinnerDim);
 			mRedGammaSpinner.addChangeListener(mChangeListener);
-			mRgbTransformPanel.add(mRedGammaSpinner);
+			add(mRedGammaSpinner);
 			mRedBlacklevelSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mRedBlacklevel, 0.0, 1.0, spinnerChangeValue));
-			mRedBlacklevelSpinner.setMaximumSize(maxDim);
+			mRedBlacklevelSpinner.setMaximumSize(maxSpinnerDim);
 			mRedBlacklevelSpinner.addChangeListener(mChangeListener);
-			mRgbTransformPanel.add(mRedBlacklevelSpinner);
+			add(mRedBlacklevelSpinner);
 			mRedWhitelevelSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mRedWhitelevel, 0.0, 1.0, spinnerChangeValue));
-			mRedWhitelevelSpinner.setMaximumSize(maxDim);
+			mRedWhitelevelSpinner.setMaximumSize(maxSpinnerDim);
 			mRedWhitelevelSpinner.addChangeListener(mChangeListener);
-			mRgbTransformPanel.add(mRedWhitelevelSpinner);
+			add(mRedWhitelevelSpinner);
 
-			mGreenTransformLabel = new JLabel("GREEN");
-			mRgbTransformPanel.add(mGreenTransformLabel);
+			mGreenTransformLabel = new JLabel(language.getString("process.transform.greenlabel")); //$NON-NLS-1$
+			add(mGreenTransformLabel);
 			mGreenThresholdSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mGreenThreshold, 0.0, 1.0, spinnerChangeValue));
-			mGreenThresholdSpinner.setMaximumSize(maxDim);
+			mGreenThresholdSpinner.setMaximumSize(maxSpinnerDim);
 			mGreenThresholdSpinner.addChangeListener(mChangeListener);
-			mRgbTransformPanel.add(mGreenThresholdSpinner);
+			add(mGreenThresholdSpinner);
 			mGreenGammaSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mGreenGamma, 0.0, 100.0, spinnerChangeValue));
-			mGreenGammaSpinner.setMaximumSize(maxDim);
+			mGreenGammaSpinner.setMaximumSize(maxSpinnerDim);
 			mGreenGammaSpinner.addChangeListener(mChangeListener);
-			mRgbTransformPanel.add(mGreenGammaSpinner);
+			add(mGreenGammaSpinner);
 			mGreenBlacklevelSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mGreenBlacklevel, 0.0, 1.0, spinnerChangeValue));
-			mGreenBlacklevelSpinner.setMaximumSize(maxDim);
+			mGreenBlacklevelSpinner.setMaximumSize(maxSpinnerDim);
 			mGreenBlacklevelSpinner.addChangeListener(mChangeListener);
-			mRgbTransformPanel.add(mGreenBlacklevelSpinner);
+			add(mGreenBlacklevelSpinner);
 			mGreenWhitelevelSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mGreenWhitelevel, 0.0, 1.0, spinnerChangeValue));
-			mGreenWhitelevelSpinner.setMaximumSize(maxDim);
+			mGreenWhitelevelSpinner.setMaximumSize(maxSpinnerDim);
 			mGreenWhitelevelSpinner.addChangeListener(mChangeListener);
-			mRgbTransformPanel.add(mGreenWhitelevelSpinner);
+			add(mGreenWhitelevelSpinner);
 
-			mBlueTransformLabel = new JLabel("BLUE");
-			mRgbTransformPanel.add(mBlueTransformLabel);
+			mBlueTransformLabel = new JLabel(language.getString("process.transform.bluelabel")); //$NON-NLS-1$
+			add(mBlueTransformLabel);
 			mBlueThresholdSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mBlueThreshold, 0.0, 1.0, spinnerChangeValue));
-			mBlueThresholdSpinner.setMaximumSize(maxDim);
+			mBlueThresholdSpinner.setMaximumSize(maxSpinnerDim);
 			mBlueThresholdSpinner.addChangeListener(mChangeListener);
-			mRgbTransformPanel.add(mBlueThresholdSpinner);
+			add(mBlueThresholdSpinner);
 			mBlueGammaSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mBlueGamma, 0.0, 100.0, spinnerChangeValue));
-			mBlueGammaSpinner.setMaximumSize(maxDim);
+			mBlueGammaSpinner.setMaximumSize(maxSpinnerDim);
 			mBlueGammaSpinner.addChangeListener(mChangeListener);
-			mRgbTransformPanel.add(mBlueGammaSpinner);
+			add(mBlueGammaSpinner);
 			mBlueBlacklevelSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mBlueBlacklevel, 0.0, 1.0, spinnerChangeValue));
-			mBlueBlacklevelSpinner.setMaximumSize(maxDim);
+			mBlueBlacklevelSpinner.setMaximumSize(maxSpinnerDim);
 			mBlueBlacklevelSpinner.addChangeListener(mChangeListener);
-			mRgbTransformPanel.add(mBlueBlacklevelSpinner);
+			add(mBlueBlacklevelSpinner);
 			mBlueWhitelevelSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mBlueWhitelevel, 0.0, 1.0, spinnerChangeValue));
-			mBlueWhitelevelSpinner.setMaximumSize(maxDim);
+			mBlueWhitelevelSpinner.setMaximumSize(maxSpinnerDim);
 			mBlueWhitelevelSpinner.addChangeListener(mChangeListener);
-			mRgbTransformPanel.add(mBlueWhitelevelSpinner);
-		}
-		return mRgbTransformPanel;
-	}
+			add(mBlueWhitelevelSpinner);
 
-	private JPanel getHsvPanel() {
-		if (mHsvTransformPanel == null) {
-			mHsvTransformPanel = new JPanel();
 
-			GroupLayout layout = new GroupLayout(mHsvTransformPanel);
-			mHsvTransformPanel.setLayout(layout);
-
-			mSaturationAdjustLabel = new JLabel("HSV Saturation gain");
-			mHsvTransformPanel.add(mSaturationAdjustLabel);
+			mSaturationAdjustLabel = new JLabel(language.getString("process.transform.hsvsaturationlabel")); //$NON-NLS-1$
+			add(mSaturationAdjustLabel);
 
 			mSaturationAdjustSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mSaturationGain, 0.0, 1024.0, 0.01));
 
 			mSaturationAdjustSpinner.setMaximumSize(maxDim);
 			mSaturationAdjustSpinner.addChangeListener(mChangeListener);
-			mHsvTransformPanel.add(mSaturationAdjustSpinner);
+			add(mSaturationAdjustSpinner);
 
-			mValueAdjustLabel = new JLabel("HSV Value gain");
-			mHsvTransformPanel.add(mValueAdjustLabel);
+			mValueAdjustLabel = new JLabel(language.getString("process.transform.hsvvaluelabel")); //$NON-NLS-1$
+			add(mValueAdjustLabel);
 
 			mValueAdjustSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mValueGain, 0.0, 1024.0, 0.01));
 			mValueAdjustSpinner.setMaximumSize(maxDim);
 			mValueAdjustSpinner.addChangeListener(mChangeListener);
-			mHsvTransformPanel.add(mValueAdjustSpinner);
+			add(mValueAdjustSpinner);
 
-			layout.setHorizontalGroup(layout.createSequentialGroup()
-					.addGroup(layout.createParallelGroup().addComponent(mSaturationAdjustLabel).addComponent(mValueAdjustLabel))
-					.addGroup(layout.createParallelGroup().addComponent(mSaturationAdjustSpinner).addComponent(mValueAdjustSpinner)));
-
-			layout.setVerticalGroup(layout.createSequentialGroup()
-					.addGroup(layout.createParallelGroup().addComponent(mSaturationAdjustLabel).addComponent(mSaturationAdjustSpinner))
-					.addGroup(layout.createParallelGroup().addComponent(mValueAdjustLabel).addComponent(mValueAdjustSpinner)));
-		}
-		return mHsvTransformPanel;
+			
+			GroupLayout layout = new GroupLayout(this);
+			layout.setHorizontalGroup(
+				layout.createParallelGroup()
+					.addGroup(layout.createSequentialGroup()
+						.addGroup(layout.createParallelGroup()
+									.addGroup(layout.createSequentialGroup()
+										.addComponent(mIndexLabel)
+										.addComponent(mIndexField))
+											.addGroup(layout.createSequentialGroup()
+												.addGroup(layout.createParallelGroup()
+													.addComponent(mThresholdLabel)
+													.addComponent(mDummyLabel)
+													.addComponent(mGammaLabel)
+													.addComponent(mBlacklevelLabel)	
+													.addComponent(mWhitelevelLabel)
+														)
+												.addGroup(layout.createParallelGroup(Alignment.CENTER)
+													.addComponent(mRedThresholdSpinner)
+													.addComponent(mRedTransformLabel)
+													.addComponent(mRedGammaSpinner)
+													.addComponent(mRedBlacklevelSpinner)
+													.addComponent(mRedWhitelevelSpinner)
+														)
+												.addGroup(layout.createParallelGroup(Alignment.CENTER)
+													.addComponent(mGreenTransformLabel)
+													.addComponent(mGreenThresholdSpinner)
+													.addComponent(mGreenGammaSpinner)
+													.addComponent(mGreenBlacklevelSpinner)
+													.addComponent(mGreenWhitelevelSpinner)
+														)
+												.addGroup(layout.createParallelGroup(Alignment.CENTER)
+														.addComponent(mBlueTransformLabel)
+														.addComponent(mBlueThresholdSpinner)
+														.addComponent(mBlueGammaSpinner)
+														.addComponent(mBlueBlacklevelSpinner)
+														.addComponent(mBlueWhitelevelSpinner)
+														)
+													)	
+							.addGroup(layout.createSequentialGroup()
+								.addGroup(layout.createParallelGroup()
+									.addComponent(mSaturationAdjustLabel)
+									.addComponent(mValueAdjustLabel)
+									.addComponent(mSshColorTransformPanel))
+								.addGroup(layout.createParallelGroup()
+									.addComponent(mSaturationAdjustSpinner)
+									.addComponent(mValueAdjustSpinner))))
+						)
+			);
+			layout.setVerticalGroup(
+				layout.createParallelGroup()
+					.addGroup(layout.createSequentialGroup()
+						.addGroup(layout.createParallelGroup()
+							.addGroup(layout.createSequentialGroup()
+								.addComponent(mIndexField)
+								.addGroup(layout.createParallelGroup(Alignment.CENTER)
+									.addComponent(mDummyLabel)
+									.addComponent(mRedTransformLabel)
+									.addComponent(mGreenTransformLabel)
+									.addComponent(mBlueTransformLabel))
+								.addGroup(layout.createParallelGroup(Alignment.CENTER)
+									.addComponent(mThresholdLabel)
+									.addComponent(mRedThresholdSpinner)
+									.addComponent(mGreenThresholdSpinner)
+									.addComponent(mBlueThresholdSpinner))
+								.addGroup(layout.createParallelGroup(Alignment.CENTER)
+									.addComponent(mGammaLabel)
+									.addComponent(mGreenGammaSpinner)
+									.addComponent(mBlueGammaSpinner)
+									.addComponent(mRedGammaSpinner))
+								.addGroup(layout.createParallelGroup(Alignment.CENTER)
+									.addComponent(mBlacklevelLabel)
+									.addComponent(mBlueBlacklevelSpinner)
+									.addComponent(mGreenBlacklevelSpinner)
+									.addComponent(mRedBlacklevelSpinner))
+								.addGroup(layout.createParallelGroup(Alignment.CENTER)
+									.addComponent(mWhitelevelLabel)
+									.addComponent(mGreenWhitelevelSpinner)
+									.addComponent(mBlueWhitelevelSpinner)
+									.addComponent(mRedWhitelevelSpinner)))
+							.addComponent(mIndexLabel))
+						.addGap(12)
+						.addGroup(layout.createParallelGroup(Alignment.CENTER)
+							.addComponent(mSaturationAdjustLabel)
+							.addComponent(mSaturationAdjustSpinner))
+						.addGroup(layout.createParallelGroup(Alignment.CENTER)
+							.addComponent(mValueAdjustLabel)
+							.addComponent(mValueAdjustSpinner))
+						.addGroup(layout.createParallelGroup(Alignment.CENTER)
+								.addComponent(mSshColorTransformPanel))
+							)
+			);
+			layout.setAutoCreateGaps(true);
+			setLayout(layout);
+		
+	
 	}
-
 	private final ChangeListener mChangeListener = new ChangeListener() {
 		@Override
 		public void stateChanged(ChangeEvent e) {

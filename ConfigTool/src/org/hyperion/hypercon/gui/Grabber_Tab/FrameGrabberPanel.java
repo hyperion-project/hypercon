@@ -12,9 +12,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.MiscConfig;
 
 public class FrameGrabberPanel extends JPanel {
@@ -28,6 +30,8 @@ public class FrameGrabberPanel extends JPanel {
 	private JSpinner mHeightSpinner;
 	private JLabel mIntervalLabel;
 	private JSpinner mIntervalSpinner;
+	private JLabel mPriorityLabel;
+	private JSpinner mPrioritySpinner;
 	
 	public FrameGrabberPanel(final MiscConfig pMiscConfig) {
 		super();
@@ -46,34 +50,42 @@ public class FrameGrabberPanel extends JPanel {
 	}
 
 	private void initialise() {
-		setBorder(BorderFactory.createTitledBorder("Frame Grabber"));
+		setBorder(BorderFactory.createTitledBorder(language.getString("grabber.intframegrabber.title"))); //$NON-NLS-1$
 		
-		mFrameGrabberCheck = new JCheckBox("Enabled");
+		mFrameGrabberCheck = new JCheckBox(language.getString("general.phrase.enabled")); //$NON-NLS-1$
 		mFrameGrabberCheck.setSelected(mMiscConfig.mFrameGrabberEnabled);
 		mFrameGrabberCheck.addActionListener(mActionListener);
 		add(mFrameGrabberCheck);
 		
-		mWidthLabel = new JLabel("Width: ");
+		mWidthLabel = new JLabel(language.getString("grabber.intframegrabber.widthlabel")); //$NON-NLS-1$
 		add(mWidthLabel);
 		
 		mWidthSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mFrameGrabberWidth, 16, 1024, 8));
 		mWidthSpinner.addChangeListener(mChangeListener);
 		add(mWidthSpinner);
 		
-		mHeightLabel = new JLabel("Heigth: ");
+		mHeightLabel = new JLabel(language.getString("grabber.intframegrabber.heightlabel")); //$NON-NLS-1$
 		add(mHeightLabel);
 		
 		mHeightSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mFrameGrabberHeight, 16, 1024, 8));
 		mHeightSpinner.addChangeListener(mChangeListener);
 		add(mHeightSpinner);
 		
-		mIntervalLabel = new JLabel("Interval [ms]:");
+		mIntervalLabel = new JLabel(language.getString("grabber.intframegrabber.intervallabel")); //$NON-NLS-1$
 		add(mIntervalLabel);
 		
 		mIntervalSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mFrameGrabberInterval_ms, 10, 60000, 10));
 		mIntervalSpinner.addChangeListener(mChangeListener);
 		add(mIntervalSpinner);
 
+		mPriorityLabel = new JLabel(language.getString("general.phrase.prioritylabel")); //$NON-NLS-1$
+		add(mPriorityLabel);
+		
+		mPrioritySpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mFrameGrabberPriority, 0, 5000, 1));
+		mPrioritySpinner.setToolTipText(language.getString("general.phrase.prioritytooltip"));
+		mPrioritySpinner.addChangeListener(mChangeListener);
+		add(mPrioritySpinner);
+		
 		GroupLayout layout = new GroupLayout(this);
 		layout.setAutoCreateGaps(true);
 		setLayout(layout);
@@ -84,26 +96,32 @@ public class FrameGrabberPanel extends JPanel {
 						.addComponent(mWidthLabel)
 						.addComponent(mHeightLabel)
 						.addComponent(mIntervalLabel)
+						.addComponent(mPriorityLabel)
 						)
 				.addGroup(layout.createParallelGroup()
 						.addComponent(mFrameGrabberCheck)
 						.addComponent(mWidthSpinner)
 						.addComponent(mHeightSpinner)
 						.addComponent(mIntervalSpinner)
+						.addComponent(mPrioritySpinner)
 						));
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addComponent(mFrameGrabberCheck)
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mWidthLabel)
 						.addComponent(mWidthSpinner)
 						)
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mHeightLabel)
 						.addComponent(mHeightSpinner)
 						)
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mIntervalLabel)
 						.addComponent(mIntervalSpinner)
+						)
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
+						.addComponent(mPriorityLabel)
+						.addComponent(mPrioritySpinner)
 						));
 
 		toggleEnabled(mMiscConfig.mFrameGrabberEnabled);
@@ -116,6 +134,8 @@ public class FrameGrabberPanel extends JPanel {
 		mHeightSpinner.setEnabled(pEnabled);
 		mIntervalLabel.setEnabled(pEnabled);
 		mIntervalSpinner.setEnabled(pEnabled);
+		mPriorityLabel.setEnabled(pEnabled);
+		mPrioritySpinner.setEnabled(pEnabled);
 	}
 	
 	private final ActionListener mActionListener = new ActionListener() {
@@ -132,6 +152,7 @@ public class FrameGrabberPanel extends JPanel {
 			mMiscConfig.mFrameGrabberWidth = (Integer)mWidthSpinner.getValue();
 			mMiscConfig.mFrameGrabberHeight = (Integer)mHeightSpinner.getValue();
 			mMiscConfig.mFrameGrabberInterval_ms = (Integer)mIntervalSpinner.getValue();
+			mMiscConfig.mFrameGrabberPriority = (Integer)mPrioritySpinner.getValue();
 		}
 	};
 }

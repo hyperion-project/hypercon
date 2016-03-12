@@ -1,10 +1,12 @@
 package org.hyperion.hypercon.gui.Grabber_Tab;
 
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.DimensionModes;
 import org.hyperion.hypercon.spec.Grabberv4l2Config;
 import org.hyperion.hypercon.spec.VideoStandard;
 
 import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
@@ -92,142 +94,142 @@ public class Grabberv4l2Panel extends JPanel {
 	}
 
 	private void initialise() {
-		setBorder(BorderFactory.createTitledBorder("GrabberV4L2"));
+		setBorder(BorderFactory.createTitledBorder(language.getString("grabber.extgrabber.title"))); //$NON-NLS-1$
 
-		mGrabberV4l2Enable = new JCheckBox("Enabled");
+		mGrabberV4l2Enable = new JCheckBox(language.getString("general.phrase.enabled")); //$NON-NLS-1$
 		mGrabberV4l2Enable.setSelected(mGrabberV4l2Config.mGrabberv4l2Enabled);
 		mGrabberV4l2Enable.addActionListener(mActionListener);
 		add(mGrabberV4l2Enable);
 
-		mDeviceLabel = new JLabel("Device: ");
+		mDeviceLabel = new JLabel(language.getString("grabber.extgrabber.devicelabel")); //$NON-NLS-1$
 		add(mDeviceLabel);
 		mDevice = new JTextField(mGrabberV4l2Config.mDevice);
-		mDevice.setToolTipText("V4L2 Device to use [default=\"/dev/video0\"]");
+		mDevice.setToolTipText(language.getString("grabber.extgrabber.devicetooltip")); //$NON-NLS-1$
 		mDevice.getDocument().addDocumentListener(mDocumentListener);
 		add(mDevice);
 
-		mInputLabel = new JLabel("Input: ");
+		mInputLabel = new JLabel(language.getString("grabber.extgrabber.inputlabel")); //$NON-NLS-1$
 		add(mInputLabel);
 		mInput = new JSpinner(new SpinnerNumberModel(mGrabberV4l2Config.mInput,
 				0, Integer.MAX_VALUE, 1));
 		mInput.addChangeListener(mChangeListener);
-		mInput.setToolTipText("V4L2 input to use [default=0]");
+		mInput.setToolTipText(language.getString("grabber.extgrabber.inputooltip")); //$NON-NLS-1$
 		add(mInput);
 
-		mStandardLabel = new JLabel("Video Standard: ");
+		mStandardLabel = new JLabel(language.getString("grabber.extgrabber.videostandardlabel")); //$NON-NLS-1$
 		add(mStandardLabel);
 		mStandard = new JComboBox<>(VideoStandard.values());
 		mStandard.setSelectedItem(mGrabberV4l2Config.mStandard);
 		mStandard.addActionListener(mActionListener);
 		add(mStandard);
 
-		mWidthLabel = new JLabel("Width: ");
+		mWidthLabel = new JLabel(language.getString("grabber.extgrabber.widthlabel")); //$NON-NLS-1$
 		add(mWidthLabel);
 		mWidth = new JSpinner(new SpinnerNumberModel(mGrabberV4l2Config.mWidth,
 				-1, Integer.MAX_VALUE, widthHeightSpinnerIncrease));
 		mWidth.addChangeListener(mChangeListener);
-		mWidth.setToolTipText("V4L2 width to set [default=-1]");
+		mWidth.setToolTipText(language.getString("grabber.extgrabber.widthtooltip")); //$NON-NLS-1$
 		add(mWidth);
 
-		mHeightLabel = new JLabel("Height: ");
+		mHeightLabel = new JLabel(language.getString("grabber.extgrabber.heightlabel")); //$NON-NLS-1$
 		add(mHeightLabel);
 		mHeight = new JSpinner(new SpinnerNumberModel(
 				mGrabberV4l2Config.mHeight, -1, Integer.MAX_VALUE,
 				widthHeightSpinnerIncrease));
 		mHeight.addChangeListener(mChangeListener);
-		mHeight.setToolTipText("V4L2 height to set [default=-1]");
+		mHeight.setToolTipText(language.getString("grabber.extgrabber.heighttooltip")); //$NON-NLS-1$
 		add(mHeight);
 
-		mFrameDecimationLabel = new JLabel("Frame Decimation: ");
+		mFrameDecimationLabel = new JLabel(language.getString("grabber.extgrabber.framedezilabel")); //$NON-NLS-1$
 		add(mFrameDecimationLabel);
 		mFrameDecimation = new JSpinner(new SpinnerNumberModel(
 				mGrabberV4l2Config.mFrameDecimation, 0, Integer.MAX_VALUE, 1));
 		mFrameDecimation.addChangeListener(mChangeListener);
-		mFrameDecimation.setToolTipText("Frame decimation factor [default=2]");
+		mFrameDecimation.setToolTipText(language.getString("grabber.extgrabber.framedezitooltip")); //$NON-NLS-1$
 		add(mFrameDecimation);
 
-		mSizeDecimationLabel = new JLabel("Size Decimation: ");
+		mSizeDecimationLabel = new JLabel(language.getString("grabber.extgrabber.sizelabel")); //$NON-NLS-1$
 		add(mSizeDecimationLabel);
 		mSizeDecimation = new JSpinner(new SpinnerNumberModel(
 				mGrabberV4l2Config.mSizeDecimation, 0, Integer.MAX_VALUE, 1));
 		mSizeDecimation.addChangeListener(mChangeListener);
-		mSizeDecimation.setToolTipText("Size decimation factor [default=8]");
+		mSizeDecimation.setToolTipText(language.getString("grabber.extgrabber.sizetooltip")); //$NON-NLS-1$
 		add(mSizeDecimation);
 
-		mPriorityLabel = new JLabel("Priority: ");
+		mPriorityLabel = new JLabel(language.getString("grabber.extgrabber.prioritylabel")); //$NON-NLS-1$
 		mPriority = new JSpinner(new SpinnerNumberModel(
 				mGrabberV4l2Config.mPriority, 0, Integer.MAX_VALUE, 1));
 		mPriority.addChangeListener(mChangeListener);
-		mPriority.setToolTipText("Hyperion priority channel [default=800]");
+		mPriority.setToolTipText(language.getString("grabber.extgrabber.prioritytooltip")); //$NON-NLS-1$
 		add(mPriority);
 
-		mModeLabel = new JLabel("3D Mode: ");
+		mModeLabel = new JLabel(language.getString("grabber.extgrabber.3dmodelabel")); //$NON-NLS-1$
 		add(mModeLabel);
 		mMode = new JComboBox<>(DimensionModes.values());
 		mMode.setSelectedItem(mGrabberV4l2Config.mMode);
 		mMode.addActionListener(mActionListener);
 		add(mMode);
 
-		mCropLeftLabel = new JLabel("Crop Left: ");
+		mCropLeftLabel = new JLabel(language.getString("grabber.extgrabber.cropleftlabel")); //$NON-NLS-1$
 		add(mCropLeftLabel);
 		mCropLeft = new JSpinner(new SpinnerNumberModel(
 				mGrabberV4l2Config.mCropLeft, 0, 100, cropSpinnerIncrease));
 		mCropLeft.addChangeListener(mChangeListener);
-		mCropLeft.setToolTipText("Cropping from the left [default=0]");
+		mCropLeft.setToolTipText(language.getString("grabber.extgrabber.croplefttooltip")); //$NON-NLS-1$
 		add(mCropLeft);
 
-		mCropRightLabel = new JLabel("Crop Right: ");
+		mCropRightLabel = new JLabel(language.getString("grabber.extgrabber.croprightlabel")); //$NON-NLS-1$
 		add(mCropRightLabel);
 		mCropRight = new JSpinner(new SpinnerNumberModel(
 				mGrabberV4l2Config.mCropRight, 0, 100, cropSpinnerIncrease));
 		mCropRight.addChangeListener(mChangeListener);
-		mCropRight.setToolTipText("Cropping from the right [default=0]");
+		mCropRight.setToolTipText(language.getString("grabber.extgrabber.croprighttooltip")); //$NON-NLS-1$
 		add(mCropRight);
 
-		mCropTopLabel = new JLabel("Crop Top: ");
+		mCropTopLabel = new JLabel(language.getString("grabber.extgrabber.croptoplabel")); //$NON-NLS-1$
 		add(mCropTopLabel);
 		mCropTop = new JSpinner(new SpinnerNumberModel(
 				mGrabberV4l2Config.mCropTop, 0, 100, cropSpinnerIncrease));
 		mCropTop.addChangeListener(mChangeListener);
-		mCropTop.setToolTipText("Cropping from the top [default=0]");
+		mCropTop.setToolTipText(language.getString("grabber.extgrabber.croptoptooltip")); //$NON-NLS-1$
 		add(mCropTop);
 
-		mCropBottomLabelLabel = new JLabel("Crop Bottom: ");
+		mCropBottomLabelLabel = new JLabel(language.getString("grabber.extgrabber.cropbottomlabel")); //$NON-NLS-1$
 		add(mCropBottomLabelLabel);
 		mCropBottom = new JSpinner(new SpinnerNumberModel(
 				mGrabberV4l2Config.mCropBottom, 0, 100, cropSpinnerIncrease));
 		mCropBottom.addChangeListener(mChangeListener);
-		mCropBottom.setToolTipText("Cropping from the bottom [default=0]");
+		mCropBottom.setToolTipText(language.getString("grabber.extgrabber.cropbottomtooltip")); //$NON-NLS-1$
 		add(mCropBottom);
 
-		mRedSignalThresholdLabel = new JLabel("Red Signal Threshold: ");
+		mRedSignalThresholdLabel = new JLabel(language.getString("grabber.extgrabber.redsignaltreshlabel")); //$NON-NLS-1$
 		add(mRedSignalThresholdLabel);
 		mRedSignalThreshold = new JSpinner(new SpinnerNumberModel(
 				mGrabberV4l2Config.mRedSignalThreshold, 0, 1,
 				thresholdSpinnerIncrease));
 		mRedSignalThreshold.addChangeListener(mChangeListener);
 		mRedSignalThreshold
-				.setToolTipText("Signal threshold for the red channel between 0.0 and 1.0 [default=0.0]");
+				.setToolTipText(language.getString("grabber.extgrabber.redsignaltreshtooltip")); //$NON-NLS-1$
 		add(mRedSignalThreshold);
 
-		mGreenSignalThresholdLabel = new JLabel("Green Signal Threshold: ");
+		mGreenSignalThresholdLabel = new JLabel(language.getString("grabber.extgrabber.greensignaltreshlabel")); //$NON-NLS-1$
 		add(mGreenSignalThresholdLabel);
 		mGreenSignalThreshold = new JSpinner(new SpinnerNumberModel(
 				mGrabberV4l2Config.mGreenSignalThreshold, 0, 1,
 				thresholdSpinnerIncrease));
 		mGreenSignalThreshold.addChangeListener(mChangeListener);
 		mGreenSignalThreshold
-				.setToolTipText("Signal threshold for the green channel between 0.0 and 1.0 [default=0.0]");
+				.setToolTipText(language.getString("grabber.extgrabber.greensignaltreshtooltip")); //$NON-NLS-1$
 		add(mGreenSignalThreshold);
 
-		mBlueSignalThresholdLabel = new JLabel("Blue Signal Threshold: ");
+		mBlueSignalThresholdLabel = new JLabel(language.getString("grabber.extgrabber.bluesignaltreshlabel")); //$NON-NLS-1$
 		add(mBlueSignalThresholdLabel);
 		mBlueSignalThreshold = new JSpinner(new SpinnerNumberModel(
 				mGrabberV4l2Config.mBlueSignalThreshold, 0, 1,
 				thresholdSpinnerIncrease));
 		mBlueSignalThreshold.addChangeListener(mChangeListener);
 		mBlueSignalThreshold
-				.setToolTipText("Signal threshold for the blue channel between 0.0 and 1.0 [default=0.0]");
+				.setToolTipText(language.getString("grabber.extgrabber.bluesignaltreshtooltip")); //$NON-NLS-1$
 		add(mBlueSignalThreshold);
 
 		GroupLayout layout = new GroupLayout(this);
@@ -275,62 +277,67 @@ public class Grabberv4l2Panel extends JPanel {
 				.createSequentialGroup()
 				.addComponent(mGrabberV4l2Enable)
 				.addGroup(
-						layout.createParallelGroup().addComponent(mDeviceLabel)
+						layout.createParallelGroup(Alignment.CENTER)
+								.addComponent(mDeviceLabel)
 								.addComponent(mDevice))
 				.addGroup(
-						layout.createParallelGroup().addComponent(mInputLabel)
+						layout.createParallelGroup(Alignment.CENTER)
+								.addComponent(mInputLabel)
 								.addComponent(mInput))
 				.addGroup(
-						layout.createParallelGroup()
+						layout.createParallelGroup(Alignment.CENTER)
 								.addComponent(mStandardLabel)
 								.addComponent(mStandard))
 				.addGroup(
-						layout.createParallelGroup().addComponent(mWidthLabel)
+						layout.createParallelGroup(Alignment.CENTER)
+								.addComponent(mWidthLabel)
 								.addComponent(mWidth))
 				.addGroup(
-						layout.createParallelGroup().addComponent(mHeightLabel)
+						layout.createParallelGroup(Alignment.CENTER)
+								.addComponent(mHeightLabel)
 								.addComponent(mHeight))
 				.addGroup(
-						layout.createParallelGroup()
+						layout.createParallelGroup(Alignment.CENTER)
 								.addComponent(mFrameDecimationLabel)
 								.addComponent(mFrameDecimation))
 				.addGroup(
-						layout.createParallelGroup()
+						layout.createParallelGroup(Alignment.CENTER)
 								.addComponent(mSizeDecimationLabel)
 								.addComponent(mSizeDecimation))
 				.addGroup(
-						layout.createParallelGroup()
+						layout.createParallelGroup(Alignment.CENTER)
 								.addComponent(mPriorityLabel)
 								.addComponent(mPriority))
 				.addGroup(
-						layout.createParallelGroup().addComponent(mModeLabel)
+						layout.createParallelGroup(Alignment.CENTER)
+								.addComponent(mModeLabel)
 								.addComponent(mMode))
 				.addGroup(
-						layout.createParallelGroup()
+						layout.createParallelGroup(Alignment.CENTER)
 								.addComponent(mCropLeftLabel)
 								.addComponent(mCropLeft))
 				.addGroup(
-						layout.createParallelGroup()
+						layout.createParallelGroup(Alignment.CENTER)
 								.addComponent(mCropRightLabel)
 								.addComponent(mCropRight))
 				.addGroup(
-						layout.createParallelGroup()
+						layout.createParallelGroup(Alignment.CENTER)
 								.addComponent(mCropTopLabel)
 								.addComponent(mCropTop))
 				.addGroup(
-						layout.createParallelGroup()
+						layout.createParallelGroup(Alignment.CENTER)
 								.addComponent(mCropBottomLabelLabel)
 								.addComponent(mCropBottom))
 				.addGroup(
-						layout.createParallelGroup()
+						layout.createParallelGroup(Alignment.CENTER)
 								.addComponent(mRedSignalThresholdLabel)
 								.addComponent(mRedSignalThreshold))
 				.addGroup(
-						layout.createParallelGroup()
+						layout.createParallelGroup(Alignment.CENTER)
 								.addComponent(mGreenSignalThresholdLabel)
 								.addComponent(mGreenSignalThreshold))
 				.addGroup(
-						layout.createParallelGroup()
+						layout.createParallelGroup(Alignment.CENTER)
 								.addComponent(mBlueSignalThresholdLabel)
 								.addComponent(mBlueSignalThreshold))
 

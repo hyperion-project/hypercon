@@ -13,9 +13,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.MiscConfig;
 
 public class InterfacePanel extends JPanel {
@@ -36,6 +38,8 @@ public class InterfacePanel extends JPanel {
 	private JCheckBox mBoblightCheck;
 	private JLabel mBoblightPortLabel;
 	private JSpinner mBoblightPortSpinner;
+	private JLabel mBoblightPriorityLabel;
+	private JSpinner mBoblightPrioritySpinner;
 	
 	public InterfacePanel(final MiscConfig pMiscConfig) {
 		super();
@@ -54,7 +58,7 @@ public class InterfacePanel extends JPanel {
 	}
 	
 	private void initialise() {
-		//setBorder(BorderFactory.createTitledBorder("External interfaces"));
+		setBorder(BorderFactory.createTitledBorder(language.getString("external.server.jsonprotoboblighttitel")));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		add(getJsonPanel());
@@ -67,14 +71,13 @@ public class InterfacePanel extends JPanel {
 	private JPanel getJsonPanel() {
 		if (mJsonPanel == null) {
 			mJsonPanel = new JPanel();
-			mJsonPanel.setBorder(BorderFactory.createTitledBorder("Json server"));
 			
-			mJsonCheck = new JCheckBox("Enabled");
+			mJsonCheck = new JCheckBox(language.getString("external.server.jsonenabled")); //$NON-NLS-1$
 			mJsonCheck.setSelected(mMiscConfig.mJsonInterfaceEnabled);
 			mJsonCheck.addActionListener(mActionListener);
 			mJsonPanel.add(mJsonCheck);
 			
-			mJsonPortLabel = new JLabel("TCP Port: ");
+			mJsonPortLabel = new JLabel(language.getString("external.server.jsonportlabel")); //$NON-NLS-1$
 			mJsonPanel.add(mJsonPortLabel);
 			
 			mJsonPortSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mJsonPort, 1, 65536, 1));
@@ -96,7 +99,7 @@ public class InterfacePanel extends JPanel {
 							));
 			layout.setVerticalGroup(layout.createSequentialGroup()
 					.addComponent(mJsonCheck)
-					.addGroup(layout.createParallelGroup()
+					.addGroup(layout.createParallelGroup(Alignment.CENTER)
 							.addComponent(mJsonPortLabel)
 							.addComponent(mJsonPortSpinner)
 							));
@@ -106,14 +109,13 @@ public class InterfacePanel extends JPanel {
 	private JPanel getProtoPanel() {
 		if (mProtoPanel == null) {
 			mProtoPanel = new JPanel();
-			mProtoPanel.setBorder(BorderFactory.createTitledBorder("Proto server"));
 			
-			mProtoCheck = new JCheckBox("Enabled");
+			mProtoCheck = new JCheckBox(language.getString("external.server.protoenabled")); //$NON-NLS-1$
 			mProtoCheck.setSelected(mMiscConfig.mProtoInterfaceEnabled);
 			mProtoCheck.addActionListener(mActionListener);
 			mProtoPanel.add(mProtoCheck);
 			
-			mProtoPortLabel = new JLabel("TCP Port: ");
+			mProtoPortLabel = new JLabel(language.getString("external.server.protoportlabel")); //$NON-NLS-1$
 			mProtoPanel.add(mProtoPortLabel);
 			
 			mProtoPortSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mProtoPort, 1, 65536, 1));
@@ -135,7 +137,7 @@ public class InterfacePanel extends JPanel {
 							));
 			layout.setVerticalGroup(layout.createSequentialGroup()
 					.addComponent(mProtoCheck)
-					.addGroup(layout.createParallelGroup()
+					.addGroup(layout.createParallelGroup(Alignment.CENTER)
 							.addComponent(mProtoPortLabel)
 							.addComponent(mProtoPortSpinner)
 							));
@@ -146,19 +148,26 @@ public class InterfacePanel extends JPanel {
 	private JPanel getBoblightPanel() {
 		if (mBoblightPanel == null) {
 			mBoblightPanel = new JPanel();
-			mBoblightPanel.setBorder(BorderFactory.createTitledBorder("Boblight server"));
 			
-			mBoblightCheck = new JCheckBox("Enabled");
+			mBoblightCheck = new JCheckBox(language.getString("external.server.boblightenabled")); //$NON-NLS-1$
 			mBoblightCheck.setSelected(mMiscConfig.mBoblightInterfaceEnabled);
 			mBoblightCheck.addActionListener(mActionListener);
 			mBoblightPanel.add(mBoblightCheck);
 			
-			mBoblightPortLabel = new JLabel("TCP Port: ");
+			mBoblightPortLabel = new JLabel(language.getString("external.server.boblightportlabel")); //$NON-NLS-1$
 			mBoblightPanel.add(mBoblightPortLabel);
 			
 			mBoblightPortSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mBoblightPort, 1, 65536, 1));
 			mBoblightPortSpinner.addChangeListener(mChangeListener);
 			mBoblightPanel.add(mBoblightPortSpinner);
+	
+			mBoblightPriorityLabel = new JLabel(language.getString("general.phrase.prioritylabel")); //$NON-NLS-1$
+			mBoblightPanel.add(mBoblightPriorityLabel);
+			
+			mBoblightPrioritySpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mBoblightPriority, 0, 5000, 1));
+			mBoblightPrioritySpinner.addChangeListener(mChangeListener);
+			mBoblightPrioritySpinner.setToolTipText(language.getString("general.phrase.prioritytooltip"));
+			mBoblightPanel.add(mBoblightPrioritySpinner);
 			
 			GroupLayout layout = new GroupLayout(mBoblightPanel);
 			layout.setAutoCreateGaps(true);
@@ -168,16 +177,22 @@ public class InterfacePanel extends JPanel {
 					.addGroup(layout.createParallelGroup()
 							.addComponent(mBoblightCheck)
 							.addComponent(mBoblightPortLabel)
+							.addComponent(mBoblightPriorityLabel)
 							)
 					.addGroup(layout.createParallelGroup()
 							.addComponent(mBoblightCheck)
 							.addComponent(mBoblightPortSpinner)
+							.addComponent(mBoblightPrioritySpinner)
 							));
 			layout.setVerticalGroup(layout.createSequentialGroup()
 					.addComponent(mBoblightCheck)
-					.addGroup(layout.createParallelGroup()
+					.addGroup(layout.createParallelGroup(Alignment.CENTER)
 							.addComponent(mBoblightPortLabel)
 							.addComponent(mBoblightPortSpinner)
+							)
+					.addGroup(layout.createParallelGroup(Alignment.CENTER)
+							.addComponent(mBoblightPriorityLabel)
+							.addComponent(mBoblightPrioritySpinner)
 							));
 		}
 		return mBoblightPanel;
@@ -192,6 +207,7 @@ public class InterfacePanel extends JPanel {
 		
 		mBoblightPortLabel.setEnabled(mMiscConfig.mBoblightInterfaceEnabled);
 		mBoblightPortSpinner.setEnabled(mMiscConfig.mBoblightInterfaceEnabled);
+		mBoblightPrioritySpinner.setEnabled(mMiscConfig.mBoblightInterfaceEnabled);
 	}
 	
 	private final ActionListener mActionListener = new ActionListener() {
@@ -208,8 +224,9 @@ public class InterfacePanel extends JPanel {
 		@Override
 		public void stateChanged(ChangeEvent e) {
 			mMiscConfig.mJsonPort = (Integer)mJsonPortSpinner.getValue();
-			mMiscConfig.mProtoPort = (Integer)mJsonPortSpinner.getValue();
-			mMiscConfig.mBoblightPort = (Integer)mJsonPortSpinner.getValue();
+			mMiscConfig.mProtoPort = (Integer)mProtoPortSpinner.getValue();
+			mMiscConfig.mBoblightPort = (Integer)mBoblightPortSpinner.getValue();
+			mMiscConfig.mBoblightPriority = (Integer)mBoblightPrioritySpinner.getValue();
 		}
 	};
 }

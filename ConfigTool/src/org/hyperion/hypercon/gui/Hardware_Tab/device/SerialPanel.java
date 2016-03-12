@@ -8,9 +8,11 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.DeviceConfig;
 
 /**
@@ -55,7 +57,7 @@ public class SerialPanel extends DeviceTypePanel {
 	}
 	
 	private void initialise() {
-		mOutputLabel = new JLabel("Output: ");
+		mOutputLabel = new JLabel(language.getString("hardware.leddevice.output"));
 		mOutputLabel.setMinimumSize(firstColMinDim);
 		add(mOutputLabel);
 		
@@ -65,7 +67,7 @@ public class SerialPanel extends DeviceTypePanel {
 		mOutputCombo.addActionListener(mActionListener);
 		add(mOutputCombo);
 		
-		mBaudrateLabel = new JLabel("Baudrate: ");
+		mBaudrateLabel = new JLabel(language.getString("hardware.leddevice.baudrate"));
 		mBaudrateLabel.setMinimumSize(firstColMinDim);
 		add(mBaudrateLabel);
 		
@@ -74,7 +76,7 @@ public class SerialPanel extends DeviceTypePanel {
 		mBaudrateSpinner.addChangeListener(mChangeListener);
 		add(mBaudrateSpinner);
 	
-		mDelayLabel = new JLabel("Delay [ms]: ");
+		mDelayLabel = new JLabel(language.getString("hardware.leddevice.delayinms"));
 		mDelayLabel.setMinimumSize(firstColMinDim);
 		add(mDelayLabel);
 
@@ -99,13 +101,13 @@ public class SerialPanel extends DeviceTypePanel {
 						.addComponent(mDelaySpinner))
 				);
 		layout.setVerticalGroup(layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mOutputLabel)
 						.addComponent(mOutputCombo))
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mBaudrateLabel)
 						.addComponent(mBaudrateSpinner))
-				.addGroup(layout.createParallelGroup()
+				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mDelayLabel)
 						.addComponent(mDelaySpinner))
 				);		

@@ -40,7 +40,23 @@ public final class HyperionRemoteCalls {
         }
         return "";
     }
-
+   
+    public static String getHyperionInstallCallForSystemType(SystemTypes type){
+        if(type == SystemTypes.raspbian){
+            return "cd /tmp && wget -nv -N https://raw.github.com/tvdzwan/hyperion/master/bin/install_hyperion.sh && chmod +x install_hyperion.sh && ./install_hyperion.sh HyperConInstall && rm install_hyperion.sh";
+        }else if(type == SystemTypes.openelec || type == SystemTypes.kodi){
+            return "cd /tmp && curl -# -k -L --output install_hyperion.sh --get https://raw.github.com/tvdzwan/hyperion/master/bin/install_hyperion.sh && sh ./install_hyperion.sh HyperConInstall && rm install_hyperion.sh";
+        }
+        return "";
+    }
+    public static String getHyperionRemoveCallForSystemType(SystemTypes type){
+        if(type == SystemTypes.raspbian){
+            return "cd /tmp && wget -nv -N https://raw.github.com/tvdzwan/hyperion/master/bin/remove_hyperion.sh && chmod +x remove_hyperion.sh && ./remove_hyperion.sh HyperConRemove && rm remove_hyperion.sh";
+        }else if(type == SystemTypes.openelec || type == SystemTypes.kodi){
+            return "cd /tmp && curl -# -k -L --output remove_hyperion.sh --get https://raw.github.com/tvdzwan/hyperion/master/bin/remove_hyperion.sh && sh ./remove_hyperion.sh HyperConRemove && rm remove_hyperion.sh";
+        }
+        return "";
+    }
     public static Vector<String> getSystemTypesAsVecor(){
         Vector<String> result = new Vector();
 
