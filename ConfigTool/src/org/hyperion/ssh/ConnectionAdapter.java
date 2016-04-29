@@ -21,6 +21,9 @@ public abstract class ConnectionAdapter implements ConnectionListener {
 	public void getFileFinished(String src, String dst){}
 
 	@Override
+	public void sendConfigFileFinished(String srcPath, String dstPath, String fileName){}
+	
+	@Override
 	public void addLine(String pLine) {}
 
 	@Override

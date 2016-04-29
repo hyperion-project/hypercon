@@ -16,7 +16,7 @@ public class Grabberv4l2Config {
 	public int mHeight = -1;
 	public int mFrameDecimation = 2;
 	public int mSizeDecimation = 8;
-	public int mPriority = 800;
+	public int mPriority = 900;
 	public DimensionModes mMode = DimensionModes.TwoD;
 	public int mCropLeft = 0;
 	public int mCropRight = 0;
@@ -36,7 +36,7 @@ public class Grabberv4l2Config {
 				+ " * height               : V4L2 height to set [default=-1]\n"
 				+ " * frameDecimation      : Frame decimation factor [default=2]\n"
 				+ " * sizeDecimation       : Size decimation factor [default=8]\n"
-				+ " * priority             : Hyperion priority channel [default=800]\n"
+				+ " * priority             : Hyperion priority channel [default=900]\n"
 				+ " * mode                 : 3D mode to use 2D/3DSBS/3DTAB (note: no autodetection) [default=\"2D\"]\n"
 				+ " * cropLeft             : Cropping from the left [default=0]\n"
 				+ " * cropRight            : Cropping from the right [default=0]\n"

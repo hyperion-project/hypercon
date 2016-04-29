@@ -31,6 +31,7 @@ import org.hyperion.hypercon.gui.SSH_Tab.SshColorPickingPanel;
 import org.hyperion.hypercon.gui.SSH_Tab.SshCommandSenderPanel;
 import org.hyperion.hypercon.gui.SSH_Tab.SshConnectionPanel;
 import org.hyperion.hypercon.gui.SSH_Tab.SshManageHyperionPanel;
+import org.hyperion.hypercon.gui.SSH_Tab.SshSendConfigPanel;
 import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
 /**
@@ -200,10 +201,10 @@ public class ConfigPanel extends JPanel {
 			mTestingPanel = new JPanel();
 			mTestingPanel.setLayout(new BoxLayout(mTestingPanel, BoxLayout.Y_AXIS));
 			mTestingPanel.add(new SshConnectionPanel(sshConfig));
-			mTestingPanel.add(new SshColorPickingPanel(sshConfig));
-			mTestingPanel.add(new SshCommandSenderPanel(sshConfig));
 			mTestingPanel.add(new SshManageHyperionPanel(sshConfig));
-			
+			mTestingPanel.add(new SshSendConfigPanel(sshConfig));
+			mTestingPanel.add(new SshColorPickingPanel(sshConfig));
+//			mTestingPanel.add(new SshCommandSenderPanel(sshConfig));			
 			mTestingPanel.add(Box.createVerticalGlue());
 
 		}

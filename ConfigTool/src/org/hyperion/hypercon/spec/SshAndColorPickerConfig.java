@@ -16,8 +16,8 @@ public class SshAndColorPickerConfig {
 	public boolean colorPickerShowColorWheel;
 	public Vector<SshCommand> sshCommands;
     public HyperionRemoteCalls.SystemTypes selectedSystemType;
-    public String InputPath;
-	
+    public String srcPath;
+	public String FileName;
 	
 	/**Constructor
 	 * 
@@ -29,8 +29,9 @@ public class SshAndColorPickerConfig {
 		password = "raspberry";
 		colorPickerInExpertmode = false;
 		colorPickerShowColorWheel = true;
-		InputPath = ("\\folder\\subfolder").toString();
-
+		srcPath = "";
+		FileName = "hyperion.config.json";
+		
 		sshCommands = new Vector<>();
 
 		sshCommands.add(new SshCommand("sudo service hyperion start"));
@@ -38,7 +39,7 @@ public class SshAndColorPickerConfig {
 		sshCommands.add(new SshCommand("sudo service hyperion restart"));
 		sshCommands.add(new SshCommand("sudo killall hyperionv4l2"));
 
-        selectedSystemType = HyperionRemoteCalls.SystemTypes.raspbian;
+        selectedSystemType = HyperionRemoteCalls.SystemTypes.allsystems;
 
 	}
 

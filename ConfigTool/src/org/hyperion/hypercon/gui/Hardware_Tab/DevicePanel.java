@@ -91,7 +91,7 @@ public class DevicePanel extends JPanel {
 				.addGroup(layout.createSequentialGroup()
 						.addComponent(mRgbLabel)
 						.addComponent(mRgbCombo)));
-		layout.setVerticalGroup(layout.createParallelGroup(Alignment.CENTER)
+		layout.setVerticalGroup(layout.createParallelGroup()
 				.addGroup(layout.createSequentialGroup()
 						.addComponent(mTypeLabel)
 						.addComponent(mDevicePanel)

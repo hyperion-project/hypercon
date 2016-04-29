@@ -70,7 +70,7 @@ public class ColorSmoothingPanel extends JPanel {
 		mTimeLabel = new JLabel(language.getString("process.smoothing.timelabel")); //$NON-NLS-1$
 		add(mTimeLabel);
 		
-		mTimeSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mSmoothingTime_ms, 1, 600, 100));
+		mTimeSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mSmoothingTime_ms, 1, 600, 25));
 		mTimeSpinner.addChangeListener(mChangeListener);
 		add(mTimeSpinner);
 		

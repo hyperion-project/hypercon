@@ -207,6 +207,8 @@ public class InterfacePanel extends JPanel {
 		
 		mBoblightPortLabel.setEnabled(mMiscConfig.mBoblightInterfaceEnabled);
 		mBoblightPortSpinner.setEnabled(mMiscConfig.mBoblightInterfaceEnabled);
+		
+		mBoblightPriorityLabel.setEnabled(mMiscConfig.mBoblightInterfaceEnabled);
 		mBoblightPrioritySpinner.setEnabled(mMiscConfig.mBoblightInterfaceEnabled);
 	}
 	

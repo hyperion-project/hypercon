@@ -23,13 +23,14 @@ import javax.swing.GroupLayout.Alignment;
 import org.hyperion.hypercon.spec.MiscConfig;
 import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.EffectStandard;
+import org.hyperion.hypercon.spec.EffectPathStandard;
 
 public class BootEffectPanel extends JPanel {
 	
 	private final MiscConfig mMiscConfig;
 
 	private JLabel mPathLabel;
-	private JTextField mPathField;
+	private JComboBox<EffectPathStandard> mPathComboBox;
 	
 	private JCheckBox mBootEffectEnable;
 	
@@ -69,25 +70,29 @@ public class BootEffectPanel extends JPanel {
 		mPathLabel.setMinimumSize(new Dimension(80, 10));
 		add(mPathLabel);
 		
-		mPathField = new JTextField();
-		mPathField.setMaximumSize(new Dimension(1024, 20));
-		mPathField.setText(mMiscConfig.mEffectEnginePath);
-		mPathField.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				mMiscConfig.mEffectEnginePath = mPathField.getText();
-			}
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				mMiscConfig.mEffectEnginePath = mPathField.getText();
-			}
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				mMiscConfig.mEffectEnginePath = mPathField.getText();
-			}
-		});
-		add(mPathField);
-		
+//		mPathComboBox = new JTextField();
+//		mPathComboBox.setMaximumSize(new Dimension(1024, 20));
+//		mPathComboBox.setText(mMiscConfig.mEffectEnginePath);
+//		mPathComboBox.getDocument().addDocumentListener(new DocumentListener() {
+//			@Override
+//			public void removeUpdate(DocumentEvent e) {
+//				mMiscConfig.mEffectEnginePath = mPathComboBox.getText();
+//			}
+//			@Override
+//			public void insertUpdate(DocumentEvent e) {
+//				mMiscConfig.mEffectEnginePath = mPathComboBox.getText();
+//			}
+//			@Override
+//			public void changedUpdate(DocumentEvent e) {
+//				mMiscConfig.mEffectEnginePath = mPathComboBox.getText();
+//			}
+//		});
+//		add(mPathComboBox);
+		mPathComboBox = new JComboBox<>(EffectPathStandard.values());
+		mPathComboBox.setSelectedItem(mMiscConfig.mEffectPathCombo);
+		mPathComboBox.setToolTipText(language.getString("external.effect.effectpath.listcomboboxtooltip"));
+		mPathComboBox.addActionListener(mActionListener);
+		add(mPathComboBox);
 		
 		
 		mBootEffectEnable = new JCheckBox(language.getString("general.phrase.enabled")); //$NON-NLS-1$
@@ -150,7 +155,7 @@ public class BootEffectPanel extends JPanel {
 					.addComponent(mPathLabel)
 					)
 			.addGroup(layout.createParallelGroup()
-					.addComponent(mPathField)
+					.addComponent(mPathComboBox)
 					.addComponent(mBootEffectEnable)
 					.addComponent(mEffectSetCombo)
 					.addComponent(mEffectDurationSpinner)
@@ -187,7 +192,7 @@ layout.setVerticalGroup(layout
 						)
 				.addGroup(layout.createParallelGroup(Alignment.CENTER)	
 						.addComponent(mPathLabel)	
-						.addComponent(mPathField)
+						.addComponent(mPathComboBox)
 						)
 		);
 toggleEnabled(mMiscConfig.mBootEffectEnabled);
@@ -217,8 +222,8 @@ toggleEnabled(mMiscConfig.mBootEffectEnabled);
 				.isSelected();
 				toggleEnabled(mMiscConfig.mBootEffectEnabled);
 			}
-			mMiscConfig.mEffectsetCombo = (EffectStandard) mEffectSetCombo
-					.getSelectedItem();
+			mMiscConfig.mEffectsetCombo = (EffectStandard) mEffectSetCombo.getSelectedItem();
+			mMiscConfig.mEffectPathCombo = (EffectPathStandard) mPathComboBox.getSelectedItem();
 			}
 	};
 	private final ChangeListener mChangeListener = new ChangeListener() {

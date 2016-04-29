@@ -8,7 +8,7 @@ import java.util.Hashtable;
 public class DeviceConfig {
 	
 	/** The name of the device */
-	public String mName     = "MyPi";
+	public String mName     = "MyHyperionConfig";
 	/** The type specification of the device */
 	public DeviceType mType = DeviceType.ws2801;
 	
@@ -17,6 +17,10 @@ public class DeviceConfig {
 
 	/** The order of the color bytes */
 	public ColorByteOrder mColorByteOrder = ColorByteOrder.RGB;
+	
+	/**Store Device specific config for .dat here too**/
+//	public int FCP_portSpinner=8899;
+	
 	
 	/**
 	 * Creates the JSON string of the configuration as used in the Hyperion daemon configfile
@@ -32,11 +36,6 @@ public class DeviceConfig {
 				+ "\t/// " + DeviceType.listTypes() + ")\n");
 		strBuf.append("\t/// * [device type specific configuration]\n");
 		strBuf.append("\t/// * 'colorOrder' : The order of the color bytes ('rgb', 'rbg', 'bgr', etc.).\n");
-		strBuf.append("\t///\n");
-		strBuf.append("\t/// * 'Specific of Philips Hue:\n");
-		strBuf.append("\t/// * 'username'  		 : The name of user registred on the Philips Hue Bridge \n");
-		strBuf.append("\t/// * 'switchOffOnBlack': Define if Hue light switch off when black is detected \n");
-		strBuf.append("\t/// * 'transitiontime'	 : Set the time of transition between color of Hue light \n");
 		
 		strBuf.append("\t\"device\" :\n");
 		strBuf.append("\t{\n");

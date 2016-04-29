@@ -436,7 +436,7 @@ public class Grabberv4l2Panel extends JPanel {
 
 		@Override
 		public void changedUpdate(DocumentEvent e) {
-
+			mGrabberV4l2Config.mDevice = mDevice.getText();
 		}
 	};
 }

@@ -60,14 +60,14 @@ public class FrameGrabberPanel extends JPanel {
 		mWidthLabel = new JLabel(language.getString("grabber.intframegrabber.widthlabel")); //$NON-NLS-1$
 		add(mWidthLabel);
 		
-		mWidthSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mFrameGrabberWidth, 16, 1024, 8));
+		mWidthSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mFrameGrabberWidth, 16, 1024, 1));
 		mWidthSpinner.addChangeListener(mChangeListener);
 		add(mWidthSpinner);
 		
 		mHeightLabel = new JLabel(language.getString("grabber.intframegrabber.heightlabel")); //$NON-NLS-1$
 		add(mHeightLabel);
 		
-		mHeightSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mFrameGrabberHeight, 16, 1024, 8));
+		mHeightSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mFrameGrabberHeight, 16, 1024, 1));
 		mHeightSpinner.addChangeListener(mChangeListener);
 		add(mHeightSpinner);
 		
@@ -82,7 +82,7 @@ public class FrameGrabberPanel extends JPanel {
 		add(mPriorityLabel);
 		
 		mPrioritySpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mFrameGrabberPriority, 0, 5000, 1));
-		mPrioritySpinner.setToolTipText(language.getString("general.phrase.prioritytooltip"));
+		mPrioritySpinner.setToolTipText(language.getString("grabber.intframegrabber.prioritytooltip"));
 		mPrioritySpinner.addChangeListener(mChangeListener);
 		add(mPrioritySpinner);
 		

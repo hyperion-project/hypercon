@@ -1,12 +1,8 @@
 package org.hyperion.hypercon;
 
-import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.*;
 
@@ -27,8 +23,8 @@ public class Main {
 	/** Some application settings (for easy/dirty access) */
 	public static final HyperConConfig HyperConConfig = new HyperConConfig();
 
-	public static String versionStr = "V1.00.0"; 
-	public static String DateStr = "(11.03.2016)";
+	public static String versionStr = "V1.02.0"; 
+	public static String DateStr = "(30.04.2016)";
 	/**
 	 * Entry point to start HyperCon 
 	 * 

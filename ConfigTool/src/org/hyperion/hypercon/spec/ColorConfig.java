@@ -36,20 +36,31 @@ public class ColorConfig {
 		strBuf.append("\t/// Color manipulation configuration used to tune the output colors to specific surroundings. \n");
 		strBuf.append("\t/// The configuration contains a list of color-transforms. Each transform contains the \n");
 		strBuf.append("\t/// following fields:\n");
-		strBuf.append("\t///  * 'id'   : The unique identifier of the color transformation (eg 'device_1')");
+		strBuf.append("\t///  * 'channelAdjustment'\n");
+		strBuf.append("\t///  * 'id'   : The unique identifier of the channel adjustments (eg 'device_1')\n");
+		strBuf.append("\t///  * 'leds'   : The indices (or index ranges) of the leds to which this channel adjustment applies\n");
+		strBuf.append("\t///             (eg '0-5, 9, 11, 12-17'). The indices are zero based.\n");
+		strBuf.append("\t///  * 'pureRed'/'pureGreen'/'pureBlue' : The manipulation in the Red-Green-Blue color domain with the \n");
+		strBuf.append("\t///                           following tuning parameters for each channel:\n");
+		strBuf.append("\t///  * 'temperature'\n");
+		strBuf.append("\t///  * 'id'   : The unique identifier of the temperature (eg 'device_1')\n");
+		strBuf.append("\t///  * 'leds'   : The indices (or index ranges) of the leds to which this temperature applies\n");
+		strBuf.append("\t///             (eg '0-5, 9, 11, 12-17'). The indices are zero based.\n");
+		strBuf.append("\t///  * 'red'/'green'/'blue' : The temperature manipulation in the Red-Green-Blue color domain with the \n");
+		strBuf.append("\t///                           following tuning parameters for each channel:\n");
+		strBuf.append("\t///  * 'transform'\n");
+		strBuf.append("\t///  * 'id'   : The unique identifier of the color transformation (eg 'device_1')\n");
 		strBuf.append("\t///  * 'leds' : The indices (or index ranges) of the leds to which this color transform applies\n");
-		strBuf.append("\t///             (eg '0-5, 9, 11, 12-17'). The indices are zero based.");
+		strBuf.append("\t///             (eg '0-5, 9, 11, 12-17'). The indices are zero based.\n");
 		strBuf.append("\t///  * 'hsv' : The manipulation in the Hue-Saturation-Value color domain with the following \n");
 		strBuf.append("\t///            tuning parameters:\n");
 		strBuf.append("\t///            - 'saturationGain'  The gain adjustement of the saturation\n");
-		strBuf.append("\t///            - 'valueGain'       The gain adjustement of the value\n");
+		strBuf.append("\t///            - 'luminanceGain'       The gain adjustement of the luminance\n");
 		strBuf.append("\t///  * 'red'/'green'/'blue' : The manipulation in the Red-Green-Blue color domain with the \n");
 		strBuf.append("\t///                           following tuning parameters for each channel:\n");
 		strBuf.append("\t///            - 'threshold'       The minimum required input value for the channel to be on \n");
 		strBuf.append("\t///                                (else zero)\n");
 		strBuf.append("\t///            - 'gamma'           The gamma-curve correction factor\n");
-		strBuf.append("\t///            - 'blacklevel'      The lowest possible value (when the channel is black)\n");
-		strBuf.append("\t///            - 'whitelevel'      The highest possible value (when the channel is white)\n");
 		strBuf.append("\t///\n");
 		strBuf.append("\t/// Next to the list with color transforms there is also a smoothing option.\n");
 		strBuf.append("\t///  * 'smoothing' : Smoothing of the colors in the time-domain with the following tuning \n");
@@ -62,8 +73,6 @@ public class ColorConfig {
 		strBuf.append("\t\"color\" :\n");
 		strBuf.append("\t{\n");
 		
-		strBuf.append("\t\t\"transform\" :\n");
-		strBuf.append("\t\t[\n");
 		for (int i=0; i<mTransforms.size(); ++i) {
 			TransformConfig transform = mTransforms.get(i);
 			strBuf.append(transform.toJsonString());
@@ -73,7 +82,6 @@ public class ColorConfig {
 				strBuf.append(",\n");
 			}
 		}
-		strBuf.append("\t\t],\n");
 
 		strBuf.append(smoothingToString() + "\n");
 		strBuf.append("\t}");
@@ -92,7 +100,7 @@ public class ColorConfig {
 		String preamble = "\t\t";
 		strBuf.append(preamble).append("\"smoothing\" :\n");
 		strBuf.append(preamble).append("{\n");
-		strBuf.append(preamble).append(String.format(Locale.ROOT, "\t\"type\"            : \"%s\",\n", (mSmoothingEnabled) ? mSmoothingType.name() : "none"));
+		strBuf.append(preamble).append(String.format(Locale.ROOT, "\t\"type\"            : \"%s\",\n", (mSmoothingEnabled) ? mSmoothingType.getTypeId() : "none"));
 		strBuf.append(preamble).append(String.format(Locale.ROOT, "\t\"time_ms\"         : %d,\n", mSmoothingTime_ms));
 		strBuf.append(preamble).append(String.format(Locale.ROOT, "\t\"updateFrequency\" : %.4f,\n", mSmoothingUpdateFrequency_Hz));
 		strBuf.append(preamble).append(String.format(Locale.ROOT, "\t\"updateDelay\"     : %d\n", mUpdateDelay));

@@ -4,7 +4,10 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
 import org.hyperion.hypercon.SshConnectionModel;
@@ -13,7 +16,7 @@ import org.hyperion.hypercon.language.language;
 public class SshColorTransformPanel extends JPanel implements Observer {
 	
 	public JButton sendTransform;
-
+	public JCheckBox sendTransformContinuousCheckBox;
 	
 	public SshColorTransformPanel() {
 		super();
@@ -28,6 +31,29 @@ public class SshColorTransformPanel extends JPanel implements Observer {
 		sendTransform.setToolTipText(language.getString("process.ssh.sendcolortransformtooltip")); //$NON-NLS-1$
 		add(sendTransform);
 		
+		sendTransformContinuousCheckBox = new JCheckBox(language.getString("process.ssh.sendTransContinuouslabel")); //$NON-NLS-1$
+		sendTransformContinuousCheckBox.setToolTipText(language.getString("process.ssh.sendTransContinuoustooltip")); //$NON-NLS-1$
+		add(sendTransformContinuousCheckBox);
+		
+		
+		
+		GroupLayout layout = new GroupLayout(this);
+		layout.setAutoCreateGaps(true);
+		setLayout(layout);
+		
+		layout.setHorizontalGroup(layout
+		.createSequentialGroup()					
+			.addGroup(layout.createParallelGroup()
+					.addComponent(sendTransform)
+					.addComponent(sendTransformContinuousCheckBox)
+					)
+					);
+		layout.setVerticalGroup(layout
+			.createSequentialGroup()
+				.addComponent(sendTransform)
+				.addComponent(sendTransformContinuousCheckBox)
+				);
+
 		setGuiElementsEnabled(SshConnectionModel.getInstance().isConnected());
 	}
 
@@ -47,6 +73,6 @@ public class SshColorTransformPanel extends JPanel implements Observer {
 
 	private void setGuiElementsEnabled(boolean enabled) {
 		sendTransform.setEnabled(enabled);
-		
+		sendTransformContinuousCheckBox.setEnabled(enabled);
 	}
 }

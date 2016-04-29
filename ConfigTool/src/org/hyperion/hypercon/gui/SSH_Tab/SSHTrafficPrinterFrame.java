@@ -123,7 +123,12 @@ public class SSHTrafficPrinterFrame extends JFrame implements ConnectionListener
         txtArea.setCaretPosition(txtArea.getDocument().getLength());
 
     }
+    @Override
+    public void sendConfigFile(String srcPath, String FileName, String hyperionConfigTargetCall) {
+        txtArea.append("sftp Send Hyperion Config - Sourcepath: " + srcPath + ", Targetpath: " + hyperionConfigTargetCall +", Filename: "+ FileName +"\n");
+        txtArea.setCaretPosition(txtArea.getDocument().getLength());
 
+    }
     @Override
     public void commandFinished(String pCommand) {
 
@@ -133,7 +138,10 @@ public class SSHTrafficPrinterFrame extends JFrame implements ConnectionListener
     public void getFileFinished(String src, String dst) {
 
     }
+    @Override
+    public void sendConfigFileFinished(String srcPath, String dstPath, String fileName) {
 
+    }
     @Override
     public void addLine(String pLine) {
         txtArea.append("ssh in: \t" + pLine + "\n");
@@ -149,4 +157,5 @@ public class SSHTrafficPrinterFrame extends JFrame implements ConnectionListener
 
 
     }
+
 }

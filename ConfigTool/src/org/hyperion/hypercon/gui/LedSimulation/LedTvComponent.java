@@ -71,7 +71,7 @@ public class LedTvComponent extends JComponent {
 				g2d.drawString(""+led.mLedSeqNr, 0, 11);
 				break;
 			case top:
-				g2d.drawString(""+led.mLedSeqNr, (int)rect.getCenterX(), 11);
+				g2d.drawString(""+led.mLedSeqNr, (int)rect.getCenterX(), 13);
 				break;
 			case top_right:
 				g2d.drawString(""+led.mLedSeqNr, (int)getWidth()-11, (int)11);
@@ -83,7 +83,7 @@ public class LedTvComponent extends JComponent {
 				g2d.drawString(""+led.mLedSeqNr, (int)getWidth()-11, (int)getHeight()-1);
 				break;
 			case bottom:
-				g2d.drawString(""+led.mLedSeqNr, (int)rect.getCenterX(), (int)getHeight()-1);
+				g2d.drawString(""+led.mLedSeqNr, (int)rect.getCenterX(), (int)getHeight()-5);
 				break;
 			case bottom_left:
 				g2d.drawString(""+led.mLedSeqNr, (int)0, (int)getHeight()-1);

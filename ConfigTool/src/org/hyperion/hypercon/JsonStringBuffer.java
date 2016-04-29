@@ -143,6 +143,15 @@ public class JsonStringBuffer {
 		}
 	}
 
+	public void addPathValue(String pValue, boolean lastValue) {
+		startLine();
+		mStrBuf.append('"').append(pValue).append('"'); 
+		if (lastValue) {
+			mStrBuf.append("\n"); 
+		} else {
+			mStrBuf.append(",\n"); 	
+		}
+	}
 	/**
 	 *
 	 * @param pKey
@@ -298,5 +307,7 @@ public class JsonStringBuffer {
 
 		System.out.println(jsonBuf.toString());
 	}
+
+
 	
 }

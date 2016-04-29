@@ -17,4 +17,8 @@ public interface ConnectionListener {
 	public void addLine(String pLine);
 	
 	public void addError(String pLine);
+
+	public void sendConfigFile(String dstPath, String srcPath, String fileName);
+
+	public void sendConfigFileFinished(String dstPath, String srcPath, String fileName);
 }

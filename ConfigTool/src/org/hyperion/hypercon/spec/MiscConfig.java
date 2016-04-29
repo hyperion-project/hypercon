@@ -9,7 +9,7 @@ public class MiscConfig {
 
 //Effect Engine
 	/** The absolute location(s) of the effects */
-	public String mEffectEnginePath = "/opt/hyperion/effects";
+	public EffectPathStandard mEffectPathCombo = EffectPathStandard.allsystems;
 	
 	/** Flag indicating that the boot sequence is enabled(true) or not(false) */
 	public boolean mBootEffectEnabled = true;
@@ -30,13 +30,13 @@ public class MiscConfig {
 	/** Flag indicating that the Frame Grabber is enabled */
 	public boolean mFrameGrabberEnabled = true;
 	/** The width of 'grabbed' frames (screen shots) [pixels] */
-	public int mFrameGrabberWidth = 80;
+	public int mFrameGrabberWidth = 64;
 	/** The height of 'grabbed' frames (screen shots) [pixels] */
-	public int mFrameGrabberHeight = 45;
+	public int mFrameGrabberHeight = 64;
 	/** The interval of frame grabs (screen shots) [ms] */
 	public int mFrameGrabberInterval_ms = 100;
 	/** The Priority of the Internal Frame Grabber */
-	public int mFrameGrabberPriority = 900;
+	public int mFrameGrabberPriority = 890;
 
 //Kodi	
 	/** Flag indicating that the XBMC checker is enabled */
@@ -92,14 +92,13 @@ public class MiscConfig {
 				" * duration_ms	: The duration of the selected effect (0=endless) \n" +
 				" * priority 	: The priority of the selected effect/static color (default=990) HINT: lower value result in HIGHER priority! \n";
 		strBuf.writeComment(effectEngineComment);
-		
-		String[] effectPaths = mEffectEnginePath.split(":");
-		
+				
 		strBuf.startObject("effects");
 		strBuf.startArray("paths");
-		for (String effectPath : effectPaths) {
-			strBuf.addArrayElement(effectPath, effectPath == effectPaths[effectPaths.length-1]);
-		}
+//		for (String effectPath : effectPaths) {
+//			strBuf.addArrayElement(effectPath, effectPath == effectPaths[effectPaths.length-1]);
+//		}
+		strBuf.addPathValue(mEffectPathCombo.getTypeId(), true);
 		strBuf.stopArray(true);
 		strBuf.stopObject();
 
@@ -108,7 +107,7 @@ public class MiscConfig {
 		strBuf.toggleComment(!mBootEffectEnabled);
 		strBuf.startObject("bootsequence");
 		strBuf.addArrayRGB("color", mEffectColorRspinner, mEffectColorGspinner, mEffectColorBspinner, false);
-		strBuf.addValue("effect", mEffectsetCombo.toString(), false);
+		strBuf.addValue("effect", mEffectsetCombo.getTypeId(), false);
 		strBuf.addValue("duration_ms", mEffectDurationspinner, false);
 		strBuf.addValue("priority", mEffectPriorityspinner, true);
 		strBuf.stopObject();
@@ -143,7 +142,7 @@ public class MiscConfig {
 				"  * width        : The width of the grabbed frames [pixels]\n" +
 				"  * height       : The height of the grabbed frames [pixels]\n" +
 				"  * frequency_Hz : The frequency of the frame grab [Hz]\n" +
-				"  * priority     : The priority of the frame-gabber (Default=900) HINT: lower value result in HIGHER priority! \n" +
+				"  * priority     : The priority of the frame-gabber (Default=890) HINT: lower value result in HIGHER priority! \n" +
 				"  * ATTENTION    : Power-of-Two resolution is not supported and leads to unexpected behaviour! \n";
 		strBuf.writeComment(grabComment);
 		

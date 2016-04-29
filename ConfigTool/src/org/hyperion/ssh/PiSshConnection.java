@@ -1,9 +1,7 @@
 package org.hyperion.ssh;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Vector;
@@ -11,6 +9,8 @@ import java.util.Vector;
 import com.jcraft.jsch.*;
 
 import javax.imageio.ImageIO;
+
+
 
 public class PiSshConnection {
 	final JSch mJsch;
@@ -144,7 +144,7 @@ public class PiSshConnection {
 			e.printStackTrace();
 		}
 	}
-	public void getFile(String srcFile, String dstFile) throws SftpException, JSchException {
+	public void sendConfig(String srcPath, String FileName, String hyperionConfigTargetCall) throws JSchException, SftpException {
 		if (mSession == null || !mSession.isConnected()) {
 			System.err.println("Can not execute on not existing or not connected session");
 			return;
@@ -154,17 +154,18 @@ public class PiSshConnection {
 
 
 			for (ConnectionListener cl : mConnectionListeners) {
-				cl.getFile(srcFile,dstFile);
+				cl.sendConfigFile(srcPath,FileName, hyperionConfigTargetCall);
 			}
 
 			channel.connect();
-
-			channel.get(srcFile, dstFile);
+			
+			channel.lcd(srcPath);
+			channel.put(FileName, hyperionConfigTargetCall+FileName, channel.OVERWRITE);
 
 			channel.disconnect();
 
 			for (ConnectionListener conLin : mConnectionListeners) {
-				conLin.getFileFinished(srcFile, dstFile);
+				conLin.getFileFinished(srcPath, hyperionConfigTargetCall);
 			}
 
 	}
@@ -269,11 +270,16 @@ public class PiSshConnection {
 						//Nothing to do
 					}
 				}
-
 				@Override
-				public void getFileFinished(String src, String dst) {
+				public void sendConfigFile(String srcPath, String dstPath, String fileName) {
 					if(printTraffic){
-						System.out.println("sftp getFile(" + src + ", " + dst + ")");
+						System.out.println("sftp sendConfigFile(" + srcPath + ", " + dstPath + fileName +")");
+					}
+				}
+				@Override
+				public void sendConfigFileFinished(String srcPath, String dstPath, String fileName) {
+					if(printTraffic){
+						System.out.println("sftp sendConfigFile(" + srcPath + ", " + dstPath + fileName +")");
 					}
 				}
 

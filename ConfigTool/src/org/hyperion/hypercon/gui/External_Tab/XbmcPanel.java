@@ -104,7 +104,7 @@ public class XbmcPanel extends JPanel {
 		add(mMenuLabel);
 
 		mMenuCheck = new JCheckBox(); //$NON-NLS-1$
-		mMenuCheck.setSelected(mMiscConfig.mXbmcCheckerEnabled);
+		mMenuCheck.setSelected(mMiscConfig.mMenuOn);
 		mMenuCheck.setToolTipText(language.getString("external.kodi.menutooltip")); //$NON-NLS-1$
 		mMenuCheck.addActionListener(mActionListener);
 		add(mMenuCheck);
@@ -113,7 +113,7 @@ public class XbmcPanel extends JPanel {
 		add(mVideoLabel);
 
 		mVideoCheck = new JCheckBox(); //$NON-NLS-1$
-		mVideoCheck.setSelected(mMiscConfig.mXbmcCheckerEnabled);
+		mVideoCheck.setSelected(mMiscConfig.mVideoOn);
 		mVideoCheck.setToolTipText(language.getString("external.kodi.videotooltip")); //$NON-NLS-1$
 		mVideoCheck.addActionListener(mActionListener);
 		add(mVideoCheck);		
@@ -124,7 +124,7 @@ public class XbmcPanel extends JPanel {
 		
 
 		mPictureCheck = new JCheckBox(); //$NON-NLS-1$
-		mPictureCheck.setSelected(mMiscConfig.mXbmcCheckerEnabled);
+		mPictureCheck.setSelected(mMiscConfig.mPictureOn);
 		mPictureCheck.setToolTipText(language.getString("external.kodi.picturetooltip")); //$NON-NLS-1$
 		mPictureCheck.addActionListener(mActionListener);
 		add(mPictureCheck);	
@@ -133,7 +133,7 @@ public class XbmcPanel extends JPanel {
 		add(mAudioLabel);
 			
 		mAudioCheck = new JCheckBox(); //$NON-NLS-1$
-		mAudioCheck.setSelected(mMiscConfig.mXbmcCheckerEnabled);
+		mAudioCheck.setSelected(mMiscConfig.mAudioOn);
 		mAudioCheck.setToolTipText(language.getString("external.kodi.audiotooltip")); //$NON-NLS-1$
 		mAudioCheck.addActionListener(mActionListener);
 		add(mAudioCheck);			
@@ -142,7 +142,7 @@ public class XbmcPanel extends JPanel {
 		add(mScreensaverLabel);
 
 		mScreensaverCheck = new JCheckBox(); //$NON-NLS-1$
-		mScreensaverCheck.setSelected(mMiscConfig.mXbmcCheckerEnabled);
+		mScreensaverCheck.setSelected(mMiscConfig.mScreensaverOn);
 		mScreensaverCheck.setToolTipText(language.getString("external.kodi.sreensavertooltip")); //$NON-NLS-1$
 		mScreensaverCheck.addActionListener(mActionListener);
 		add(mScreensaverCheck);					
@@ -151,7 +151,7 @@ public class XbmcPanel extends JPanel {
 		add(mEnable3DLabel);
 	
 		mEnable3DCeck = new JCheckBox(); //$NON-NLS-1$
-		mEnable3DCeck.setSelected(mMiscConfig.mXbmcCheckerEnabled);
+		mEnable3DCeck.setSelected(mMiscConfig.m3DCheckingEnabled);
 		mEnable3DCeck.setToolTipText(language.getString("external.kodi.3dchecktooltip")); //$NON-NLS-1$
 		mEnable3DCeck.addActionListener(mActionListener);
 		add(mEnable3DCeck);			

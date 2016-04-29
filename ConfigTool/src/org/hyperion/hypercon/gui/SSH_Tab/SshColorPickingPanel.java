@@ -202,7 +202,7 @@ public class SshColorPickingPanel extends JPanel implements Observer, PropertyCh
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if(autoUpdateCB != null && autoUpdateCB.isSelected() && evt.getPropertyName().equals("selected color")){ //$NON-NLS-1$
+		if(autoUpdateCB != null && autoUpdateCB.isSelected() && evt.getPropertyName().equals("selected color")){ 
 			int[] chosenColor = colorPicker.getRGB();
 			try {
 				SshConnectionModel.getInstance().sendLedColor(chosenColor[0], chosenColor[1], chosenColor[2]);

@@ -8,46 +8,53 @@ import org.hyperion.hypercon.gui.Hardware_Tab.device.SerialPanel;
 import org.hyperion.hypercon.gui.Hardware_Tab.device.SpiDevPanel;
 import org.hyperion.hypercon.gui.Hardware_Tab.device.TestDevicePanel;
 import org.hyperion.hypercon.gui.Hardware_Tab.device.TinkerForgePanel;
-
+import org.hyperion.hypercon.gui.Hardware_Tab.device.AtmoOrbPanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.UDPPanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.WS281XPanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.FadeCandyPanel;
+import org.hyperion.hypercon.gui.Hardware_Tab.device.rawhidPanel;
 /**
  * Enumeration of known device types
  */
 public enum DeviceType {
+
+/** all non pwm led (stripes) **/
+	spileds("---------SPI---------"),
 	apa102("APA102"),
-	/** Adalight device */
+	ws2801("WS2801"),
+	p9813("P9813"),
+	lpd6803("LPD6803"),
+	lpd8806("LPD8806"),	
+
+/** all pwm led (stripes) **/
+	pwmleds("---------PWM---------"),
+	ws2812b("WS2812b (just RPi1)"),
+	ws281x("WS281X (RPi1, RPi2, RPi3)"),
+	
+/** other devices/controller **/
+	otherleddevices("--------OTHER--------"),
+	philipshue("PhilipsHUE"),
+	atmoorb("AtmoOrb"),
+	piblaster("PiBlaster"),
+	tinkerforge("Tinkerforge"),
+	fadecandy("FadeCandy"),
+	udp("UDP"),
+	rawhid("RawHID (USB)"),
+	sedu("SEDU"),
 	adalight("Adalight"),
 	AdalightApa102("AdalightAPA102"),
+	tpm2("TPM2"),
+	hyperion_usbasp_ws2801("USBASP-WS2801"),
+	hyperion_usbasp_ws2812("USBASP-WS2812"),
+	
+/** 3rd party vendors/devices **/
+	rdpartydevices("------3rd PARTY------"),
 	ambiled("AmbiLed"),
 	atmo("Atmo"),
-	hyperion_usbasp_ws2801("Hyperion-USBASP-WS2801"),
-	hyperion_usbasp_ws2812("Hyperion-USBASP-WS2812"),
-	/** Lightberry device */
-	lightberry("Lightberry"),
-	/** Lightpack USB led device */
 	lightpack("Lightpack"),
-	/** LDP6803 Led String device with one continuous shift-register (5 bits per color channel)*/
-	lpd6803("LPD6803"),
-	/** LDP8806 Led String device with one continuous shift-register (1 + 7 bits per color channel)*/
-	lpd8806("LPD8806"),
 	multi_lightpack("Multi-Lightpack"),
-	p9813("P9813"),
-	/** Paintpack USB led device */
 	paintpack("Paintpack"),
-	philipshue("PhilipsHUE"),
-	piblaster("PiBlaster"),
-	/** SEDU LED device */
-	sedu("SEDU"),
-	/** Test device for writing color values to file-output */
-	test("Test"),
-	tinkerforge("ThinkerForge"),
-	/** tpm2 protocol serial device */
-	tpm2("TPM2"),
-	/** WS2801 Led String device with one continuous shift-register (1 byte per color-channel) */
-	ws2801("WS2801"),
-	/** WS2801 Led String device with one continuous shift-register (1 byte per color-channel) */
-	ws2812b("WS2812b"),
-	
-	/** No device, no output is generated */
+	file("Test (file)"),
 	none("None");
 	
 	/** The 'pretty' name of the device type */
@@ -75,8 +82,9 @@ public enum DeviceType {
 			return "hyperion-usbasp-ws2801";
 		} else if (this == hyperion_usbasp_ws2812) {
 			return "hyperion-usbasp-ws2812";
-		}
-		return super.name();
+		} else if (this == multi_lightpack) {
+			return "multi-lightpack";
+		}return super.name();
 	}
 	
 	/**
@@ -88,14 +96,13 @@ public enum DeviceType {
 		if (mConfigPanel == null) {
 			switch (this) {
 			case apa102:
-			case lightberry:
 			case lpd6803:
 			case lpd8806:
 			case p9813:
 			case ws2801:
 				mConfigPanel = new SpiDevPanel();
 				break;
-			case test:
+			case file:
 				mConfigPanel = new TestDevicePanel();
 				break;
 			case adalight:
@@ -112,6 +119,9 @@ public enum DeviceType {
 			case piblaster:
 				mConfigPanel = new PiBlasterPanel();
 				break;
+			case rawhid:
+				mConfigPanel = new rawhidPanel();
+				break;
 			case hyperion_usbasp_ws2801:
 			case hyperion_usbasp_ws2812:
 			case multi_lightpack:
@@ -119,8 +129,20 @@ public enum DeviceType {
 			case ws2812b:
 			case none:
 				break;
+			case ws281x:
+				mConfigPanel = new WS281XPanel();
+				break;			
+			case fadecandy:
+				mConfigPanel = new FadeCandyPanel();
+				break;
 			case philipshue:
 				mConfigPanel = new PhilipsHuePanel();
+				break;
+			case atmoorb:
+				mConfigPanel = new AtmoOrbPanel();
+				break;
+			case udp:
+				mConfigPanel = new UDPPanel();
 				break;
 			case tinkerforge:
 				mConfigPanel = new TinkerForgePanel();

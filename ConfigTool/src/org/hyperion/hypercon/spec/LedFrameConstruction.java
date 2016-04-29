@@ -2,6 +2,8 @@ package org.hyperion.hypercon.spec;
 
 import java.util.Observable;
 
+import org.hyperion.hypercon.language.language;
+
 
 
 /**
@@ -11,13 +13,26 @@ public class LedFrameConstruction extends Observable {
 	/**
 	 * Enumeration of the led configuration direction 
 	 */
+//	public enum Direction {
+//		/** Clockwise led configuration */
+//		clockwise,
+//		/** Counter Clockwise led configuration */
+//		counter_clockwise;
+//	}
 	public enum Direction {
-		/** Clockwise led configuration */
-		clockwise,
-		/** Counter Clockwise led configuration */
-		counter_clockwise;
-	}
+		clockwise(language.getString("hardware.directionlist.clockwise")), 
+		counter_clockwise(language.getString("hardware.directionlist.counter_clockwise")); 
 	
+	private final String mtext;
+
+    private Direction(final String name){
+        mtext = name;
+    }
+	 @Override
+	    public String toString() {
+	        return mtext;
+	    }
+	}
 	/** True if the leds are organised clockwise else false (counter clockwise) */
 	public boolean clockwiseDirection = true;
 	

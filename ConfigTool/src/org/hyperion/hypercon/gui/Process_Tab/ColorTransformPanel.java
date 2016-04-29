@@ -34,38 +34,59 @@ public class ColorTransformPanel extends JPanel {
 	private final Dimension maxDim = new Dimension(1024, 20);
 	private final Dimension maxSpinnerDim = new Dimension(1024, 20);
 	private final double spinnerChangeValue = 0.01;
-
+	private final int spinnerIntChangeValue = 1;
+	
 	private final TransformConfig mColorConfig;
 
-//	private JPanel mIndexPanel;
 	private JLabel mIndexLabel;
 	private JLabel mDummyLabel;
+	private JLabel mDummy1Label;
+	private JLabel mDummy2Label;
+	private JLabel mDummy3Label;
 	private JTextField mIndexField;
 
-	private JLabel mThresholdLabel;
+	private JLabel mWhiteLabel;
+	private JSpinner mRedChannelRedSpinner;	
+	private JSpinner mGreenChannelGreenSpinner;
+	private JSpinner mBlueChannelBlueSpinner;
+	
+	private JLabel mPureRedLabel;
+	private JLabel mPureGreenLabel;
+	private JLabel mPureBlueLabel;
 	private JLabel mGammaLabel;
-	private JLabel mBlacklevelLabel;
-	private JLabel mWhitelevelLabel;
+	private JLabel mTemperatureLabel;
+	private JLabel mThresholdLabel;
+	
 	private JLabel mRedTransformLabel;
-	private JSpinner mRedThresholdSpinner;
+	private JSpinner mRedChannelGreenSpinner;
+	private JSpinner mRedChannelBlueSpinner;
 	private JSpinner mRedGammaSpinner;
-	private JSpinner mRedBlacklevelSpinner;
-	private JSpinner mRedWhitelevelSpinner;
+	private JSpinner mRedTemperatureSpinner;
+	private JSpinner mRedThresholdSpinner;
+	
 	private JLabel mGreenTransformLabel;
-	private JSpinner mGreenThresholdSpinner;
+	private JSpinner mGreenChannelRedSpinner;
+	private JSpinner mGreenChannelBlueSpinner;
 	private JSpinner mGreenGammaSpinner;
-	private JSpinner mGreenBlacklevelSpinner;
-	private JSpinner mGreenWhitelevelSpinner;
+	private JSpinner mGreenTemperatureSpinner;
+	private JSpinner mGreenThresholdSpinner;
+	
 	private JLabel mBlueTransformLabel;
-	private JSpinner mBlueThresholdSpinner;
+	private JSpinner mBlueChannelRedSpinner;
+	private JSpinner mBlueChannelGreenSpinner;
 	private JSpinner mBlueGammaSpinner;
-	private JSpinner mBlueBlacklevelSpinner;
-	private JSpinner mBlueWhitelevelSpinner;
+	private JSpinner mBlueTemperatureSpinner;
+	private JSpinner mBlueThresholdSpinner;
 
-	private JLabel mSaturationAdjustLabel;
-	private JSpinner mSaturationAdjustSpinner;
-	private JLabel mValueAdjustLabel;
-	private JSpinner mValueAdjustSpinner;
+//	private JLabel mHSVSaturationAdjustLabel;
+//	private JSpinner mHSVSaturationAdjustSpinner;
+//	private JLabel mHSVValueAdjustLabel;
+//	private JSpinner mHSVValueAdjustSpinner;
+
+	private JLabel mHSLSaturationGainAdjustLabel;
+	private JSpinner mHSLSaturationGainAdjustSpinner;
+	private JLabel mHSLLuminanceGainAdjustLabel;
+	private JSpinner mHSLLuminanceGainAdjustSpinner;
 
 	private SshColorTransformPanel mSshColorTransformPanel;
 
@@ -102,101 +123,165 @@ public class ColorTransformPanel extends JPanel {
 			mIndexField.getDocument().addDocumentListener(mDocumentListener);
 			add(mIndexField);
 
+			// Dummy Labels are used to fill space
 			mDummyLabel = new JLabel("");
 			add(mDummyLabel);
+			mDummy1Label = new JLabel("255");
+			add(mDummy1Label);
+			mDummy2Label = new JLabel("255");
+			add(mDummy2Label);
+			mDummy3Label = new JLabel("255");
+			add(mDummy3Label);
+			
+			mPureRedLabel = new JLabel(language.getString("process.transform.PureRedlabel")); //$NON-NLS-1$
+			mPureRedLabel.setToolTipText(language.getString("process.transform.PureRedlabeltooltip"));			
+			add(mPureRedLabel);
+
+			mPureGreenLabel = new JLabel(language.getString("process.transform.PureGreenlabel")); //$NON-NLS-1$
+			mPureGreenLabel.setToolTipText(language.getString("process.transform.PureGreenlabeltooltip"));		
+			add(mPureGreenLabel);
+
+			mPureBlueLabel = new JLabel(language.getString("process.transform.PureBluelabel")); //$NON-NLS-1$
+			mPureBlueLabel.setToolTipText(language.getString("process.transform.PureBluelabeltooltip"));
+			add(mPureBlueLabel);
+			
+			mGammaLabel = new JLabel(language.getString("process.transform.gammalabel")); //$NON-NLS-1$
+			mGammaLabel.setToolTipText(language.getString("process.transform.gammalabeltooltip"));
+			add(mGammaLabel);
+			
+			mTemperatureLabel = new JLabel(language.getString("process.transform.temperaturelabel")); //$NON-NLS-1$
+			mTemperatureLabel.setToolTipText(language.getString("process.transform.temperaturelabeltooltip"));
+			add(mTemperatureLabel);
 			
 			mThresholdLabel = new JLabel(language.getString("process.transform.treshlabel")); //$NON-NLS-1$
 			mThresholdLabel.setToolTipText(language.getString("process.transform.treshlabeltooltip"));
 			add(mThresholdLabel);
-
-			mGammaLabel = new JLabel(language.getString("process.transform.gammalabel")); //$NON-NLS-1$
-			mGammaLabel.setToolTipText(language.getString("process.transform.gammalabeltooltip"));
-			add(mGammaLabel);
-
-			mBlacklevelLabel = new JLabel(language.getString("process.transform.blacklvllabel")); //$NON-NLS-1$
-			mBlacklevelLabel.setToolTipText(language.getString("process.transform.blacklvllabeltooltip"));			
-			add(mBlacklevelLabel);
-
-			mWhitelevelLabel = new JLabel(language.getString("process.transform.whitelvllabel")); //$NON-NLS-1$
-			mWhitelevelLabel.setToolTipText(language.getString("process.transform.whitelvllabeltooltip"));		
-			add(mWhitelevelLabel);
-
+			
+			mWhiteLabel = new JLabel(language.getString("process.transform.whitelabel")); //$NON-NLS-1$
+			mWhiteLabel.setToolTipText(language.getString("process.transform.ChannelWhitetooltip"));
+			add(mWhiteLabel);
+			
+			mRedChannelRedSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mRedChannelRedSpinner, 0, 255, spinnerIntChangeValue));
+			mRedChannelRedSpinner.setToolTipText(language.getString("process.transform.ChannelWhitetooltip"));		
+			mRedChannelRedSpinner.setMaximumSize(maxSpinnerDim);
+			mRedChannelRedSpinner.addChangeListener(mChangeListener);
+			add(mRedChannelRedSpinner);
+		
+			mGreenChannelGreenSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mGreenChannelGreenSpinner, 0, 255, spinnerIntChangeValue));
+			mGreenChannelGreenSpinner.setToolTipText(language.getString("process.transform.ChannelWhitetooltip"));	
+			mGreenChannelGreenSpinner.setMaximumSize(maxSpinnerDim);
+			mGreenChannelGreenSpinner.addChangeListener(mChangeListener);
+			add(mGreenChannelGreenSpinner);			
+			
+			mBlueChannelBlueSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mBlueChannelBlueSpinner, 0, 255, spinnerIntChangeValue));
+			mBlueChannelBlueSpinner.setToolTipText(language.getString("process.transform.ChannelWhitetooltip"));
+			mBlueChannelBlueSpinner.setMaximumSize(maxSpinnerDim);
+			mBlueChannelBlueSpinner.addChangeListener(mChangeListener);
+			add(mBlueChannelBlueSpinner);
+			
 			mRedTransformLabel = new JLabel(language.getString("process.transform.redlabel")); //$NON-NLS-1$
-			add(mRedTransformLabel);
-			mRedThresholdSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mRedThreshold, 0.0, 1.0, spinnerChangeValue));
-			mRedThresholdSpinner.setMaximumSize(maxSpinnerDim);
-			mRedThresholdSpinner.addChangeListener(mChangeListener);
-			add(mRedThresholdSpinner);
+			add(mRedTransformLabel);			
+			
+			mRedChannelGreenSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mRedChannelGreenSpinner, 0, 255, spinnerIntChangeValue));
+			mRedChannelGreenSpinner.setToolTipText(language.getString("process.transform.ChannelAdjustmenttooltip"));		
+			mRedChannelGreenSpinner.setMaximumSize(maxSpinnerDim);
+			mRedChannelGreenSpinner.addChangeListener(mChangeListener);
+			add(mRedChannelGreenSpinner);
+			mRedChannelBlueSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mRedChannelBlueSpinner, 0, 255, spinnerIntChangeValue));
+			mRedChannelBlueSpinner.setToolTipText(language.getString("process.transform.ChannelAdjustmenttooltip"));
+			mRedChannelBlueSpinner.setMaximumSize(maxSpinnerDim);
+			mRedChannelBlueSpinner.addChangeListener(mChangeListener);
+			add(mRedChannelBlueSpinner);
 			mRedGammaSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mRedGamma, 0.0, 100.0, spinnerChangeValue));
+			mRedGammaSpinner.setToolTipText(language.getString("process.transform.gammalabeltooltip"));
 			mRedGammaSpinner.setMaximumSize(maxSpinnerDim);
 			mRedGammaSpinner.addChangeListener(mChangeListener);
 			add(mRedGammaSpinner);
-			mRedBlacklevelSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mRedBlacklevel, 0.0, 1.0, spinnerChangeValue));
-			mRedBlacklevelSpinner.setMaximumSize(maxSpinnerDim);
-			mRedBlacklevelSpinner.addChangeListener(mChangeListener);
-			add(mRedBlacklevelSpinner);
-			mRedWhitelevelSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mRedWhitelevel, 0.0, 1.0, spinnerChangeValue));
-			mRedWhitelevelSpinner.setMaximumSize(maxSpinnerDim);
-			mRedWhitelevelSpinner.addChangeListener(mChangeListener);
-			add(mRedWhitelevelSpinner);
+			mRedTemperatureSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mRedTemperature, 0, 255, spinnerIntChangeValue));
+			mRedTemperatureSpinner.setToolTipText(language.getString("process.transform.temperaturelabeltooltip"));
+			mRedTemperatureSpinner.setMaximumSize(maxSpinnerDim);
+			mRedTemperatureSpinner.addChangeListener(mChangeListener);
+			add(mRedTemperatureSpinner);
+			mRedThresholdSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mRedThreshold, 0.0, 1.0, spinnerChangeValue));
+			mRedThresholdSpinner.setToolTipText(language.getString("process.transform.treshlabeltooltip"));
+			mRedThresholdSpinner.setMaximumSize(maxSpinnerDim);
+			mRedThresholdSpinner.addChangeListener(mChangeListener);
+			add(mRedThresholdSpinner);
 
 			mGreenTransformLabel = new JLabel(language.getString("process.transform.greenlabel")); //$NON-NLS-1$
 			add(mGreenTransformLabel);
-			mGreenThresholdSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mGreenThreshold, 0.0, 1.0, spinnerChangeValue));
-			mGreenThresholdSpinner.setMaximumSize(maxSpinnerDim);
-			mGreenThresholdSpinner.addChangeListener(mChangeListener);
-			add(mGreenThresholdSpinner);
+			
+			mGreenChannelRedSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mGreenChannelRedSpinner, 0, 255, spinnerIntChangeValue));
+			mGreenChannelRedSpinner.setToolTipText(language.getString("process.transform.ChannelAdjustmenttooltip"));		
+			mGreenChannelRedSpinner.setMaximumSize(maxSpinnerDim);
+			mGreenChannelRedSpinner.addChangeListener(mChangeListener);
+			add(mGreenChannelRedSpinner);
+			mGreenChannelBlueSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mGreenChannelBlueSpinner, 0, 255, spinnerIntChangeValue));
+			mGreenChannelBlueSpinner.setToolTipText(language.getString("process.transform.ChannelAdjustmenttooltip"));
+			mGreenChannelBlueSpinner.setMaximumSize(maxSpinnerDim);
+			mGreenChannelBlueSpinner.addChangeListener(mChangeListener);
+			add(mGreenChannelBlueSpinner);
 			mGreenGammaSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mGreenGamma, 0.0, 100.0, spinnerChangeValue));
+			mGreenGammaSpinner.setToolTipText(language.getString("process.transform.gammalabeltooltip"));
 			mGreenGammaSpinner.setMaximumSize(maxSpinnerDim);
 			mGreenGammaSpinner.addChangeListener(mChangeListener);
 			add(mGreenGammaSpinner);
-			mGreenBlacklevelSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mGreenBlacklevel, 0.0, 1.0, spinnerChangeValue));
-			mGreenBlacklevelSpinner.setMaximumSize(maxSpinnerDim);
-			mGreenBlacklevelSpinner.addChangeListener(mChangeListener);
-			add(mGreenBlacklevelSpinner);
-			mGreenWhitelevelSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mGreenWhitelevel, 0.0, 1.0, spinnerChangeValue));
-			mGreenWhitelevelSpinner.setMaximumSize(maxSpinnerDim);
-			mGreenWhitelevelSpinner.addChangeListener(mChangeListener);
-			add(mGreenWhitelevelSpinner);
+			mGreenTemperatureSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mGreenTemperature, 0, 255, spinnerIntChangeValue));
+			mGreenTemperatureSpinner.setToolTipText(language.getString("process.transform.temperaturelabeltooltip"));
+			mGreenTemperatureSpinner.setMaximumSize(maxSpinnerDim);
+			mGreenTemperatureSpinner.addChangeListener(mChangeListener);
+			add(mGreenTemperatureSpinner);
+			mGreenThresholdSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mGreenThreshold, 0.0, 1.0, spinnerChangeValue));
+			mGreenThresholdSpinner.setToolTipText(language.getString("process.transform.treshlabeltooltip"));
+			mGreenThresholdSpinner.setMaximumSize(maxSpinnerDim);
+			mGreenThresholdSpinner.addChangeListener(mChangeListener);
+			add(mGreenThresholdSpinner);
 
 			mBlueTransformLabel = new JLabel(language.getString("process.transform.bluelabel")); //$NON-NLS-1$
 			add(mBlueTransformLabel);
-			mBlueThresholdSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mBlueThreshold, 0.0, 1.0, spinnerChangeValue));
-			mBlueThresholdSpinner.setMaximumSize(maxSpinnerDim);
-			mBlueThresholdSpinner.addChangeListener(mChangeListener);
-			add(mBlueThresholdSpinner);
+			
+			mBlueChannelRedSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mBlueChannelRedSpinner, 0, 255, spinnerIntChangeValue));
+			mBlueChannelRedSpinner.setToolTipText(language.getString("process.transform.ChannelAdjustmenttooltip"));		
+			mBlueChannelRedSpinner.setMaximumSize(maxSpinnerDim);
+			mBlueChannelRedSpinner.addChangeListener(mChangeListener);
+			add(mBlueChannelRedSpinner);
+			mBlueChannelGreenSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mBlueChannelGreenSpinner, 0, 255, spinnerIntChangeValue));
+			mBlueChannelGreenSpinner.setToolTipText(language.getString("process.transform.ChannelAdjustmenttooltip"));	
+			mBlueChannelGreenSpinner.setMaximumSize(maxSpinnerDim);
+			mBlueChannelGreenSpinner.addChangeListener(mChangeListener);
+			add(mBlueChannelGreenSpinner);
 			mBlueGammaSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mBlueGamma, 0.0, 100.0, spinnerChangeValue));
+			mBlueGammaSpinner.setToolTipText(language.getString("process.transform.gammalabeltooltip"));
 			mBlueGammaSpinner.setMaximumSize(maxSpinnerDim);
 			mBlueGammaSpinner.addChangeListener(mChangeListener);
 			add(mBlueGammaSpinner);
-			mBlueBlacklevelSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mBlueBlacklevel, 0.0, 1.0, spinnerChangeValue));
-			mBlueBlacklevelSpinner.setMaximumSize(maxSpinnerDim);
-			mBlueBlacklevelSpinner.addChangeListener(mChangeListener);
-			add(mBlueBlacklevelSpinner);
-			mBlueWhitelevelSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mBlueWhitelevel, 0.0, 1.0, spinnerChangeValue));
-			mBlueWhitelevelSpinner.setMaximumSize(maxSpinnerDim);
-			mBlueWhitelevelSpinner.addChangeListener(mChangeListener);
-			add(mBlueWhitelevelSpinner);
+			mBlueTemperatureSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mBlueTemperature, 0, 255, spinnerIntChangeValue));
+			mBlueTemperatureSpinner.setToolTipText(language.getString("process.transform.temperaturelabeltooltip"));
+			mBlueTemperatureSpinner.setMaximumSize(maxSpinnerDim);
+			mBlueTemperatureSpinner.addChangeListener(mChangeListener);
+			add(mBlueTemperatureSpinner);
+			mBlueThresholdSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mBlueThreshold, 0.0, 1.0, spinnerChangeValue));
+			mBlueThresholdSpinner.setToolTipText(language.getString("process.transform.treshlabeltooltip"));
+			mBlueThresholdSpinner.setMaximumSize(maxSpinnerDim);
+			mBlueThresholdSpinner.addChangeListener(mChangeListener);
+			add(mBlueThresholdSpinner);
 
+			mHSLSaturationGainAdjustLabel = new JLabel(language.getString("process.transform.HSLSaturationGainlabel")); //$NON-NLS-1$
+			add(mHSLSaturationGainAdjustLabel);
+			mHSLSaturationGainAdjustSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mHSLSaturationGainAdjustSpinner, 0.0, 1024.0, 0.01));
+			mHSLSaturationGainAdjustSpinner.setMaximumSize(maxDim);
+			mHSLSaturationGainAdjustSpinner.setToolTipText(language.getString("process.transform.hslsaturationlabeltooltip"));
+			mHSLSaturationGainAdjustSpinner.addChangeListener(mChangeListener);
+			add(mHSLSaturationGainAdjustSpinner);
 
-			mSaturationAdjustLabel = new JLabel(language.getString("process.transform.hsvsaturationlabel")); //$NON-NLS-1$
-			add(mSaturationAdjustLabel);
+			mHSLLuminanceGainAdjustLabel = new JLabel(language.getString("process.transform.HSLluminanceGainlabel")); //$NON-NLS-1$
+			add(mHSLLuminanceGainAdjustLabel);
+			mHSLLuminanceGainAdjustSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mHSLLuminanceGainAdjustSpinner, 0.0, 1024.0, 0.01));
+			mHSLLuminanceGainAdjustSpinner.setMaximumSize(maxDim);
+			mHSLLuminanceGainAdjustSpinner.setToolTipText(language.getString("process.transform.hslluminancelabeltooltip"));
+			mHSLLuminanceGainAdjustSpinner.addChangeListener(mChangeListener);
+			add(mHSLLuminanceGainAdjustSpinner);
 
-			mSaturationAdjustSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mSaturationGain, 0.0, 1024.0, 0.01));
-
-			mSaturationAdjustSpinner.setMaximumSize(maxDim);
-			mSaturationAdjustSpinner.addChangeListener(mChangeListener);
-			add(mSaturationAdjustSpinner);
-
-			mValueAdjustLabel = new JLabel(language.getString("process.transform.hsvvaluelabel")); //$NON-NLS-1$
-			add(mValueAdjustLabel);
-
-			mValueAdjustSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mValueGain, 0.0, 1024.0, 0.01));
-			mValueAdjustSpinner.setMaximumSize(maxDim);
-			mValueAdjustSpinner.addChangeListener(mChangeListener);
-			add(mValueAdjustSpinner);
-
-			
 			GroupLayout layout = new GroupLayout(this);
 			layout.setHorizontalGroup(
 				layout.createParallelGroup()
@@ -207,42 +292,55 @@ public class ColorTransformPanel extends JPanel {
 										.addComponent(mIndexField))
 											.addGroup(layout.createSequentialGroup()
 												.addGroup(layout.createParallelGroup()
+													.addComponent(mWhiteLabel)
+													.addComponent(mPureBlueLabel)
+													.addComponent(mTemperatureLabel)
 													.addComponent(mThresholdLabel)
 													.addComponent(mDummyLabel)
 													.addComponent(mGammaLabel)
-													.addComponent(mBlacklevelLabel)	
-													.addComponent(mWhitelevelLabel)
+													.addComponent(mPureRedLabel)	
+													.addComponent(mPureGreenLabel)
 														)
 												.addGroup(layout.createParallelGroup(Alignment.CENTER)
+													.addComponent(mGreenChannelRedSpinner)
+													.addComponent(mRedTemperatureSpinner)
 													.addComponent(mRedThresholdSpinner)
 													.addComponent(mRedTransformLabel)
 													.addComponent(mRedGammaSpinner)
-													.addComponent(mRedBlacklevelSpinner)
-													.addComponent(mRedWhitelevelSpinner)
+													.addComponent(mRedChannelRedSpinner)
+													.addComponent(mBlueChannelRedSpinner)
+													.addComponent(mDummy1Label)
 														)
 												.addGroup(layout.createParallelGroup(Alignment.CENTER)
+													.addComponent(mRedChannelGreenSpinner)
+													.addComponent(mGreenTemperatureSpinner)
 													.addComponent(mGreenTransformLabel)
 													.addComponent(mGreenThresholdSpinner)
 													.addComponent(mGreenGammaSpinner)
-													.addComponent(mGreenBlacklevelSpinner)
-													.addComponent(mGreenWhitelevelSpinner)
+													.addComponent(mBlueChannelGreenSpinner)
+													.addComponent(mGreenChannelGreenSpinner)
+													.addComponent(mDummy2Label)
 														)
 												.addGroup(layout.createParallelGroup(Alignment.CENTER)
-														.addComponent(mBlueTransformLabel)
-														.addComponent(mBlueThresholdSpinner)
-														.addComponent(mBlueGammaSpinner)
-														.addComponent(mBlueBlacklevelSpinner)
-														.addComponent(mBlueWhitelevelSpinner)
-														)
-													)	
+													.addComponent(mBlueChannelBlueSpinner)
+													.addComponent(mBlueTemperatureSpinner)
+													.addComponent(mBlueTransformLabel)
+													.addComponent(mBlueThresholdSpinner)
+													.addComponent(mBlueGammaSpinner)
+													.addComponent(mGreenChannelBlueSpinner)
+													.addComponent(mRedChannelBlueSpinner)
+													.addComponent(mDummy3Label)
+													)
+												)	
 							.addGroup(layout.createSequentialGroup()
 								.addGroup(layout.createParallelGroup()
-									.addComponent(mSaturationAdjustLabel)
-									.addComponent(mValueAdjustLabel)
+									.addComponent(mHSLSaturationGainAdjustLabel)
+									.addComponent(mHSLLuminanceGainAdjustLabel)
 									.addComponent(mSshColorTransformPanel))
 								.addGroup(layout.createParallelGroup()
-									.addComponent(mSaturationAdjustSpinner)
-									.addComponent(mValueAdjustSpinner))))
+									.addComponent(mHSLSaturationGainAdjustSpinner)
+									.addComponent(mHSLLuminanceGainAdjustSpinner))
+									))
 						)
 			);
 			layout.setVerticalGroup(
@@ -257,63 +355,103 @@ public class ColorTransformPanel extends JPanel {
 									.addComponent(mGreenTransformLabel)
 									.addComponent(mBlueTransformLabel))
 								.addGroup(layout.createParallelGroup(Alignment.CENTER)
+									.addComponent(mWhiteLabel)
+									.addComponent(mRedChannelRedSpinner)
+									.addComponent(mGreenChannelGreenSpinner)
+									.addComponent(mBlueChannelBlueSpinner))
+								.addGroup(layout.createParallelGroup(Alignment.CENTER)
+									.addComponent(mGammaLabel)
+									.addComponent(mRedGammaSpinner)
+									.addComponent(mGreenGammaSpinner)
+									.addComponent(mBlueGammaSpinner))
+								.addGroup(layout.createParallelGroup(Alignment.CENTER)
+									.addComponent(mPureRedLabel)
+									.addComponent(mDummy1Label)
+									.addComponent(mRedChannelGreenSpinner)
+									.addComponent(mRedChannelBlueSpinner))
+								.addGroup(layout.createParallelGroup(Alignment.CENTER)
+									.addComponent(mPureGreenLabel)
+									.addComponent(mGreenChannelRedSpinner)
+									.addComponent(mDummy2Label)
+									.addComponent(mGreenChannelBlueSpinner))
+								.addGroup(layout.createParallelGroup(Alignment.CENTER)
+									.addComponent(mPureBlueLabel)
+									.addComponent(mBlueChannelRedSpinner)
+									.addComponent(mBlueChannelGreenSpinner)
+									.addComponent(mDummy3Label))
+								.addGroup(layout.createParallelGroup(Alignment.CENTER)
+									.addComponent(mTemperatureLabel)
+									.addComponent(mRedTemperatureSpinner)
+									.addComponent(mGreenTemperatureSpinner)
+									.addComponent(mBlueTemperatureSpinner))
+								.addGroup(layout.createParallelGroup(Alignment.CENTER)
 									.addComponent(mThresholdLabel)
 									.addComponent(mRedThresholdSpinner)
 									.addComponent(mGreenThresholdSpinner)
 									.addComponent(mBlueThresholdSpinner))
-								.addGroup(layout.createParallelGroup(Alignment.CENTER)
-									.addComponent(mGammaLabel)
-									.addComponent(mGreenGammaSpinner)
-									.addComponent(mBlueGammaSpinner)
-									.addComponent(mRedGammaSpinner))
-								.addGroup(layout.createParallelGroup(Alignment.CENTER)
-									.addComponent(mBlacklevelLabel)
-									.addComponent(mBlueBlacklevelSpinner)
-									.addComponent(mGreenBlacklevelSpinner)
-									.addComponent(mRedBlacklevelSpinner))
-								.addGroup(layout.createParallelGroup(Alignment.CENTER)
-									.addComponent(mWhitelevelLabel)
-									.addComponent(mGreenWhitelevelSpinner)
-									.addComponent(mBlueWhitelevelSpinner)
-									.addComponent(mRedWhitelevelSpinner)))
+									)
 							.addComponent(mIndexLabel))
 						.addGap(12)
 						.addGroup(layout.createParallelGroup(Alignment.CENTER)
-							.addComponent(mSaturationAdjustLabel)
-							.addComponent(mSaturationAdjustSpinner))
+							.addComponent(mHSLSaturationGainAdjustLabel)
+							.addComponent(mHSLSaturationGainAdjustSpinner))
 						.addGroup(layout.createParallelGroup(Alignment.CENTER)
-							.addComponent(mValueAdjustLabel)
-							.addComponent(mValueAdjustSpinner))
+							.addComponent(mHSLLuminanceGainAdjustLabel)
+							.addComponent(mHSLLuminanceGainAdjustSpinner))
 						.addGroup(layout.createParallelGroup(Alignment.CENTER)
-								.addComponent(mSshColorTransformPanel))
+							.addComponent(mSshColorTransformPanel))
 							)
 			);
 			layout.setAutoCreateGaps(true);
 			setLayout(layout);
 		
+			EnableFields(false);
 	
 	}
+    private void EnableFields(boolean setEnabled) {
+    	mDummy1Label.setEnabled(setEnabled);
+    	mDummy2Label.setEnabled(setEnabled);
+    	mDummy3Label.setEnabled(setEnabled);
+    }
+	
 	private final ChangeListener mChangeListener = new ChangeListener() {
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			mColorConfig.mRedThreshold = (Double) mRedThresholdSpinner.getValue();
-			mColorConfig.mRedGamma = (Double) mRedGammaSpinner.getValue();
-			mColorConfig.mRedBlacklevel = (Double) mRedBlacklevelSpinner.getValue();
-			mColorConfig.mRedWhitelevel = (Double) mRedWhitelevelSpinner.getValue();
-
-			mColorConfig.mGreenThreshold = (Double) mGreenThresholdSpinner.getValue();
-			mColorConfig.mGreenGamma = (Double) mGreenGammaSpinner.getValue();
-			mColorConfig.mGreenBlacklevel = (Double) mGreenBlacklevelSpinner.getValue();
-			mColorConfig.mGreenWhitelevel = (Double) mGreenWhitelevelSpinner.getValue();
-
-			mColorConfig.mBlueThreshold = (Double) mBlueThresholdSpinner.getValue();
-			mColorConfig.mBlueGamma = (Double) mBlueGammaSpinner.getValue();
-			mColorConfig.mBlueBlacklevel = (Double) mBlueBlacklevelSpinner.getValue();
-			mColorConfig.mBlueWhitelevel = (Double) mBlueWhitelevelSpinner.getValue();
-
-			mColorConfig.mSaturationGain = (Double) mSaturationAdjustSpinner.getValue();
-			mColorConfig.mValueGain = (Double) mValueAdjustSpinner.getValue();
+//			mColorConfig.mDummy1Label = (String) mRedChannelRedSpinner.getValue().toString();
+//			mColorConfig.mDummy2Label = (String) mGreenChannelGreenSpinner.getValue().toString();
+//			mColorConfig.mDummy3Label = (String) mBlueChannelBlueSpinner.getValue().toString();
 			
+			mDummy1Label.setText((String) mRedChannelRedSpinner.getValue().toString());
+			mDummy2Label.setText((String) mGreenChannelGreenSpinner.getValue().toString());
+			mDummy3Label.setText((String) mBlueChannelBlueSpinner.getValue().toString());
+			
+			mColorConfig.mRedChannelRedSpinner = (Integer) mRedChannelRedSpinner.getValue();
+			mColorConfig.mRedChannelGreenSpinner = (Integer) mRedChannelGreenSpinner.getValue();
+			mColorConfig.mRedChannelBlueSpinner =  (Integer) mRedChannelBlueSpinner.getValue();
+			mColorConfig.mRedGamma = (Double) mRedGammaSpinner.getValue();
+			mColorConfig.mRedTemperature = (Integer) mRedTemperatureSpinner.getValue();
+			mColorConfig.mRedThreshold = (Double) mRedThresholdSpinner.getValue();
+
+			mColorConfig.mGreenChannelRedSpinner = (Integer) mGreenChannelRedSpinner.getValue();
+			mColorConfig.mGreenChannelGreenSpinner = (Integer) mGreenChannelGreenSpinner.getValue();
+			mColorConfig.mGreenChannelBlueSpinner = (Integer) mGreenChannelBlueSpinner.getValue();
+			mColorConfig.mGreenGamma = (Double) mGreenGammaSpinner.getValue();
+			mColorConfig.mGreenTemperature = (Integer) mGreenTemperatureSpinner.getValue();
+			mColorConfig.mGreenThreshold = (Double) mGreenThresholdSpinner.getValue();
+
+			mColorConfig.mBlueChannelRedSpinner = (Integer) mBlueChannelRedSpinner.getValue();
+			mColorConfig.mBlueChannelGreenSpinner = (Integer) mBlueChannelGreenSpinner.getValue();
+			mColorConfig.mBlueChannelBlueSpinner = (Integer) mBlueChannelBlueSpinner.getValue();
+			mColorConfig.mBlueGamma = (Double) mBlueGammaSpinner.getValue();
+			mColorConfig.mBlueTemperature = (Integer) mBlueTemperatureSpinner.getValue();
+			mColorConfig.mBlueThreshold = (Double) mBlueThresholdSpinner.getValue();
+
+			mColorConfig.mHSLSaturationGainAdjustSpinner = (Double) mHSLSaturationGainAdjustSpinner.getValue();
+			mColorConfig.mHSLLuminanceGainAdjustSpinner = (Double) mHSLLuminanceGainAdjustSpinner.getValue();
+			
+			if (mSshColorTransformPanel.sendTransformContinuousCheckBox.isSelected()){
+			sendTransforms();
+			}
 		}
 	};
 	private final DocumentListener mDocumentListener = new DocumentListener() {
@@ -351,34 +489,47 @@ public class ColorTransformPanel extends JPanel {
 	 */
 	private void sendTransforms(){
 		
+			String IndexName;
 			float[] rgbThreshold = new float[3];
 			float[] rgbGamma = new float[3];
-			float[] rgbBlacklevel = new float[3];
-			float[] rgbWhitelevel = new float[3];
-			float hsvGain;
-			float hsvSaturation;
-
-			rgbThreshold[0] = ((Double) mRedThresholdSpinner.getValue()).floatValue();
-			rgbThreshold[1] = ((Double) mGreenThresholdSpinner.getValue()).floatValue();
-			rgbThreshold[2] = ((Double) mBlueThresholdSpinner.getValue()).floatValue();
+			int[] channelPureRed = new int[3];
+			int[] channelPureGreen = new int[3];
+			int[] channelPureBlue = new int[3];
+			int[] rgbTemperaturelevel = new int[3];
+			float hslGain;
+			float hslSaturation;
+			
+			IndexName = mColorConfig.mId.toString();
+			
+			channelPureRed[0] = ((Integer) mRedChannelRedSpinner.getValue()).intValue();
+			channelPureRed[1] = ((Integer) mRedChannelGreenSpinner.getValue()).intValue();
+			channelPureRed[2] = ((Integer) mRedChannelBlueSpinner.getValue()).intValue();
+			
+			channelPureGreen[0] = ((Integer) mGreenChannelRedSpinner.getValue()).intValue();
+			channelPureGreen[1] = ((Integer) mGreenChannelGreenSpinner.getValue()).intValue();
+			channelPureGreen[2] = ((Integer) mGreenChannelBlueSpinner.getValue()).intValue();
+			
+			channelPureBlue[0] = ((Integer) mBlueChannelRedSpinner.getValue()).intValue();
+			channelPureBlue[1] = ((Integer) mBlueChannelGreenSpinner.getValue()).intValue();
+			channelPureBlue[2] = ((Integer) mBlueChannelBlueSpinner.getValue()).intValue();
+			
+			rgbTemperaturelevel[0] = ((Integer) mRedTemperatureSpinner.getValue()).intValue();
+			rgbTemperaturelevel[1] = ((Integer) mGreenTemperatureSpinner.getValue()).intValue();
+			rgbTemperaturelevel[2] = ((Integer) mBlueTemperatureSpinner.getValue()).intValue();
 
 			rgbGamma[0] = ((Double) mRedGammaSpinner.getValue()).floatValue();
 			rgbGamma[1] = ((Double) mGreenGammaSpinner.getValue()).floatValue();
 			rgbGamma[2] = ((Double) mBlueGammaSpinner.getValue()).floatValue();
+			
+			rgbThreshold[0] = ((Double) mRedThresholdSpinner.getValue()).floatValue();
+			rgbThreshold[1] = ((Double) mGreenThresholdSpinner.getValue()).floatValue();
+			rgbThreshold[2] = ((Double) mBlueThresholdSpinner.getValue()).floatValue();
 
-			rgbBlacklevel[0] = ((Double) mRedBlacklevelSpinner.getValue()).floatValue();
-			rgbBlacklevel[1] = ((Double) mGreenBlacklevelSpinner.getValue()).floatValue();
-			rgbBlacklevel[2] = ((Double) mBlueBlacklevelSpinner.getValue()).floatValue();
-
-			rgbWhitelevel[0] = ((Double) mRedWhitelevelSpinner.getValue()).floatValue();
-			rgbWhitelevel[1] = ((Double) mGreenWhitelevelSpinner.getValue()).floatValue();
-			rgbWhitelevel[2] = ((Double) mBlueWhitelevelSpinner.getValue()).floatValue();
-
-			hsvGain = ((Double) mValueAdjustSpinner.getValue()).floatValue();
-			hsvSaturation = ((Double) mSaturationAdjustSpinner.getValue()).floatValue();
-
+			hslGain = ((Double) mHSLLuminanceGainAdjustSpinner.getValue()).floatValue();
+			hslSaturation = ((Double) mHSLSaturationGainAdjustSpinner.getValue()).floatValue();
+			
 		try {
-			SshConnectionModel.getInstance().sendColorTransformValues(rgbThreshold, rgbGamma, rgbBlacklevel, rgbWhitelevel, hsvGain, hsvSaturation);
+			SshConnectionModel.getInstance().sendColorTransformValues(IndexName, rgbThreshold, rgbGamma, channelPureRed, channelPureGreen, channelPureBlue, rgbTemperaturelevel, hslGain, hslSaturation);
 		} catch (JSchException e) {
 			ErrorHandling.ShowException(e);
 		}
