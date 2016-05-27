@@ -4,7 +4,6 @@ package org.hyperion.hypercon.spec;
  * Created by Fabian on 22.02.2015.
  */
 public enum VideoStandard{
-    noChange("no-change"),
     PAL("PAL"),
     NTSC("NTSC");
 

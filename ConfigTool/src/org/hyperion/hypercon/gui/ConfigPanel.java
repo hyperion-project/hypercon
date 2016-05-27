@@ -162,7 +162,7 @@ public class ConfigPanel extends JPanel {
 			mHardwarePanel.add(new DevicePanel(ledString.mDeviceConfig));
 			mHardwarePanel.add(new LedFramePanel(ledString.mLedFrameConfig));
 			mHardwarePanel.add(new ImageProcessPanel(ledString.mProcessConfig));
-			mHardwarePanel.add(new BlackBorderPanel(ledString.mBlackBorderConfig));
+			mHardwarePanel.add(new BlackBorderPanel(ledString.mMiscConfig));
 			mHardwarePanel.add(Box.createVerticalGlue());
 		}
 		return mHardwarePanel;

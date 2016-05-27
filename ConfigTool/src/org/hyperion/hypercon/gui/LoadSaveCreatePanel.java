@@ -10,6 +10,8 @@ import java.beans.Transient;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -25,6 +27,7 @@ import org.hyperion.hypercon.ConfigurationFile;
 import org.hyperion.hypercon.HyperConConfig;
 import org.hyperion.hypercon.LedString;
 import org.hyperion.hypercon.Main;
+import org.hyperion.hypercon.Restart;
 import org.hyperion.hypercon.language.language;
 import org.hyperion.hypercon.spec.SshAndColorPickerConfig;
 import org.hyperion.hypercon.spec.TransformConfig;
@@ -163,7 +166,6 @@ public class LoadSaveCreatePanel extends JPanel {
 				configFile.store(ledString.mDeviceConfig);
 				configFile.store(ledString.mLedFrameConfig);
 				configFile.store(ledString.mProcessConfig);
-				configFile.store(ledString.mBlackBorderConfig);
 				configFile.store(ledString.mColorConfig);
 				configFile.store(ledString.mMiscConfig);
 				configFile.save(Main.configFilename);
@@ -181,7 +183,6 @@ public class LoadSaveCreatePanel extends JPanel {
 					configFile.store(ledString.mDeviceConfig);
 					configFile.store(ledString.mLedFrameConfig);
 					configFile.store(ledString.mProcessConfig);						
-					configFile.store(ledString.mBlackBorderConfig);
 					configFile.store(ledString.mColorConfig);
 					configFile.store(ledString.mMiscConfig);
 					configFile.store(sshConfig);
@@ -212,16 +213,14 @@ public class LoadSaveCreatePanel extends JPanel {
 					configFile.restore(ledString.mDeviceConfig);
 					configFile.restore(ledString.mLedFrameConfig);
 					configFile.restore(ledString.mProcessConfig);
-					configFile.restore(ledString.mBlackBorderConfig);
 					configFile.restore(ledString.mColorConfig);
 					configFile.restore(ledString.mMiscConfig);
 					configFile.restore(sshConfig);
 					configFile.restore(ledString.mGrabberv4l2Config);
-					revalidate();
 		        	String message=language.getString("general.successfulloadsettingMessage");
 		        	JOptionPane.showMessageDialog(new JFrame(), message, language.getString("general.HyperConInformationDialogTitle"),
 		        		        JOptionPane.INFORMATION_MESSAGE);
-		        	
+		        	Restart.main(null);
 				} catch (Throwable t) {
 		        	String message=language.getString("general.failedtoloadsettingMessage");
 		        	JOptionPane.showMessageDialog(new JFrame(), message, language.getString("general.HyperConErrorDialogTitle"),
@@ -254,5 +253,6 @@ public class LoadSaveCreatePanel extends JPanel {
 
 
 };
+
 }
 

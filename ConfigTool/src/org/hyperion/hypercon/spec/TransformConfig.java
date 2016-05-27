@@ -80,7 +80,6 @@ public class TransformConfig {
 		strBuf.append(hslToJsonString() + ",\n");
 		strBuf.append(rgbToJsonString() + "\n");
 		strBuf.append("\t\t\t}\n");
-		strBuf.append("\t\t],\n");
 		
 		return strBuf.toString();
 	}
@@ -122,7 +121,7 @@ public class TransformConfig {
 	 */
 	private String temperatureToJsonString() {
 		StringBuffer strBuf = new StringBuffer();
-		strBuf.append("\t\t\t\t\"temperatureValues\" :\n");
+		strBuf.append("\t\t\t\t\"correctionValues\" :\n");
 		strBuf.append("\t\t\t\t{\n");
 		strBuf.append(String.format(Locale.ROOT, "\t\t\t\t\t\"red\" 	: %d,\n", mRedTemperature));
 		strBuf.append(String.format(Locale.ROOT, "\t\t\t\t\t\"green\"	: %d,\n", mGreenTemperature));

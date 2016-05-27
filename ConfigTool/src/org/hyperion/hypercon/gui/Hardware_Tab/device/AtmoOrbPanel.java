@@ -50,9 +50,8 @@ public class AtmoOrbPanel extends DeviceTypePanel {
 
 		// Make sure that the device specific configuration (and only device specific) is set
 		String host              = getValue("output", "239.15.18.2");
-		boolean useOrbSmoothing	 = getValue("useOrbSmoothing", false);
+		boolean useOrbSmoothing	 = getValue("useOrbSmoothing", true);
 		int skipSmoothingDiff	 = getValue("skipSmoothingDiff", 0);
-		int transitionTime       = getValue("transitiontime", 1);
 		String orbIds 			 = getValue("orbIds","1");
 		int numLeds     	     = getValue("numLeds", 24);
 		int port     	    	 = getValue("port", 49692);
@@ -60,7 +59,6 @@ public class AtmoOrbPanel extends DeviceTypePanel {
 		mDeviceConfig.mDeviceProperties.put("output",   host);
 		mDeviceConfig.mDeviceProperties.put("useOrbSmoothing", useOrbSmoothing);
 		mDeviceConfig.mDeviceProperties.put("skipSmoothingDiff", skipSmoothingDiff);
-		mDeviceConfig.mDeviceProperties.put("transitiontime", transitionTime);
 		mDeviceConfig.mDeviceProperties.put("orbIds",   orbIds);
 		mDeviceConfig.mDeviceProperties.put("numLeds",   numLeds);
 		mDeviceConfig.mDeviceProperties.put("port",   port);
@@ -69,7 +67,6 @@ public class AtmoOrbPanel extends DeviceTypePanel {
 		morbIdsField.setText(orbIds);
 		museOrbSmoothingBox.setSelected(useOrbSmoothing);
 		mSkipSmoothingDiffSpinner.setValue(skipSmoothingDiff);
-		mTransitionTimeSpinner.setValue(transitionTime);
 		mnumLedsSpinner.setValue(numLeds);
 		mPortSpinner.setValue(port);
 	}
@@ -137,14 +134,6 @@ public class AtmoOrbPanel extends DeviceTypePanel {
 		mSkipSmoothingDiffSpinner.addChangeListener(mChangeListener);
 		add(mSkipSmoothingDiffSpinner);
 		
-		mTransitionTimeLabel = new JLabel(language.getString("hardware.leddevice.transitiontime"));
-		mTransitionTimeLabel.setMinimumSize(firstColMinDim);
-		add(mTransitionTimeLabel);
-
-		mTransitionTimeSpinner = new JSpinner(new SpinnerNumberModel(4, 1, 10, 1));
-		mTransitionTimeSpinner.setMaximumSize(maxDim);
-		mTransitionTimeSpinner.addChangeListener(mChangeListener);
-		add(mTransitionTimeSpinner);
 
 		mnumLedsLabel = new JLabel(language.getString("hardware.leddevice.numLedsLabel"));
 		mnumLedsLabel.setMinimumSize(firstColMinDim);
@@ -175,16 +164,14 @@ public class AtmoOrbPanel extends DeviceTypePanel {
 						.addComponent(mnumLedsLabel)
 						.addComponent(mPortLabel)
 						.addComponent(museOrbSmoothingLabel)
-						.addComponent(mSkipSmoothingDiffLabel)
-						.addComponent(mTransitionTimeLabel))
+						.addComponent(mSkipSmoothingDiffLabel))
 				.addGroup(layout.createParallelGroup()
 						.addComponent(mHostField)
 						.addComponent(morbIdsField)
 						.addComponent(mnumLedsSpinner)
 						.addComponent(mPortSpinner)
 						.addComponent(museOrbSmoothingBox)
-						.addComponent(mSkipSmoothingDiffSpinner)
-						.addComponent(mTransitionTimeSpinner))
+						.addComponent(mSkipSmoothingDiffSpinner))
 				);
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup(Alignment.CENTER)
@@ -205,9 +192,6 @@ public class AtmoOrbPanel extends DeviceTypePanel {
 				.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mSkipSmoothingDiffLabel)
 						.addComponent(mSkipSmoothingDiffSpinner))
-				.addGroup(layout.createParallelGroup(Alignment.CENTER)
-						.addComponent(mTransitionTimeLabel)
-						.addComponent(mTransitionTimeSpinner))
 				);		
 	}
 	
@@ -215,11 +199,9 @@ public class AtmoOrbPanel extends DeviceTypePanel {
 		@Override
 		public void stateChanged(ChangeEvent e) {
 			if (e.getSource() == museOrbSmoothingBox) {
-				mDeviceConfig.mDeviceProperties.put("museOrbSmoothingBox", museOrbSmoothingBox.isSelected());
+				mDeviceConfig.mDeviceProperties.put("useOrbSmoothingBox", museOrbSmoothingBox.isSelected());
 			} else if (e.getSource() == mSkipSmoothingDiffSpinner) {
 				mDeviceConfig.mDeviceProperties.put("skipSmoothingDiff", mSkipSmoothingDiffSpinner.getValue());
-			} else if (e.getSource() == mTransitionTimeSpinner) {
-				mDeviceConfig.mDeviceProperties.put("transitiontime", mTransitionTimeSpinner.getValue());
 			}else if (e.getSource() == mPortSpinner) {
 				mDeviceConfig.mDeviceProperties.put("port", mPortSpinner.getValue());
 			}else if (e.getSource() == mnumLedsSpinner) {

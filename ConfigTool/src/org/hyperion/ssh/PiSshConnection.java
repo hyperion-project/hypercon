@@ -73,7 +73,7 @@ public class PiSshConnection {
 	}
 
 	public void connect(String pHostName, int pTcpPort, String pUsername, String pPassword) throws JSchException {
-		connect( pHostName,  pTcpPort,  pUsername,  pPassword, 10000);
+		connect( pHostName,  pTcpPort,  pUsername,  pPassword, 20000);
 
 	}
 

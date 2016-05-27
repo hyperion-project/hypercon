@@ -11,7 +11,7 @@ public class Grabberv4l2Config {
 
 	public String mDevice = "/dev/video0";
 	public int mInput = 0;
-	public VideoStandard mStandard = VideoStandard.noChange;
+	public VideoStandard mStandard = VideoStandard.PAL;
 	public int mWidth = -1;
 	public int mHeight = -1;
 	public int mFrameDecimation = 2;
@@ -28,26 +28,11 @@ public class Grabberv4l2Config {
 
 
 	public void appendTo(JsonStringBuffer strBuf) {
-		String grabberv4l2Comment = "Configuration for the embedded V4L2 grabber\n"
-				+ " * device          : V4L2 Device to use [default=\"/dev/video0\"]\n"
-				+ " * input           : V4L2 input to use [default=0]\n"
-				+ " * standard        : Video standard (no-change/PAL/NTSC) [default=\"no-change\"]\n"
-				+ " * width                : V4L2 width to set [default=-1]\n"
-				+ " * height               : V4L2 height to set [default=-1]\n"
-				+ " * frameDecimation      : Frame decimation factor [default=2]\n"
-				+ " * sizeDecimation       : Size decimation factor [default=8]\n"
-				+ " * priority             : Hyperion priority channel [default=900]\n"
-				+ " * mode                 : 3D mode to use 2D/3DSBS/3DTAB (note: no autodetection) [default=\"2D\"]\n"
-				+ " * cropLeft             : Cropping from the left [default=0]\n"
-				+ " * cropRight            : Cropping from the right [default=0]\n"
-				+ " * cropTop              : Cropping from the top [default=0]\n"
-				+ " * cropBottom           : Cropping from the bottom [default=0]\n"
-				+ " * redSignalThreshold   : Signal threshold for the red channel between 0.0 and 1.0 [default=0.0]\n"
-				+ " * greenSignalThreshold : Signal threshold for the green channel between 0.0 and 1.0 [default=0.0]\n"
-				+ " * blueSignalThreshold  : Signal threshold for the blue channel between 0.0 and 1.0 [default=0.0]";
+	
+	if (mGrabberv4l2Enabled==true){
+		String grabberv4l2Comment = "V4L2 GRABBER CONFIG";
 		strBuf.writeComment(grabberv4l2Comment);
 
-		strBuf.toggleComment(!mGrabberv4l2Enabled);
 		strBuf.startObject("grabber-v4l2");
 		strBuf.addValue("device", mDevice, false);
 		strBuf.addValue("input", mInput, false);
@@ -66,7 +51,13 @@ public class Grabberv4l2Config {
 		strBuf.addValue("greenSignalThreshold", mGreenSignalThreshold, false);
 		strBuf.addValue("blueSignalThreshold", mBlueSignalThreshold, true);
 		strBuf.stopObject();
-		strBuf.toggleComment(false);
+
+		strBuf.newLine();
+	}else{
+		String grabComment = "NO V4L2 GRABBER CONFIG";
+		strBuf.writeComment(grabComment);
+	}
+
 	}
 
 	/**

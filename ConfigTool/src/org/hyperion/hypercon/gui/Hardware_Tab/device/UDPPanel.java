@@ -82,7 +82,7 @@ public class UDPPanel extends DeviceTypePanel {
 		mProtocolLabel.setMinimumSize(firstColMinDim);
 		add(mProtocolLabel);
 
-		mProtocolSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 2, 1));
+		mProtocolSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 3, 1));
 		mProtocolSpinner.setMaximumSize(maxDim);
 		mProtocolSpinner.addChangeListener(mChangeListener);
 		add(mProtocolSpinner);

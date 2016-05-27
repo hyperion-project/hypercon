@@ -18,13 +18,13 @@ import org.hyperion.hypercon.spec.TransformConfig;
  * JAVA application (contains the entry-point).
  */
 public class Main {
-	public static final String configFilename = "hypercon.dat"; //$NON-NLS-1$
+	public static final String configFilename = "hypercon.dat";
 	
 	/** Some application settings (for easy/dirty access) */
 	public static final HyperConConfig HyperConConfig = new HyperConConfig();
 
-	public static String versionStr = "V1.02.0"; 
-	public static String DateStr = "(30.04.2016)";
+	public static String versionStr = "V1.02.4"; 
+	public static String DateStr = "(21.05.2016)";
 	/**
 	 * Entry point to start HyperCon 
 	 * 
@@ -36,27 +36,28 @@ public class Main {
 		final LedString ledString = new LedString();
 		final SshAndColorPickerConfig  sshConfig = new SshAndColorPickerConfig();
 		try {
-			// Configure swing to use the system default look and feel
+		// Configure swing to use the system default look and feel
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {}
 		
 		
-	      //check if the minimum java version is ok
+	    //check if the minimum java version is ok
         if (! JavaVersion.isOKJVMVersion()) {
         	String message=language.getString("general.JavaVerionInfoMessage");
         	JOptionPane.showMessageDialog(new JFrame(), message, language.getString("general.HyperConInformationDialogTitle"),
         		        JOptionPane.INFORMATION_MESSAGE);
         }
-			
-		
+		//Check for HyperCon version	
+        UpdateTool.main(pArgs);
+        
 		// Create a frame for the configuration panel
 		JFrame frame = new JFrame();
 		ErrorHandling.mainframe = frame;
-		String title = language.getString("general.title") + " -" + ((versionStr != null && !versionStr.isEmpty())? (" (" + versionStr + ")") : "") + " " + DateStr;  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		String title = language.getString("general.title") + " -" + ((versionStr != null && !versionStr.isEmpty())? (" (" + versionStr + ")") : "") + " " + DateStr;
 		frame.setTitle(title);
 		frame.setSize(1400, 800);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setIconImage(new ImageIcon(Main.class.getResource("HyperConIcon_64.png")).getImage()); //$NON-NLS-1$
+		frame.setIconImage(new ImageIcon(Main.class.getResource("HyperConIcon_64.png")).getImage());
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -66,17 +67,17 @@ public class Main {
 					configFile.store(ledString.mDeviceConfig);
 					configFile.store(ledString.mLedFrameConfig);
 					configFile.store(ledString.mProcessConfig);
-					configFile.store(ledString.mBlackBorderConfig);
 					configFile.store(ledString.mColorConfig);
 					configFile.store(ledString.mMiscConfig);
 					configFile.store(sshConfig);
 					configFile.store(ledString.mGrabberv4l2Config);
 					configFile.save(configFilename);
 				} catch (Throwable t) {
-					System.err.println(language.getString("general.failedtosave") + configFilename); //$NON-NLS-1$
+					System.err.println(language.getString("general.failedtosave") + configFilename); 
 				}
 				SshConnectionModel.getInstance().disconnect();
 				SSHTrafficPrinterFrame.close();
+				System.exit(0); return;
 			}
 		});
 		
@@ -88,13 +89,12 @@ public class Main {
 				configFile.restore(ledString.mDeviceConfig);
 				configFile.restore(ledString.mLedFrameConfig);
 				configFile.restore(ledString.mProcessConfig);
-				configFile.restore(ledString.mBlackBorderConfig);
 				configFile.restore(ledString.mColorConfig);
 				configFile.restore(ledString.mMiscConfig);
 				configFile.restore(sshConfig);
 				configFile.restore(ledString.mGrabberv4l2Config);
 			} catch (Throwable t) {
-				System.err.println(language.getString("general.failedtoload") + configFilename); //$NON-NLS-1$
+				System.err.println(language.getString("general.failedtoload") + configFilename);
 			}
 			if (ledString.mColorConfig.mTransforms.isEmpty()) {
 				ledString.mColorConfig.mTransforms.add(new TransformConfig());

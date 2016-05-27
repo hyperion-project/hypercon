@@ -76,6 +76,8 @@ public class ColorsPanel extends JPanel {
 			mDelTransformButton = new JButton(mDelAction);
 			mDelTransformButton.setEnabled(mTransformCombo.getItemCount() > 1);
 			mControlPanel.add(mDelTransformButton);
+		
+			mAddTransformButton.setEnabled(false);
 		}
 		return mControlPanel;
 	}

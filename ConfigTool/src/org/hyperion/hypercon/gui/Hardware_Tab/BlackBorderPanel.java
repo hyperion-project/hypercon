@@ -18,12 +18,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.hyperion.hypercon.language.language;
-import org.hyperion.hypercon.spec.BlackBorderConfig;
+import org.hyperion.hypercon.spec.MiscConfig;
 import org.hyperion.hypercon.spec.BlackBorderStandard;
 
 public class BlackBorderPanel extends JPanel {
 	
-	private final BlackBorderConfig mBlackBorderConfig;
+	private final MiscConfig mBlackBorderConfig;
 	
 	private JCheckBox mBlackBorderEnable;
 	
@@ -45,7 +45,7 @@ public class BlackBorderPanel extends JPanel {
 	private JLabel mBlackBorderThresholdLabel;
 	private JSpinner mBlackBorderThresholdSpinner;
 
-	public BlackBorderPanel(final BlackBorderConfig config) {
+	public BlackBorderPanel(final MiscConfig config) {
 
 		super();
 		mBlackBorderConfig = config;

@@ -29,6 +29,7 @@ public enum DeviceType {
 /** all pwm led (stripes) **/
 	pwmleds("---------PWM---------"),
 	ws2812b("WS2812b (just RPi1)"),
+	ws2812spi("WS281X-SPI"),
 	ws281x("WS281X (RPi1, RPi2, RPi3)"),
 	
 /** other devices/controller **/
@@ -127,6 +128,7 @@ public enum DeviceType {
 			case multi_lightpack:
 			case paintpack:
 			case ws2812b:
+			case ws2812spi:
 			case none:
 				break;
 			case ws281x:

@@ -404,7 +404,8 @@ public class ColorTransformPanel extends JPanel {
 			);
 			layout.setAutoCreateGaps(true);
 			setLayout(layout);
-		
+			mIndexLabel.setEnabled(false);
+			mIndexField.setEnabled(false);
 			EnableFields(false);
 	
 	}
