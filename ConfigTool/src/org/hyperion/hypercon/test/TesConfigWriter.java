@@ -18,7 +18,7 @@ public class TesConfigWriter {
 		ImageProcessConfig imageConfig = new ImageProcessConfig();
 		MiscConfig miscConfig = new MiscConfig();
 		
-		deviceConfig.mName = "DAG";
+		deviceConfig.mNameField = "DAG";
 		deviceConfig.mType = DeviceType.lpd6803;
 		deviceConfig.mDeviceProperties.put("output", "/dev/null");
 		deviceConfig.mDeviceProperties.put("baudrate", 4800);

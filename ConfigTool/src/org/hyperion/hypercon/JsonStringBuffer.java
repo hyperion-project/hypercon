@@ -50,7 +50,7 @@ public class JsonStringBuffer {
 			for (int i=0; i<mIndentLevel; ++i) {
 				mStrBuf.append('\t');
 			}
-			mStrBuf.append("/// ").append(commentLine).append('\n'); 
+			mStrBuf.append("// ").append(commentLine).append('\n'); 
 		}
 	}
 	
@@ -264,50 +264,5 @@ public class JsonStringBuffer {
 	@Override
 	public String toString() {
 		return mStrBuf.toString();
-	}
-	
-//	public static void main(String[] pArgs) {
-//		JsonStringBuffer jsonBuf = new JsonStringBuffer();
-//		
-//		String comment = "Device configuration contains the following fields: \n" + 
-//				"* 'name'       : The user friendly name of the device (only used for display purposes) \n" + 
-//				"* 'type'       : The type of the device or leds (known types for now are \n" +
-//				"				'apa102', 'lightpack', 'philipshue', 'ws2801', 'lpd6803', 'sedu', 'test' and 'none') \n" + 
-//				"* 'output'     : The output specification depends on selected device \n" + 
-//				"                  - 'ws2801' this is the device (eg '/dev/spidev0.0 or /dev/ttyS0') \n" + 
-//				"                 - 'test' this is the file used to write test output (eg '/home/pi/hyperion.out') \n" + 
-//				"* 'rate'       : The baudrate of the output to the device \n" + 
-//				"* 'colorOrder' : The order of the color bytes ('rgb', 'rbg', 'bgr', etc.). \n" + 
-//				"\n" + 
-//				" Specific of Philips Hue: \n" + 
-//				"* 'username'   : The name of user registred on the Philips Hue Bridge \n" + 
-//				"* 'switchOffOnBlack' : Define if Hue light switch off when black is detected \n" + 
-//				"* 'transitiontime' : Set the time of transition between color of Hue light \n" ; 		
-//		jsonBuf.writeComment(comment);
-//		
-//		jsonBuf.startObject("device"); 
-//		jsonBuf.addValue("name", "MyPi", false);  
-//		jsonBuf.addValue("type", "ws2801", false);  
-//		jsonBuf.addValue("output", "/dev/spidev0.0", false);  
-//		jsonBuf.addValue("rate", 1000000, false); 
-//		jsonBuf.addValue("colorOrder", "rgb", true);  
-//		jsonBuf.stopObject();
-//		
-//		jsonBuf.toggleComment(true);
-//		jsonBuf.startObject("device"); 
-//		jsonBuf.addValue("name", "MyPi", false);  
-//		jsonBuf.addValue("type", "ws2801", false);  
-//		jsonBuf.addValue("output", "/dev/spidev0.0", false);  
-//		jsonBuf.addValue("rate", 1000000, false); 
-//		jsonBuf.addValue("colorOrder", "rgb", true);  
-//		jsonBuf.stopObject();
-//		jsonBuf.toggleComment(false);
-//
-//		jsonBuf.finish();
-//
-//		System.out.println(jsonBuf.toString());
-//	}
-
-
-	
+	}	
 }

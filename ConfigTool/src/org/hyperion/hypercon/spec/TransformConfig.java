@@ -17,6 +17,8 @@ public class TransformConfig {
 	public double mHSLSaturationGainAdjustSpinner = 1.0;
 	/** The value gain (in HSL space) */
 	public double mHSLLuminanceGainAdjustSpinner = 1.0;
+	/** The minimum luminance */
+	public double mluminanceMinimumSpinner = 0.0;
 	
 	/** The RGB Values for RED Channel (in RGB space) */
 	public int mRedChannelRedSpinner 	= 255;
@@ -140,6 +142,7 @@ public class TransformConfig {
 		strBuf.append("\t\t\t\t{\n");
 		strBuf.append(String.format(Locale.ROOT, "\t\t\t\t\t\"saturationGain\"	: %.4f,\n", mHSLSaturationGainAdjustSpinner));
 		strBuf.append(String.format(Locale.ROOT, "\t\t\t\t\t\"luminanceGain\"\t	: %.4f\n", mHSLLuminanceGainAdjustSpinner));
+		strBuf.append(String.format(Locale.ROOT, "\t\t\t\t\t\"luminanceMinimum\"\t	: %.4f\n", mluminanceMinimumSpinner));
 		strBuf.append("\t\t\t\t}");
 		return strBuf.toString();
 	}

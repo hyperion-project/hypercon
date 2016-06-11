@@ -43,6 +43,8 @@ public class XbmcPanel extends JPanel {
 	private JCheckBox mPictureCheck;
 	private JLabel mAudioLabel;
 	private JCheckBox mAudioCheck;
+	private JLabel mPauseLabel;
+	private JCheckBox mPauseCheck;
 	private JLabel mScreensaverLabel;
 	private JCheckBox mScreensaverCheck;
 	private JLabel mEnable3DLabel;
@@ -138,6 +140,15 @@ public class XbmcPanel extends JPanel {
 		mAudioCheck.addActionListener(mActionListener);
 		add(mAudioCheck);			
 
+		mPauseLabel = new JLabel(language.getString("external.kodi.pauselabel")); //$NON-NLS-1$
+		add(mPauseLabel);
+			
+		mPauseCheck = new JCheckBox(); //$NON-NLS-1$
+		mPauseCheck.setSelected(mMiscConfig.mAudioOn);
+		mPauseCheck.setToolTipText(language.getString("external.kodi.pausetooltip")); //$NON-NLS-1$
+		mPauseCheck.addActionListener(mActionListener);
+		add(mPauseCheck);
+		
 		mScreensaverLabel = new JLabel(language.getString("external.kodi.screensaverlabel")); //$NON-NLS-1$
 		add(mScreensaverLabel);
 
@@ -177,7 +188,7 @@ public class XbmcPanel extends JPanel {
 								.addComponent(mMenuCheck)
 								.addComponent(mVideoCheck)
 								.addComponent(mPictureCheck))
-						.addGap(15)
+						.addGap(10)
 						.addGroup(layout.createParallelGroup()
 								.addComponent(mAudioLabel)
 								.addComponent(mScreensaverLabel)
@@ -186,7 +197,12 @@ public class XbmcPanel extends JPanel {
 								.addComponent(mAudioCheck)
 								.addComponent(mScreensaverCheck)
 								.addComponent(mEnable3DCeck))								
-								)						
+						.addGap(10)
+						.addGroup(layout.createParallelGroup()
+								.addComponent(mPauseLabel))						
+						.addGroup(layout.createParallelGroup()
+								.addComponent(mPauseCheck))	
+						)						
 					
 						);
 		layout.setVerticalGroup(
@@ -203,7 +219,9 @@ public class XbmcPanel extends JPanel {
 						.addComponent(mMenuLabel)
 						.addComponent(mMenuCheck)
 						.addComponent(mAudioLabel)
-						.addComponent(mAudioCheck))
+						.addComponent(mAudioCheck)
+						.addComponent(mPauseLabel)
+						.addComponent(mPauseCheck))
 					.addGroup(layout.createParallelGroup(Alignment.CENTER)
 						.addComponent(mVideoLabel)
 						.addComponent(mVideoCheck)
@@ -237,6 +255,8 @@ public class XbmcPanel extends JPanel {
 		mPictureCheck.setEnabled(pEnabled);
 		mAudioLabel.setEnabled(pEnabled);
 		mAudioCheck.setEnabled(pEnabled);
+		mPauseLabel.setEnabled(pEnabled);
+		mPauseCheck.setEnabled(pEnabled);
 		mScreensaverLabel.setEnabled(pEnabled);
 		mScreensaverCheck.setEnabled(pEnabled);
 		mEnable3DLabel.setEnabled(pEnabled);
@@ -258,6 +278,7 @@ public class XbmcPanel extends JPanel {
 			mMiscConfig.mVideoOn = mVideoCheck.isSelected();
 			mMiscConfig.mPictureOn = mPictureCheck.isSelected();
 			mMiscConfig.mAudioOn = mAudioCheck.isSelected();
+			mMiscConfig.mPauseOn = mPauseCheck.isSelected();
 			mMiscConfig.mScreensaverOn = mScreensaverCheck.isSelected();
 			mMiscConfig.m3DCheckingEnabled = mEnable3DCeck.isSelected();
 

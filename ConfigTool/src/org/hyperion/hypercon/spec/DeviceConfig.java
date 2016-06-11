@@ -8,7 +8,7 @@ import java.util.Hashtable;
 public class DeviceConfig {
 	
 	/** The name of the device */
-	public String mName     = "MyHyperionConfig";
+	public String mNameField     = "MyHyperionConfig";
 	/** The type specification of the device */
 	public DeviceType mType = DeviceType.ws2801;
 	
@@ -30,18 +30,11 @@ public class DeviceConfig {
 	public String toJsonString() {
 		StringBuffer strBuf = new StringBuffer();
 		
-		strBuf.append("\t/// DEVICE CONFIGURATION \n");
-//		strBuf.append("\t/// Device configuration contains the following fields: \n");
-//		strBuf.append("\t/// * 'name'       : The user friendly name of the device (only used for display purposes)\n");
-//		strBuf.append("\t/// * 'type'       : The type of the device or leds (known types for now are\n"
-//				+ "\t/// " + DeviceType.listTypes() + ")\n");
-//		strBuf.append("\t/// * [device type specific configuration]\n");
-//		strBuf.append("\t/// * 'colorOrder' : The order of the color bytes ('rgb', 'rbg', 'bgr', etc.).\n");
-		
+		strBuf.append("\t// DEVICE CONFIGURATION \n");
 		strBuf.append("\t\"device\" :\n");
 		strBuf.append("\t{\n");
 		
-		strBuf.append("\t\t\"name\"       : \"").append(mName).append("\",\n");
+		strBuf.append("\t\t\"name\"       : \"").append(mNameField).append("\",\n");
 		strBuf.append("\t\t\"type\"       : \"").append(mType.getTypeId()).append("\",\n");
 		for (Object key : mDeviceProperties.keySet()) {
 			Object value = mDeviceProperties.get(key);

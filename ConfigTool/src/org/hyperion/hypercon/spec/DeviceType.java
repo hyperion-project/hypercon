@@ -40,6 +40,7 @@ public enum DeviceType {
 	tinkerforge("Tinkerforge"),
 	fadecandy("FadeCandy"),
 	udp("UDP"),
+	udpraw("UDP (new-imp)"),
 	rawhid("RawHID (USB)"),
 	sedu("SEDU"),
 	adalight("Adalight"),
@@ -144,6 +145,7 @@ public enum DeviceType {
 				mConfigPanel = new AtmoOrbPanel();
 				break;
 			case udp:
+			case udpraw:
 				mConfigPanel = new UDPPanel();
 				break;
 			case tinkerforge:

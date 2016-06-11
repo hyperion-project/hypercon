@@ -25,12 +25,10 @@ public class InterfacePanel extends JPanel {
 	public final MiscConfig mMiscConfig;
 	
 	private JPanel mJsonPanel;
-	private JCheckBox mJsonCheck;
 	private JLabel mJsonPortLabel;
 	private JSpinner mJsonPortSpinner;
 	
 	private JPanel mProtoPanel;
-	private JCheckBox mProtoCheck;
 	private JLabel mProtoPortLabel;
 	private JSpinner mProtoPortSpinner;
 	
@@ -62,7 +60,6 @@ public class InterfacePanel extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		add(getJsonPanel());
-		add(getProtoPanel());
 		add(getBoblightPanel());
 		
 		toggleEnabledFlags();
@@ -72,11 +69,6 @@ public class InterfacePanel extends JPanel {
 		if (mJsonPanel == null) {
 			mJsonPanel = new JPanel();
 			
-			mJsonCheck = new JCheckBox(language.getString("external.server.jsonenabled")); //$NON-NLS-1$
-			mJsonCheck.setSelected(mMiscConfig.mJsonInterfaceEnabled);
-			mJsonCheck.addActionListener(mActionListener);
-			mJsonPanel.add(mJsonCheck);
-			
 			mJsonPortLabel = new JLabel(language.getString("external.server.jsonportlabel")); //$NON-NLS-1$
 			mJsonPanel.add(mJsonPortLabel);
 			
@@ -84,65 +76,36 @@ public class InterfacePanel extends JPanel {
 			mJsonPortSpinner.addChangeListener(mChangeListener);
 			mJsonPanel.add(mJsonPortSpinner);
 			
+			mProtoPortLabel = new JLabel(language.getString("external.server.protoportlabel")); //$NON-NLS-1$
+			mJsonPanel.add(mProtoPortLabel);
+			
+			mProtoPortSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mProtoPort, 1, 65536, 1));
+			mProtoPortSpinner.addChangeListener(mChangeListener);
+			mJsonPanel.add(mProtoPortSpinner);
+			
 			GroupLayout layout = new GroupLayout(mJsonPanel);
 			layout.setAutoCreateGaps(true);
 			mJsonPanel.setLayout(layout);
 			
 			layout.setHorizontalGroup(layout.createSequentialGroup()
 					.addGroup(layout.createParallelGroup()
-							.addComponent(mJsonCheck)
 							.addComponent(mJsonPortLabel)
+							.addComponent(mProtoPortLabel)
 							)
 					.addGroup(layout.createParallelGroup()
-							.addComponent(mJsonCheck)
 							.addComponent(mJsonPortSpinner)
+							.addComponent(mProtoPortSpinner)
 							));
 			layout.setVerticalGroup(layout.createSequentialGroup()
-					.addComponent(mJsonCheck)
 					.addGroup(layout.createParallelGroup(Alignment.CENTER)
 							.addComponent(mJsonPortLabel)
-							.addComponent(mJsonPortSpinner)
+							.addComponent(mJsonPortSpinner))
+					.addGroup(layout.createParallelGroup(Alignment.CENTER)
+							.addComponent(mProtoPortLabel)
+							.addComponent(mProtoPortSpinner)
 							));
 		}
 		return mJsonPanel;
-	}
-	private JPanel getProtoPanel() {
-		if (mProtoPanel == null) {
-			mProtoPanel = new JPanel();
-			
-			mProtoCheck = new JCheckBox(language.getString("external.server.protoenabled")); //$NON-NLS-1$
-			mProtoCheck.setSelected(mMiscConfig.mProtoInterfaceEnabled);
-			mProtoCheck.addActionListener(mActionListener);
-			mProtoPanel.add(mProtoCheck);
-			
-			mProtoPortLabel = new JLabel(language.getString("external.server.protoportlabel")); //$NON-NLS-1$
-			mProtoPanel.add(mProtoPortLabel);
-			
-			mProtoPortSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mProtoPort, 1, 65536, 1));
-			mProtoPortSpinner.addChangeListener(mChangeListener);
-			mProtoPanel.add(mProtoPortSpinner);
-			
-			GroupLayout layout = new GroupLayout(mProtoPanel);
-			layout.setAutoCreateGaps(true);
-			mProtoPanel.setLayout(layout);
-			
-			layout.setHorizontalGroup(layout.createSequentialGroup()
-					.addGroup(layout.createParallelGroup()
-							.addComponent(mProtoCheck)
-							.addComponent(mProtoPortLabel)
-							)
-					.addGroup(layout.createParallelGroup()
-							.addComponent(mProtoCheck)
-							.addComponent(mProtoPortSpinner)
-							));
-			layout.setVerticalGroup(layout.createSequentialGroup()
-					.addComponent(mProtoCheck)
-					.addGroup(layout.createParallelGroup(Alignment.CENTER)
-							.addComponent(mProtoPortLabel)
-							.addComponent(mProtoPortSpinner)
-							));
-		}
-		return mProtoPanel;
 	}
 	
 	private JPanel getBoblightPanel() {
@@ -198,13 +161,7 @@ public class InterfacePanel extends JPanel {
 		return mBoblightPanel;
 	}
 	
-	private  void toggleEnabledFlags() {
-		mJsonPortLabel.setEnabled(mMiscConfig.mJsonInterfaceEnabled);
-		mJsonPortSpinner.setEnabled(mMiscConfig.mJsonInterfaceEnabled);
-		
-		mProtoPortLabel.setEnabled(mMiscConfig.mProtoInterfaceEnabled);
-		mProtoPortSpinner.setEnabled(mMiscConfig.mProtoInterfaceEnabled);
-		
+	private  void toggleEnabledFlags() {		
 		mBoblightPortLabel.setEnabled(mMiscConfig.mBoblightInterfaceEnabled);
 		mBoblightPortSpinner.setEnabled(mMiscConfig.mBoblightInterfaceEnabled);
 		
@@ -215,8 +172,6 @@ public class InterfacePanel extends JPanel {
 	private final ActionListener mActionListener = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			mMiscConfig.mJsonInterfaceEnabled = mJsonCheck.isSelected();
-			mMiscConfig.mProtoInterfaceEnabled = mProtoCheck.isSelected();
 			mMiscConfig.mBoblightInterfaceEnabled = mBoblightCheck.isSelected();
 			
 			toggleEnabledFlags();

@@ -156,7 +156,7 @@ public class SshConnectionModel extends Observable {
 	 * @throws IllegalArgumentException when the parameters don't fit
 	 */
 	public boolean sendColorTransformValues(String IndexName, float[] rgbThreshold, float[] rgbGamma, int[] channelPureRed,
-			 int[] channelPureGreen, int[] channelPureBlue, int[] rgbTemperaturelevel, float hslGain, float hslSaturation) throws IllegalArgumentException, JSchException {
+			 int[] channelPureGreen, int[] channelPureBlue, int[] rgbTemperaturelevel, float hslGain, float hslSaturation, float hsluminanceMinimum) throws IllegalArgumentException, JSchException {
 
 		if( channelPureRed.length != 3 || rgbGamma.length != 3 || rgbThreshold.length != 3 || channelPureGreen.length != 3 || channelPureBlue.length != 3 || rgbTemperaturelevel.length != 3){
 			throw new IllegalArgumentException();
@@ -170,6 +170,7 @@ DEPRECATED  -s, --saturation <arg>       Set the HSV saturation gain of the leds
 DEPRECATED	-v, --value <arg>            Set the HSV value gain of the leds
 		    -u, --saturationL <arg>		 Set the HSL saturation gain of the leds
 		    -m, --luminance <arg>		 Set the HSL luminance gain of the leds
+		    -n, --luminanceMin <arg>	 Set the HSL luminance minimum of the leds (backlight)
 		    -g, --gamma <arg>            Set the gamma of the leds (requires 3 space seperated values)
 		    -t, --threshold <arg>        Set the threshold of the leds (requires 3 space seperated values between 0.0 and 1.0)
 DEPRECATED  -b, --blacklevel <arg>       Set the blacklevel of the leds (requires 3 space seperated values which are normally between 0.0 and 1.0)
@@ -183,7 +184,7 @@ DEPRECATED 	-Y, --correction <arg>       Set the color correction of the leds (r
 			-G  --greenAdjustment <arg>  Set the adjustment of the green color (requires 3 space seperated values between 0 and 255)
 			-B  --blueAdjustment <arg>   Set the adjustment of the blue color (requires 3 space seperated values between 0 and 255)
 		 */
-		mSshConnection.execute(hyperionRemoteCall + "-u " + hslSaturation + " -m " + hslGain + " -g " + floatArrayToArgsString(rgbGamma) + 
+		mSshConnection.execute(hyperionRemoteCall + "-u " + hslSaturation + " -m " + hslGain + " -n " + hsluminanceMinimum + " -g " + floatArrayToArgsString(rgbGamma) + 
 				" -t " + floatArrayToArgsString(rgbThreshold) + " -R " + intArrayToArgsString(channelPureRed) + " -G " + intArrayToArgsString(channelPureGreen) + " -B " + intArrayToArgsString(channelPureBlue) + " -Z " + intArrayToArgsString(rgbTemperaturelevel)); 
 		return true;
 		

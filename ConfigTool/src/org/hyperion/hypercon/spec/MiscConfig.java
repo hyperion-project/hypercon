@@ -19,7 +19,7 @@ public class MiscConfig {
 //Effect Engine
 	/** declare all paths **/
 	public String mPathOE = "/storage/hyperion/effects" ;
-	public String mPathGEN = "/opt/hyperion/effects" ;
+	public String mPathGEN = "/usr/share/hyperion/effects" ;
 	/** Flag indicating that the boot sequence is enabled(true) or not(false) */
 	public boolean mBootEffectEnabled = true;
 	/** The effect selected for the boot sequence */
@@ -62,6 +62,8 @@ public class MiscConfig {
 	public boolean mPictureOn = true;
 	/** Flag indicating that the frame-grabber is on during audio playback */
 	public boolean mAudioOn = true;
+	/** Flag indicating that the frame-grabber is on at player state pause */
+	public boolean mPauseOn = false;
 	/** Flag indicating that the frame-grabber is on when xbmc is on screensaver */
 	public boolean mScreensaverOn = true;
 	/** Flag indicating that the frame-grabber is should take actions when a 3D file is playing */
@@ -73,13 +75,9 @@ public class MiscConfig {
 	public String mJsonfield = "\"127.0.0.1:19446\"";
 
 //Proto/Boblight/Json Server
-	/** Flag indicating that the JSON interface is enabled */
-	public boolean mJsonInterfaceEnabled = true;
 	/** The TCP port at which the JSON server is listening for incoming connections */
 	public int mJsonPort = 19444;
 
-	/** Flag indicating that the PROTO interface is enabled */
-	public boolean mProtoInterfaceEnabled = true;
 	/** The TCP port at which the Protobuf server is listening for incoming connections */
 	public int mProtoPort = 19445;
 
@@ -139,6 +137,7 @@ public class MiscConfig {
 			strBuf.addValue("grabPictures", mPictureOn, false);
 			strBuf.addValue("grabAudio", mAudioOn, false);
 			strBuf.addValue("grabMenu", mMenuOn, false);
+			strBuf.addValue("grabPause", mPauseOn, false);
 			strBuf.addValue("grabScreensaver", mScreensaverOn, false);
 			strBuf.addValue("enable3DDetection", m3DCheckingEnabled, true);
 			strBuf.stopObject();
@@ -164,7 +163,6 @@ public class MiscConfig {
 		
 	// Json Server
 			
-		if (mJsonInterfaceEnabled==true){
 			String jsonComment = "JSON SERVER CONFIG";
 			strBuf.writeComment(jsonComment);
 			
@@ -173,11 +171,9 @@ public class MiscConfig {
 			strBuf.stopObject();
 
 			strBuf.newLine();
-		}
 			
 	// Proto Server
 				
-		if (mProtoInterfaceEnabled==true){
 			String protoComment = "PROTO SERVER CONFIG";
 			strBuf.writeComment(protoComment);
 			
@@ -186,7 +182,6 @@ public class MiscConfig {
 			strBuf.stopObject();
 
 			strBuf.newLine();
-		}
 			
 	// Boblight Server
 
@@ -244,14 +239,6 @@ public class MiscConfig {
 		}
 		if (mBootEffectEnabled==false){
 			String addComment = "NO BOOTEFFECT CONFIG";
-			strBuf.writeComment(addComment);
-		}
-		if (mJsonInterfaceEnabled==false){
-			String addComment = "NO JSON SERVER CONFIG";
-			strBuf.writeComment(addComment);
-		}
-		if (mProtoInterfaceEnabled==false){
-			String addComment = "NO PROTO SERVER CONFIG";
 			strBuf.writeComment(addComment);
 		}
 		if (mBoblightInterfaceEnabled==false){

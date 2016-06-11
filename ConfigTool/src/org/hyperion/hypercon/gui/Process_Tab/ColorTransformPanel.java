@@ -87,7 +87,9 @@ public class ColorTransformPanel extends JPanel {
 	private JSpinner mHSLSaturationGainAdjustSpinner;
 	private JLabel mHSLLuminanceGainAdjustLabel;
 	private JSpinner mHSLLuminanceGainAdjustSpinner;
-
+	private JLabel mMinimumLuminanceLabel;
+	private JSpinner mMinimumLuminanceSpinner;
+	
 	private SshColorTransformPanel mSshColorTransformPanel;
 
 	public ColorTransformPanel(TransformConfig pTransformConfig) {
@@ -282,6 +284,14 @@ public class ColorTransformPanel extends JPanel {
 			mHSLLuminanceGainAdjustSpinner.addChangeListener(mChangeListener);
 			add(mHSLLuminanceGainAdjustSpinner);
 
+			mMinimumLuminanceLabel = new JLabel(language.getString("process.transform.MinimumLuminanceLabel")); //$NON-NLS-1$
+			add(mMinimumLuminanceLabel);
+			mMinimumLuminanceSpinner = new JSpinner(new SpinnerNumberModel(mColorConfig.mluminanceMinimumSpinner, 0.0, 1.0, 0.01));
+			mMinimumLuminanceSpinner.setMaximumSize(maxDim);
+			mMinimumLuminanceSpinner.setToolTipText(language.getString("process.transform.MinimumLuminanceLabeltooltip"));
+			mMinimumLuminanceSpinner.addChangeListener(mChangeListener);
+			add(mMinimumLuminanceSpinner);
+			
 			GroupLayout layout = new GroupLayout(this);
 			layout.setHorizontalGroup(
 				layout.createParallelGroup()
@@ -336,10 +346,12 @@ public class ColorTransformPanel extends JPanel {
 								.addGroup(layout.createParallelGroup()
 									.addComponent(mHSLSaturationGainAdjustLabel)
 									.addComponent(mHSLLuminanceGainAdjustLabel)
+									.addComponent(mMinimumLuminanceLabel)
 									.addComponent(mSshColorTransformPanel))
 								.addGroup(layout.createParallelGroup()
 									.addComponent(mHSLSaturationGainAdjustSpinner)
-									.addComponent(mHSLLuminanceGainAdjustSpinner))
+									.addComponent(mHSLLuminanceGainAdjustSpinner)
+									.addComponent(mMinimumLuminanceSpinner))
 									))
 						)
 			);
@@ -399,6 +411,9 @@ public class ColorTransformPanel extends JPanel {
 							.addComponent(mHSLLuminanceGainAdjustLabel)
 							.addComponent(mHSLLuminanceGainAdjustSpinner))
 						.addGroup(layout.createParallelGroup(Alignment.CENTER)
+								.addComponent(mMinimumLuminanceLabel)
+								.addComponent(mMinimumLuminanceSpinner))
+						.addGroup(layout.createParallelGroup(Alignment.CENTER)
 							.addComponent(mSshColorTransformPanel))
 							)
 			);
@@ -449,6 +464,7 @@ public class ColorTransformPanel extends JPanel {
 
 			mColorConfig.mHSLSaturationGainAdjustSpinner = (Double) mHSLSaturationGainAdjustSpinner.getValue();
 			mColorConfig.mHSLLuminanceGainAdjustSpinner = (Double) mHSLLuminanceGainAdjustSpinner.getValue();
+			mColorConfig.mluminanceMinimumSpinner = (Double) mMinimumLuminanceSpinner.getValue();
 			
 			if (mSshColorTransformPanel.sendTransformContinuousCheckBox.isSelected()){
 			sendTransforms();
@@ -499,6 +515,7 @@ public class ColorTransformPanel extends JPanel {
 			int[] rgbTemperaturelevel = new int[3];
 			float hslGain;
 			float hslSaturation;
+			float hsluminanceMinimum;
 			
 			IndexName = mColorConfig.mId.toString();
 			
@@ -528,9 +545,10 @@ public class ColorTransformPanel extends JPanel {
 
 			hslGain = ((Double) mHSLLuminanceGainAdjustSpinner.getValue()).floatValue();
 			hslSaturation = ((Double) mHSLSaturationGainAdjustSpinner.getValue()).floatValue();
+			hsluminanceMinimum = ((Double) mMinimumLuminanceSpinner.getValue()).floatValue();
 			
 		try {
-			SshConnectionModel.getInstance().sendColorTransformValues(IndexName, rgbThreshold, rgbGamma, channelPureRed, channelPureGreen, channelPureBlue, rgbTemperaturelevel, hslGain, hslSaturation);
+			SshConnectionModel.getInstance().sendColorTransformValues(IndexName, rgbThreshold, rgbGamma, channelPureRed, channelPureGreen, channelPureBlue, rgbTemperaturelevel, hslGain, hslSaturation, hsluminanceMinimum);
 		} catch (JSchException e) {
 			ErrorHandling.ShowException(e);
 		}

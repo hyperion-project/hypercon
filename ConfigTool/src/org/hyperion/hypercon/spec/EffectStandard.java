@@ -28,9 +28,7 @@ public enum EffectStandard {
 	moodblobswarm(language.getString("external.effect.booteffectlist.Warm_mood_blobs")), //$NON-NLS-1$
 	strobeblue(language.getString("external.effect.booteffectlist.Strobe_blue")), //$NON-NLS-1$
 	stroberaspbmc(language.getString("external.effect.booteffectlist.Strobe_raspbmc")), //$NON-NLS-1$
-	strobewhite(language.getString("external.effect.booteffectlist.Strobe_white")), //$NON-NLS-1$
-	udplistener(language.getString("external.effect.booteffectlist.UDP_listener")); //$NON-NLS-1$
-
+	strobewhite(language.getString("external.effect.booteffectlist.Strobe_white")); //$NON-NLS-1$
 	
 	private final String mtext;
 
@@ -68,7 +66,6 @@ public enum EffectStandard {
 		else if (this == strobeblue) {return "Strobe blue";} //$NON-NLS-1$
 		else if (this == stroberaspbmc) {return "Strobe Raspbmc";} //$NON-NLS-1$
 		else if (this == strobewhite) {return "Strobe white";} //$NON-NLS-1$
-		else if (this == udplistener) {return "UDP listener";} //$NON-NLS-1$
 		return super.name();
 	}
     @Override

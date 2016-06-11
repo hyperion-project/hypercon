@@ -12,7 +12,6 @@ public class ColorConfig {
 	public Vector<TransformConfig> mTransforms = new Vector<>();
 	{
 		mTransforms.add(new TransformConfig());
-//		mTransforms.add(new TemperatureConfig());
 	}
 	
 	public boolean mSmoothingEnabled = true;
@@ -33,7 +32,7 @@ public class ColorConfig {
 	 */
 	public String toJsonString() {
 		StringBuffer strBuf = new StringBuffer();
-		strBuf.append("\t/// COLOR CALIBRATION CONFIG\n");
+		strBuf.append("\t// COLOR CALIBRATION CONFIG\n");
 		strBuf.append("\t\"color\" :\n");
 		strBuf.append("\t{\n");
 		
@@ -44,12 +43,12 @@ public class ColorConfig {
 
 		if(mSmoothingEnabled==true){
 			strBuf.append("\t\t],\n");
-			strBuf.append("\t/// SMOOTHING CONFIG\n");
+			strBuf.append("\t// SMOOTHING CONFIG\n");
 			strBuf.append(smoothingToString());
 		}
 		else{
 			strBuf.append("\t\t]\n");
-			strBuf.append("\t/// NO SMOOTHING CONFIG\n");
+			strBuf.append("\t// NO SMOOTHING CONFIG\n");
 		}
 		strBuf.append("\t}");
 		

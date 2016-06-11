@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <hyperionUpdateInfo>
-        <actualVersion>V1.02.4</actualVersion>
-        <versionInfo>www.hyperion-project.org</versionInfo>
+        <actualVersion>V1.03.0</actualVersion>
+        <versionInfo>Please visit: www.hyperion-project.org</versionInfo>
         <updateURL>https://sourceforge.net/projects/hyperion-project/files/hypercon/HyperCon.jar/download</updateURL>
 </hyperionUpdateInfo>
