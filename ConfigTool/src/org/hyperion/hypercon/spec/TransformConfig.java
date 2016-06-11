@@ -141,7 +141,7 @@ public class TransformConfig {
 		strBuf.append("\t\t\t\t\"hsl\" :\n");
 		strBuf.append("\t\t\t\t{\n");
 		strBuf.append(String.format(Locale.ROOT, "\t\t\t\t\t\"saturationGain\"	: %.4f,\n", mHSLSaturationGainAdjustSpinner));
-		strBuf.append(String.format(Locale.ROOT, "\t\t\t\t\t\"luminanceGain\"\t	: %.4f\n", mHSLLuminanceGainAdjustSpinner));
+		strBuf.append(String.format(Locale.ROOT, "\t\t\t\t\t\"luminanceGain\"\t	: %.4f,\n", mHSLLuminanceGainAdjustSpinner));
 		strBuf.append(String.format(Locale.ROOT, "\t\t\t\t\t\"luminanceMinimum\"\t	: %.4f\n", mluminanceMinimumSpinner));
 		strBuf.append("\t\t\t\t}");
 		return strBuf.toString();

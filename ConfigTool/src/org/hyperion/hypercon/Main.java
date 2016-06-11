@@ -23,7 +23,7 @@ public class Main {
 	/** Some application settings (for easy/dirty access) */
 	public static final HyperConConfig HyperConConfig = new HyperConConfig();
 
-	public static String versionStr = "V1.03.0"; 
+	public static String versionStr = "V1.03.1"; 
 	public static String DateStr = "(11.06.2016)";
 	/**
 	 * Entry point to start HyperCon 
