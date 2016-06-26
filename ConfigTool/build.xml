@@ -5,9 +5,9 @@
     
  	<property name="deploy.dir"  value="${basedir}/../deploy" />
     
- 	<target name="main" depends="make_deploy_dir, build" description="Build HyperCon, the Hyperion configuration file builder" />
+ 	<target name="main" depends="make_deploy_dir, create_jar" description="Build HyperCon, the Hyperion configuration file builder" />
  		
- 	<target name="build" depends="make_deploy_dir" description="Create HyperCon.jar">
+ 	<target name="create_jar" depends="make_deploy_dir" description="Create HyperCon.jar">
 		<jar destfile="HyperCon.jar">
 			<manifest>
 				<attribute name="Main-Class" value="org.hyperion.hypercon.Main" />

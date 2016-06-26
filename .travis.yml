@@ -1,0 +1,9 @@
+sudo: false
+language: java
+script:
+    - gradle --version
+    - gradle main --info --stacktrace
+jdk:
+  - oraclejdk8
+  - oraclejdk7
+  - openjdk6
