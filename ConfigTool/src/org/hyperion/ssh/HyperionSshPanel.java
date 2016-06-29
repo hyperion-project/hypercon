@@ -1,27 +1,12 @@
 package org.hyperion.ssh;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JEditorPane;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-
 import com.jcraft.jsch.JSchException;
 import org.hyperion.hypercon.ErrorHandling;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class HyperionSshPanel extends JPanel {
 
@@ -46,6 +31,12 @@ public class HyperionSshPanel extends JPanel {
 				c.setEnabled(false);
 			}
 		}
+
+		@Override
+		public void sendConfigFile(String dstPath, String srcPath, String fileName) {
+			// TODO: implement
+		}
+
 		@Override
 		public void connected() {
 			addConsoleLine("CONNECTED", "black");
@@ -458,6 +449,11 @@ public class HyperionSshPanel extends JPanel {
 		@Override
 		public void addError(String pLine) {
 			addConsoleLine(pLine, "red");
+		}
+
+		@Override
+		public void sendConfigFile(String dstPath, String srcPath, String fileName) {
+			// TODO: implement
 		}
 	};
 	
