@@ -41,7 +41,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     // https://mvnrepository.com/artifact/com.jcraft/jsch
-    compile group: 'com.jcraft', name: 'jsch', version: '0.1.44-1'
+    compile group: 'com.jcraft', name: 'jsch', version: '0.1.53'
 
     // https://mvnrepository.com/artifact/org.jdom/jdom
     compile group: 'org.jdom', name: 'jdom', version: '1.1.3'
