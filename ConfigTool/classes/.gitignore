@@ -1,0 +1,4 @@
+# Ignore everything within this directory but keep it for building
+*
+# Keep the ignore file
+!.gitignore

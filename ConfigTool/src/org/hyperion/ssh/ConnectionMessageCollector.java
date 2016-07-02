@@ -17,4 +17,9 @@ public class ConnectionMessageCollector extends ConnectionAdapter {
 	public void addError(String pLine) {
 		mErrors.add(pLine);
 	}
+
+	@Override
+	public void sendConfigFile(String dstPath, String srcPath, String fileName) {
+		// TODO: implement
+	}
 }
