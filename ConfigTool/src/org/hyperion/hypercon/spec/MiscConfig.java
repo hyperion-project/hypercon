@@ -19,6 +19,7 @@ public class MiscConfig {
 //Effect Engine
 	/** declare all paths **/
 	public String mPathOE = "/storage/hyperion/effects" ;
+	public String mPathLE = "/storage/.kodi/addons/service.hyperion/effects" ;
 	public String mPathGEN = "/usr/share/hyperion/effects" ;
 	/** Flag indicating that the boot sequence is enabled(true) or not(false) */
 	public boolean mBootEffectEnabled = true;
@@ -219,6 +220,7 @@ public class MiscConfig {
 			strBuf.startObject("effects");
 			strBuf.startArray("paths");
 			strBuf.addPathValue(mPathOE, false);
+			strBuf.addPathValue(mPathLE, false);
 			strBuf.addPathValue(mPathGEN, true);
 			strBuf.stopArray(true);
 			strBuf.stopObject();
