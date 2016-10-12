@@ -9,14 +9,34 @@
 
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
+apply plugin: 'eclipse'
 
-ant.importBuild 'ConfigTool/build.xml'
+version = '1.0.3'
 
 sourceSets {
     main {
         java {
             srcDir 'ConfigTool/src'
         }
+        resources {
+            srcDir 'ConfigTool/src'
+            exclude '**/*.java'
+        }
+    }
+}
+
+jar {
+	manifest {
+	    attributes 'Main-Class': 'org.hyperion.hypercon.Main',
+	               'Specification-Title': 'HyperCon',
+	               'Specification-Version': version,
+	               'Specification-Vendor': 'Hyperion Team',
+	               'Implementation-Title': 'org.hyperion',
+	               'Implementation-Version': version,
+	               'Implementation-Vendor': 'Hyperion Team'
+	}
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
