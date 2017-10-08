@@ -17,7 +17,14 @@ public class JavaVersion
 		        String version = System.getProperty("java.version");
 
 		        //extract the major version from it
-		        int sys_major_version = Integer.parseInt(String.valueOf(version.charAt (2)));
+		        int sys_major_version;
+		        try
+		        {
+		        	sys_major_version = Integer.parseInt(String.valueOf(version.charAt (2)));
+		        }
+		        catch(Exception e) {
+		        	sys_major_version = 9;
+		        }
 
 		        //if the major version is too low (unlikely !!), it's not good
 		        if (sys_major_version < MAJOR_VERSION) {
