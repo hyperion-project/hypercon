@@ -41,7 +41,7 @@ public class SpiDevPanel extends DeviceTypePanel {
 
 		// Make sure that the device specific configuration (and only device specific) is set
 		String output = getValue("output", KnownOutputs[0]);
-		int baudrate  = getValue("rate",   1000000);
+		int baudrate  = getValue("rate",   921600);
 		
 		mDeviceConfig.mDeviceProperties.clear();
 		mDeviceConfig.mDeviceProperties.put("output", output);
