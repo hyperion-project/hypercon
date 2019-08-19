@@ -7,7 +7,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.SpinnerListModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.GroupLayout.Alignment;
@@ -48,7 +48,7 @@ public class SpiDevPanel extends DeviceTypePanel {
 		mDeviceConfig.mDeviceProperties.put("rate",   baudrate);
 		
 		mOutputCombo.setSelectedItem(output);
-		((SpinnerNumberModel)mBaudrateSpinner.getModel()).setValue(baudrate);
+		((SpinnerListModel)mBaudrateSpinner.getModel()).setValue(baudrate);
 	}
 	
 	private void initialise() {
@@ -66,7 +66,8 @@ public class SpiDevPanel extends DeviceTypePanel {
 		mBaudrateLabel.setMinimumSize(firstColMinDim);
 		add(mBaudrateLabel);
 		
-		mBaudrateSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 1000000, 128));
+                mBaudrateSpinner = new JSpinner(new SpinnerListModel(new Object[] {
+                110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200, 230400, 460800, 921600}));
 		mBaudrateSpinner.setMaximumSize(maxDim);
 		mBaudrateSpinner.addChangeListener(mChangeListener);
 		add(mBaudrateSpinner);
@@ -100,7 +101,7 @@ public class SpiDevPanel extends DeviceTypePanel {
 			if (e.getSource() == mOutputCombo && mOutputCombo.getSelectedItem() != null) {
 				mDeviceConfig.mDeviceProperties.put("output", mOutputCombo.getSelectedItem());
 			} else if (e.getSource() == mBaudrateSpinner) {
-				mDeviceConfig.mDeviceProperties.put("baudrate", mBaudrateSpinner.getValue());
+				mDeviceConfig.mDeviceProperties.put("rate", mBaudrateSpinner.getValue());
 			}
 		}
 	};
