@@ -98,6 +98,9 @@ public class XbmcPanel extends JPanel {
 		add(mTcpPortLabel);
 		
 		mTcpPortSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mXbmcTcpPort, 1, 65535, 1));
+                JSpinner.NumberEditor mTcpPortSpinnereditor = new JSpinner.NumberEditor(mTcpPortSpinner, "#");
+                mTcpPortSpinner.setEditor(mTcpPortSpinnereditor);
+                mTcpPortSpinnereditor.getTextField().setHorizontalAlignment(JLabel.LEFT);
 		mTcpPortSpinner.addChangeListener(mChangeListener);
 		add(mTcpPortSpinner);
 		

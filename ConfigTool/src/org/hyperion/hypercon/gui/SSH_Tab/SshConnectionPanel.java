@@ -127,6 +127,9 @@ public class SshConnectionPanel extends JPanel implements Observer {
 		add(mPortLabel);
 
 		mTcpPortSpinner = new JSpinner(new SpinnerNumberModel(mSshConfig.port, 1, 65535, 1));
+                JSpinner.NumberEditor mTcpPortSpinnereditor = new JSpinner.NumberEditor(mTcpPortSpinner, "#");
+                mTcpPortSpinner.setEditor(mTcpPortSpinnereditor);
+                mTcpPortSpinnereditor.getTextField().setHorizontalAlignment(JLabel.LEFT);
 		mTcpPortSpinner.addChangeListener(mChangeListener);
 		add(mTcpPortSpinner);
 

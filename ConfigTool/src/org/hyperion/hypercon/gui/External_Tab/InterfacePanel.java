@@ -72,14 +72,20 @@ public class InterfacePanel extends JPanel {
 			mJsonPortLabel = new JLabel(language.getString("external.server.jsonportlabel")); //$NON-NLS-1$
 			mJsonPanel.add(mJsonPortLabel);
 			
-			mJsonPortSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mJsonPort, 1, 65536, 1));
+			mJsonPortSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mJsonPort, 1, 65535, 1));
+                        JSpinner.NumberEditor mJsonPortSpinnereditor = new JSpinner.NumberEditor(mJsonPortSpinner, "#");
+                        mJsonPortSpinner.setEditor(mJsonPortSpinnereditor);
+                        mJsonPortSpinnereditor.getTextField().setHorizontalAlignment(JLabel.LEFT);
 			mJsonPortSpinner.addChangeListener(mChangeListener);
 			mJsonPanel.add(mJsonPortSpinner);
 			
 			mProtoPortLabel = new JLabel(language.getString("external.server.protoportlabel")); //$NON-NLS-1$
 			mJsonPanel.add(mProtoPortLabel);
 			
-			mProtoPortSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mProtoPort, 1, 65536, 1));
+			mProtoPortSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mProtoPort, 1, 65535, 1));
+                        JSpinner.NumberEditor mProtoPortSpinnereditor = new JSpinner.NumberEditor(mProtoPortSpinner, "#");
+                        mProtoPortSpinner.setEditor(mProtoPortSpinnereditor);
+                        mProtoPortSpinnereditor.getTextField().setHorizontalAlignment(JLabel.LEFT);
 			mProtoPortSpinner.addChangeListener(mChangeListener);
 			mJsonPanel.add(mProtoPortSpinner);
 			
@@ -120,7 +126,10 @@ public class InterfacePanel extends JPanel {
 			mBoblightPortLabel = new JLabel(language.getString("external.server.boblightportlabel")); //$NON-NLS-1$
 			mBoblightPanel.add(mBoblightPortLabel);
 			
-			mBoblightPortSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mBoblightPort, 1, 65536, 1));
+			mBoblightPortSpinner = new JSpinner(new SpinnerNumberModel(mMiscConfig.mBoblightPort, 1, 65535, 1));
+                        JSpinner.NumberEditor mBoblightPortSpinnereditor = new JSpinner.NumberEditor(mBoblightPortSpinner, "#");
+                        mBoblightPortSpinner.setEditor(mBoblightPortSpinnereditor);
+                        mBoblightPortSpinnereditor.getTextField().setHorizontalAlignment(JLabel.LEFT);
 			mBoblightPortSpinner.addChangeListener(mChangeListener);
 			mBoblightPanel.add(mBoblightPortSpinner);
 	

@@ -83,7 +83,10 @@ public class TinkerForgePanel extends DeviceTypePanel {
 		mPortLabel.setMinimumSize(firstColMinDim);
 		add(mPortLabel);
 		
-		mPortSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 1000000, 128));
+		mPortSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 65535, 1));
+                JSpinner.NumberEditor mPortSpinnereditor = new JSpinner.NumberEditor(mPortSpinner, "#");
+                mPortSpinner.setEditor(mPortSpinnereditor);
+                mPortSpinnereditor.getTextField().setHorizontalAlignment(JLabel.LEFT);
 		mPortSpinner.setMaximumSize(maxDim);
 		mPortSpinner.addChangeListener(mChangeListener);
 		add(mPortSpinner);
