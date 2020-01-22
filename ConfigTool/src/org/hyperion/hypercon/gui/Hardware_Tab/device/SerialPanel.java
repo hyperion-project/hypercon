@@ -7,6 +7,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
+import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.event.ChangeEvent;
@@ -44,7 +45,7 @@ public class SerialPanel extends DeviceTypePanel {
 
 		// Make sure that the device specific configuration (and only device specific) is set
 		String output = getValue("output", KnownOutputs[0]);
-		int baudrate  = getValue("rate", 100000);
+		int baudrate  = getValue("rate", 921600);
 		int delay     = getValue("delayAfterConnect", 0);
 		mDeviceConfig.mDeviceProperties.clear();
 		mDeviceConfig.mDeviceProperties.put("output", output);
@@ -52,7 +53,7 @@ public class SerialPanel extends DeviceTypePanel {
 		mDeviceConfig.mDeviceProperties.put("delayAfterConnect", delay);
 		
 		mOutputCombo.setSelectedItem(output);
-		((SpinnerNumberModel)mBaudrateSpinner.getModel()).setValue(baudrate);
+		((SpinnerListModel)mBaudrateSpinner.getModel()).setValue(baudrate);
 		((SpinnerNumberModel)mDelaySpinner.getModel()).setValue(delay);
 	}
 	
@@ -71,7 +72,8 @@ public class SerialPanel extends DeviceTypePanel {
 		mBaudrateLabel.setMinimumSize(firstColMinDim);
 		add(mBaudrateLabel);
 		
-		mBaudrateSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 1000000, 128));
+                mBaudrateSpinner = new JSpinner(new SpinnerListModel(new Object[] {
+                110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200, 230400, 460800, 921600}));
 		mBaudrateSpinner.setMaximumSize(maxDim);
 		mBaudrateSpinner.addChangeListener(mChangeListener);
 		add(mBaudrateSpinner);

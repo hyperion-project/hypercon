@@ -148,7 +148,10 @@ public class AtmoOrbPanel extends DeviceTypePanel {
 		mPortLabel.setMinimumSize(firstColMinDim);
 		add(mPortLabel);
 		
-		mPortSpinner = new JSpinner(new SpinnerNumberModel(49692, 1, 99999, 1));
+		mPortSpinner = new JSpinner(new SpinnerNumberModel(49692, 1, 65535, 1));
+                JSpinner.NumberEditor mPortSpinnereditor = new JSpinner.NumberEditor(mPortSpinner, "#");
+                mPortSpinner.setEditor(mPortSpinnereditor);
+                mPortSpinnereditor.getTextField().setHorizontalAlignment(JLabel.LEFT);
 		mPortSpinner.setMaximumSize(maxDim);
 		mPortSpinner.addChangeListener(mChangeListener);
 		add(mPortSpinner);

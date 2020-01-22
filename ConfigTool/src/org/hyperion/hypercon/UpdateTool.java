@@ -64,7 +64,7 @@ public class UpdateTool {
 		        			 } 
 		        	 } 
 			} else {
-				System.out.println("UpdateCheck: There is a no new version available");
+				System.out.println("UpdateCheck: There is no new version available");
 			}
 
 		} catch (ParserConfigurationException e) {

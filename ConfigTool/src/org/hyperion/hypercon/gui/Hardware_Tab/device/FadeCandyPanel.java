@@ -78,7 +78,10 @@ public class FadeCandyPanel extends DeviceTypePanel {
 		mPortLabel.setMinimumSize(firstColMinDim);
 		add(mPortLabel);
 
-		mPortSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 99999, 1));
+		mPortSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 65535, 1));
+                JSpinner.NumberEditor mPortSpinnereditor = new JSpinner.NumberEditor(mPortSpinner, "#");
+                mPortSpinner.setEditor(mPortSpinnereditor);
+                mPortSpinnereditor.getTextField().setHorizontalAlignment(JLabel.LEFT);
 		mPortSpinner.setMaximumSize(maxDim);
 		mPortSpinner.addChangeListener(mChangeListener);
 		add(mPortSpinner);
