@@ -78,7 +78,7 @@ public final class HyperionRemoteCalls {
         if(type == SystemTypes.allsystems){
             return "sudo systemctl stop hyperion.service 2>/dev/null; sudo /etc/init.d/hyperion stop 2>/dev/null ; sudo /sbin/initctl stop hyperion 2>/dev/null";
         }else if(type == SystemTypes.openelec){
-            return "killall hyperiond 2>/dev/null";
+            return "killall hyperiond 2>/dev/null; killall hyperion-x11 2>/dev/null";
         }
         return "";
     }
